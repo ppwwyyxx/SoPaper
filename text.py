@@ -1,9 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: text.py
-# Date: Thu Mar 13 14:40:12 2014 +0800
+# Date: Sun Mar 16 22:16:36 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
+import string
 stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on', 'onto',
             'about', 'the', 'for', 'and', 'or', 'by'])
 
@@ -38,3 +39,11 @@ def parse_file_size(size):
     if size > 1000:
         return "{0:.2f}KB".format(float(size) / 1000)
     return "{0}B".format(size)
+
+def title_correct(query, title):
+    q = ''.join([t for t in query if t in string.letters])
+    for k in range(len(query) / 2, len(query)):
+        now = ''.join([t for t in title if t in string.letters]).lower()
+        if levenshtein(q[:k], now) < 7:
+            return True
+    return False
