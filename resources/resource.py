@@ -1,26 +1,32 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: resource.py
-# Date: Sun Mar 16 22:22:34 2014 +0800
+# Date: Mon Mar 17 10:15:44 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
-import requests
 
-from urlparse import urlparse
-from bs4 import BeautifulSoup
 import requests
 
 from text import parse_file_size
-from utils import check_filetype
+from collections import defaultdict
 import traceback
 
 def check_pdf(fname):
     return check_filetype(fname, 'PDF document')
 
 class Resource(object):
-    def __init__(self):
-        self.url = None
+    def __init__(self, url):
+        self.url = url
+
+    #class __metaclass__(type):
+        #__inheritors__ = defaultdict(list)
+
+        #def __new__(meta, name, bases, dct):
+            #klass = type.__new__(meta, name, bases, dct)
+            #for base in klass.mro()[1:-1]:
+                #meta.__inheritors__[base].append(klass)
+            #return klass
 
     def download(self, filename):
         """return True/False"""
@@ -40,16 +46,17 @@ class Resource(object):
     def do_download(self, ofile):
         pass
 
+    @staticmethod
+    def get_handlers():
+        ret = Resource.__subclasses__()
+        return ret
 
-class DirectPDFResource(Resource):
-    def __init__(self, url):
-        self.url = url
+    @staticmethod
+    def direct_download(url, filename):
+        print "Directly Download to {0}...".format(filename)
+        print "URL is {0}".format(url)
 
-    def do_download(self, filename):
-        print "Directly Download PDF to {0}...".format(filename)
-        print "PDF Link is {0}".format(self.url)
-
-        resp = requests.get(self.url, stream=True)
+        resp = requests.get(url, stream=True)
         total_length = resp.headers.get('content-length')
         with open(filename, 'w') as f:
             if total_length is None:
@@ -69,38 +76,14 @@ class DirectPDFResource(Resource):
                     sys.stdout.flush()
                 print
 
-class DL_ACM_Resource(Resource):
-    HOSTNAME = 'dl.acm.org'
 
-    def __init__(self, url):
-        self.url = url
-
+class DirectPDFResource(Resource):
     def do_download(self, filename):
-        print "Downloading from {0}".format(self.url)
-
-        text = requests.get(self.url).text.encode('utf-8')
-        with open("/tmp/b.html", 'w') as f:
-            f.write(text)
-        #text = open("/tmp/b.html").read()
-
-        soup = BeautifulSoup(text)
-        pdf = soup.findAll(attrs={'name': 'FullTextPDF'})
-        url = pdf[0].get('href')
-        url = 'http://{0}/'.format(DL_ACM_Resource.HOSTNAME) + url
-        print "dl.acm origin url: {0}".format(url)
-
-        r = requests.get(url, allow_redirects=False)
-        url = r.headers.get('location')
-        if url.find('pdf') != -1:
-            return url
-        r = requests.get(url, allow_redirects=False)
-        url = r.headers.get('location')
-        if url.find('pdf') != -1:
-            print "dl.acm pdf url: {0}".format(url)
+        Resource.direct_download(self.url, filename)
 
     @staticmethod
     def can_handle(url):
-        url = urlparse(url)
-        return url.netloc == DL_ACM_Resource.HOSTNAME
+        return False
 
-
+if __name__ == '__main__':
+    print Resource.get_handlers()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Sun Mar 16 22:20:37 2014 +0800
+# Date: Mon Mar 17 10:19:43 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import argparse
@@ -11,8 +11,9 @@ import os.path
 
 from text import title_beautify
 from searcher import ScholarSearcher, GoogleSearcher
-from resource import *
-resource_handler = [DL_ACM_Resource]
+from resources.resource import Resource
+import resources
+
 
 def get_args():
     desc = 'Automatic Search and download paper'
@@ -40,14 +41,14 @@ def main():
     ofile = os.path.join(args.directory, args.title + '.pdf')
 
     query = args.title.lower()
-    #searchers = [ScholarSearcher(), GoogleSearcher()]
-    searchers = [GoogleSearcher()]
+    searchers = [ScholarSearcher(), GoogleSearcher()]
+    #searchers = [GoogleSearcher()]
     for s in searchers:
         resources = s.search(query)
         print resources
         for r in resources:
             if isinstance(r, basestring):
-                for h in resource_handler:
+                for h in Resource.get_handlers():
                     if h.can_handle(r):
                         if h(r).download(ofile):
                             return
