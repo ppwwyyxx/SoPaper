@@ -1,13 +1,17 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: resource.py
-# Date: Mon Mar 17 10:15:44 2014 +0800
+# Date: Mon Mar 17 14:25:02 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
 
 import requests
+from urlparse import urlparse
 
+import os
+from utils import check_filetype
+import settings
 from text import parse_file_size
 from collections import defaultdict
 import traceback
@@ -52,11 +56,23 @@ class Resource(object):
         return ret
 
     @staticmethod
-    def direct_download(url, filename):
+    def direct_download(url, filename, headers=None):
         print "Directly Download to {0}...".format(filename)
         print "URL is {0}".format(url)
 
-        resp = requests.get(url, stream=True)
+        if headers is None:
+            headers = {'Host': urlparse(url).netloc,
+                       'User-Agent': settings.USER_AGENT
+                      }
+
+
+        if settings.download_method == 'wget':
+            headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
+                                in headers.iteritems()])
+            os.system('wget "{0}" -O "{1}" {2}'.format(url, filename, headers))
+            return
+
+        resp = requests.get(url, stream=True, headers=headers)
         total_length = resp.headers.get('content-length')
         with open(filename, 'w') as f:
             if total_length is None:

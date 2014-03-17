@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Mon Mar 17 10:19:43 2014 +0800
+# Date: Mon Mar 17 11:40:34 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import argparse
@@ -38,15 +38,15 @@ def main():
 
     title = title_beautify(args.title)
 
-    ofile = os.path.join(args.directory, args.title + '.pdf')
+    ofile = os.path.join(args.directory, title + '.pdf')
 
     query = args.title.lower()
     searchers = [ScholarSearcher(), GoogleSearcher()]
     #searchers = [GoogleSearcher()]
     for s in searchers:
-        resources = s.search(query)
-        print resources
-        for r in resources:
+        print "Searching with {0}".format(s.name)
+        rsts = s.search(query)
+        for r in rsts:
             if isinstance(r, basestring):
                 for h in Resource.get_handlers():
                     if h.can_handle(r):

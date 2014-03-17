@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ieeeresource.py
-# Date: Mon Mar 17 09:51:37 2014 +0800
+# Date: Mon Mar 17 10:47:42 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resource import Resource
@@ -15,7 +15,7 @@ class IEEExploreResource(Resource):
         print "Analyzing {0}".format(self.url)
 
         number = re.findall('arnumber=[0-9]*', self.url)[0]
-        number = re.findall('[0-9]*', number)[0]
+        number = re.findall('[0-9]+', number)[0]
         url2 = "http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber={0}".format(number)
         text = requests.get(url2).text.encode('utf-8')
         #with open("/tmp/b.html", 'w') as f:

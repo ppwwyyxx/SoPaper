@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacmresource.py
-# Date: Mon Mar 17 09:45:39 2014 +0800
+# Date: Mon Mar 17 10:27:54 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resource import Resource

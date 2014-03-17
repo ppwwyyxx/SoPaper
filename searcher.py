@@ -1,13 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Sun Mar 16 22:30:28 2014 +0800
+# Date: Mon Mar 17 10:55:56 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from resource import *
+from resources.resource import DirectPDFResource
 
 import re
+import requests
 from text import title_correct
+from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse
 
@@ -23,7 +25,7 @@ class ScholarSearcher(Searcher):
     GOOGLE_SCHOLAR_URL = "http://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt=1%2C5&as_sdtp="
 
     def __init__(self):
-        self.name = "Google Scholar Searcher"
+        self.name = "Google Scholar"
 
     def search(self, query):
         ret = []
@@ -39,11 +41,11 @@ class ScholarSearcher(Searcher):
                 real_title = h3.get_text()
                 if not title_correct(query, real_title):
                     continue
+                url = h3.find('a').get('href')
+                ret.append(url)
+
                 findpdf = rst.findAll(attrs={'class': 'gs_ggs'})
-                if not findpdf:
-                    url = h3.find('a').get('href')
-                    ret.append(url)
-                else:
+                if findpdf:
                     pdflink = findpdf[0].find('a').get('href')
                     url = pdflink
                     ret.append(DirectPDFResource(url))
@@ -56,7 +58,7 @@ class GoogleSearcher(Searcher):
     GOOGLE_URL = "http://www.google.com.hk/search?q={0}"
 
     def __init__(self):
-        self.name = "Google Searcher"
+        self.name = "Google"
 
     def search(self, query):
         ret = []

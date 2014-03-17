@@ -1,12 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: text.py
-# Date: Sun Mar 16 22:16:36 2014 +0800
+# Date: Mon Mar 17 11:41:36 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
-stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on', 'onto',
-            'about', 'the', 'for', 'and', 'or', 'by'])
+stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
+                 'onto', 'with', 'about', 'the', 'for', 'and', 'or', 'by',
+                 'without', 'instead', 'is', 'are', 'since', 'between',
+                 'after', 'befoer', 'then', 'than'])
 
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
@@ -31,6 +33,8 @@ def title_beautify(title):
     for (idx, w) in enumerate(tk):
         if w.lower() in stopwords and not title.startswith(w):
             tk[idx] = w.lower()
+        else:
+            tk[idx] = w.capitalize()
     return " ".join(tk)
 
 def parse_file_size(size):
