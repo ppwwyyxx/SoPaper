@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Mon Mar 17 11:40:34 2014 +0800
+# Date: Mon Mar 24 00:06:59 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import argparse
@@ -11,6 +11,7 @@ import os.path
 
 from text import title_beautify
 from searcher import ScholarSearcher, GoogleSearcher
+import settings
 from resources.resource import Resource
 import resources
 
@@ -32,13 +33,18 @@ def parse_side_link(link):
     # parse arxiv
     return link
 
+def get_ofile_name():
+    print "In get--------: ", settings.title
+    return os.path.join(args.directory, title_beautify(settings.title) + '.pdf')
+
 def main():
     global args
     args = get_args()
 
-    title = title_beautify(args.title)
+    settings.title = args.title
+    #title = title_beautify(args.title)
 
-    ofile = os.path.join(args.directory, title + '.pdf')
+    #settings.ofile = os.path.join(args.directory, title + '.pdf')
 
     query = args.title.lower()
     searchers = [ScholarSearcher(), GoogleSearcher()]
@@ -50,10 +56,10 @@ def main():
             if isinstance(r, basestring):
                 for h in Resource.get_handlers():
                     if h.can_handle(r):
-                        if h(r).download(ofile):
+                        if h(r).download(get_ofile_name()):
                             return
             else:
-                if r.download(ofile):
+                if r.download(get_ofile_name()):
                     return
 
 

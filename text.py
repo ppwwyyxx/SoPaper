@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: text.py
-# Date: Mon Mar 17 11:41:36 2014 +0800
+# Date: Sun Mar 23 23:58:55 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -46,8 +46,11 @@ def parse_file_size(size):
 
 def title_correct(query, title):
     q = ''.join([t for t in query if t in string.letters])
+    now = ''.join([t for t in title if t in string.letters]).lower()
     for k in range(len(query) / 2, len(query)):
-        now = ''.join([t for t in title if t in string.letters]).lower()
         if levenshtein(q[:k], now) < 7:
+            return True
+    for k in range(len(title) / 2, len(title)):
+        if levenshtein(now[:k], q) < 7:
             return True
     return False

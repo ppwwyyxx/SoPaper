@@ -1,24 +1,24 @@
-## a script to automatically search and download paper
+## Automatically search and download paper
 
-This script will search for:
+This script will search and analyse results in:
 * Google Scholar
 * Google
 
 and support downloading pdf from:
 
 * direct pdf link
-* dl.acm.org
-* ieeexplore.ieee.org
-* arxiv.org
+* [dl.acm.org](http://dl.acm.org/)
+* [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
+* [arxiv.org](http://arxiv.org)
 
 using:
 
-* requests
+* [requests](http://docs.python-requests.org/en/latest/)
 * wget
 
 ## Dependencies
-* requests
-* BeautifulSoup4
+* [requests](http://docs.python-requests.org/en/latest/)
+* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 
 
 ## Usage

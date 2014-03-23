@@ -1,10 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Mon Mar 17 10:55:56 2014 +0800
+# Date: Mon Mar 24 00:03:55 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resources.resource import DirectPDFResource
+
 
 import re
 import requests
@@ -12,6 +13,8 @@ from text import title_correct
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse
+import traceback
+import settings
 
 class Searcher(object):
     def __init__(self):
@@ -41,6 +44,7 @@ class ScholarSearcher(Searcher):
                 real_title = h3.get_text()
                 if not title_correct(query, real_title):
                     continue
+                settings.update_ofile(real_title)
                 url = h3.find('a').get('href')
                 ret.append(url)
 

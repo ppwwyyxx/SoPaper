@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: dlacmresource.py
-# Date: Mon Mar 17 10:27:54 2014 +0800
+# File: dlacm.py
+# Date: Sun Mar 23 23:55:26 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resource import Resource
@@ -22,6 +22,8 @@ class DL_ACM_Resource(Resource):
 
         soup = BeautifulSoup(text)
         pdf = soup.findAll(attrs={'name': 'FullTextPDF'})
+        if not pdf:
+            return
         url = pdf[0].get('href')
         url = 'http://{0}/'.format(DL_ACM_Resource.HOSTNAME) + url
         print "dl.acm origin url: {0}".format(url)
@@ -29,7 +31,9 @@ class DL_ACM_Resource(Resource):
         r = requests.get(url, allow_redirects=False)
         url = r.headers.get('location')
         if url.find('pdf') != -1:
-            return url
+            Resource.direct_download(url, filename)
+            return
+
         r = requests.get(url, allow_redirects=False)
         url = r.headers.get('location')
         if url.find('pdf') != -1:
