@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Mon Mar 24 00:03:55 2014 +0800
+# Date: Mon Mar 24 00:18:29 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resources.resource import DirectPDFResource
@@ -9,7 +9,7 @@ from resources.resource import DirectPDFResource
 
 import re
 import requests
-from text import title_correct
+from text import title_correct, color_text
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse
@@ -54,7 +54,7 @@ class ScholarSearcher(Searcher):
                     url = pdflink
                     ret.append(DirectPDFResource(url))
             except Exception as e:
-                print "Item parse error: {0}".format(str(e))
+                print color_text("Item parse error: {0}".format(str(e)), 'red')
                 print traceback.format_exc()
         return ret
 
@@ -87,10 +87,12 @@ class GoogleSearcher(Searcher):
                     url = rst.findAll('a')[0].get('href')
                     url = GoogleSearcher.parse_google_link(url)
                     ret.append(url)
-                print "Found item on google: {0} at {1}".format(real_title,
-                                                                urlparse(url).netloc)
+                print color_text("Found item on google: {0} at {1}".format(real_title,
+                                                                urlparse(url).netloc),
+                                 'blue')
             except Exception as e:
-                print "Item parse error: {0}".format(str(e))
+                print color_text("Item parse error: {0}".format(str(e)),
+                                 'red')
                 print traceback.format_exc()
 
         return ret

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Mon Mar 24 00:06:59 2014 +0800
+# Date: Mon Mar 24 00:17:07 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import argparse
@@ -9,7 +9,7 @@ import os
 import sys
 import os.path
 
-from text import title_beautify
+from text import title_beautify, color_text
 from searcher import ScholarSearcher, GoogleSearcher
 import settings
 from resources.resource import Resource
@@ -34,7 +34,6 @@ def parse_side_link(link):
     return link
 
 def get_ofile_name():
-    print "In get--------: ", settings.title
     return os.path.join(args.directory, title_beautify(settings.title) + '.pdf')
 
 def main():
@@ -50,7 +49,7 @@ def main():
     searchers = [ScholarSearcher(), GoogleSearcher()]
     #searchers = [GoogleSearcher()]
     for s in searchers:
-        print "Searching with {0}".format(s.name)
+        print color_text("Searching with {0}".format(s.name), 'green')
         rsts = s.search(query)
         for r in rsts:
             if isinstance(r, basestring):

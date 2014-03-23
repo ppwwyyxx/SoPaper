@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: resource.py
-# Date: Mon Mar 17 14:25:02 2014 +0800
+# Date: Mon Mar 24 00:21:23 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -13,6 +13,7 @@ import os
 from utils import check_filetype
 import settings
 from text import parse_file_size
+from text import color_text
 from collections import defaultdict
 import traceback
 
@@ -37,14 +38,14 @@ class Resource(object):
         try:
             self.do_download(filename)
         except Exception as e:
-            print "Download error: {0}".format(str(e))
+            print color_text("Download error: {0}".format(str(e)), 'red')
             print traceback.format_exc()
             return False
         else:
             if check_pdf(filename):
                 return True
             else:
-                print "Format is not PDF!"
+                print color_text("Format is not PDF! try next...", 'red')
                 return False
 
     def do_download(self, ofile):
@@ -57,8 +58,9 @@ class Resource(object):
 
     @staticmethod
     def direct_download(url, filename, headers=None):
-        print "Directly Download to {0}...".format(filename)
-        print "URL is {0}".format(url)
+        print color_text("Directly Download to {0}...".format(filename),
+                         'yellow')
+        print color_text("URL is {0}".format(url), 'yellow')
 
         if headers is None:
             headers = {'Host': urlparse(url).netloc,
@@ -79,7 +81,8 @@ class Resource(object):
                 f.write(resp.content)
             else:
                 total_length = int(total_length)
-                print "File size is {0}".format(parse_file_size(total_length))
+                print color_text("File size is {0}".format(parse_file_size(total_length)),
+                                 'yellow')
                 dl = 0
                 for data in resp.iter_content():
                     dl += len(data)

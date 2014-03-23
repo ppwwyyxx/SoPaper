@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: text.py
-# Date: Sun Mar 23 23:58:55 2014 +0800
+# Date: Mon Mar 24 00:16:26 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+
+from termcolor import colored
 
 import string
 stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
@@ -54,3 +56,6 @@ def title_correct(query, title):
         if levenshtein(now[:k], q) < 7:
             return True
     return False
+
+def color_text(text, color):
+    return colored(text, color)
