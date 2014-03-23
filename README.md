@@ -19,6 +19,7 @@ using:
 ## Dependencies
 * [requests](http://docs.python-requests.org/en/latest/)
 * [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+* [termcolor](https://pypi.python.org/pypi/termcolor)
 
 
 ## Usage
