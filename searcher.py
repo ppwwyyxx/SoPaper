@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Mon Mar 24 00:18:29 2014 +0800
+# Date: Tue Apr 01 14:48:53 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resources.resource import DirectPDFResource
@@ -38,13 +38,16 @@ class ScholarSearcher(Searcher):
 
         soup = BeautifulSoup(text)
         results = soup.findAll(attrs={'class': 'gs_r'})
+        title_updated = False
         for rst in results:
             try:
                 h3 = rst.findAll('h3')[0]
                 real_title = h3.get_text()
                 if not title_correct(query, real_title):
                     continue
-                settings.update_ofile(real_title)
+                if not title_updated:
+                    settings.update_ofile(real_title)
+                    title_updated = True
                 url = h3.find('a').get('href')
                 ret.append(url)
 
