@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: text.py
-# Date: Mon Mar 24 00:16:26 2014 +0800
+# File: text.py\2
+# Date: Sun Apr 13 12:26:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from termcolor import colored
@@ -33,7 +33,7 @@ def levenshtein(s1, s2):
 def title_beautify(title):
     tk = title.title().split()
     for (idx, w) in enumerate(tk):
-        if w.lower() in stopwords and not title.startswith(w):
+        if w.lower() in stopwords and not idx == 0:
             tk[idx] = w.lower()
         else:
             tk[idx] = w.capitalize()
@@ -56,6 +56,12 @@ def title_correct(query, title):
         if levenshtein(now[:k], q) < 7:
             return True
     return False
+
+def filter_title_fileformat(title):
+    title = title.replace('[pdf]', '')
+    title = title.replace('[PDF]', '')
+    return title
+
 
 def color_text(text, color):
     return colored(text, color)

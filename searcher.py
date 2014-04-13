@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Tue Apr 01 14:48:53 2014 +0800
+# Date: Sun Apr 13 12:26:32 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from resources.resource import DirectPDFResource
@@ -9,7 +9,7 @@ from resources.resource import DirectPDFResource
 
 import re
 import requests
-from text import title_correct, color_text
+from text import title_correct, color_text, filter_title_fileformat
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse
@@ -43,6 +43,7 @@ class ScholarSearcher(Searcher):
             try:
                 h3 = rst.findAll('h3')[0]
                 real_title = h3.get_text()
+                real_title = filter_title_fileformat(real_title)
                 if not title_correct(query, real_title):
                     continue
                 if not title_updated:
