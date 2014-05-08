@@ -1,0 +1,31 @@
+#!/bin/bash -e
+# This script create a virtual environment in directory $ENV,
+# install dependencies and setup executables according to setup.py.
+#
+# You need to install virtualenv and pip before running this script.
+
+#[[ -d "../.git" ]] && cp pre-commit ../.git/hooks
+
+script_dir=$(dirname $0)
+cd $script_dir
+: "DLC = ${DLC:=./.download_cache}, ENV = ${ENV:=../.env}"
+
+# find the right python version
+if [ -z "$PYTHON" ]; then
+    for PYTHON in python{2.7,2.6,2,}; do
+        type "$PYTHON" >/dev/null 2>&1 && break
+    done
+fi
+
+# find the right virtualenv version
+if [ -z "$VIRTUALENV" ]; then
+    for VIRTUALENV in virtualenv{2.7,2.6,2,}; do
+        type "$VIRTUALENV" >/dev/null 2>&1 && break
+    done
+fi
+
+"$VIRTUALENV" --no-site-packages --python "$PYTHON" "$ENV" || exit 1
+
+. "$ENV"/bin/activate || exit 1
+
+pip install --download-cache="$DLC" -e .

@@ -1,0 +1,6 @@
+#!/bin/bash -e
+# File: pre-commit
+# Date: Tue Dec 10 15:02:36 2013 +0800
+# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+
+./manage/check-style.sh || (echo "Please fix all the warnings on coding style" && exit 1)
