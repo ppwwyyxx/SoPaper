@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Sat May 10 17:59:00 2014 +0800
+# Date: Sat May 10 20:34:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -39,7 +39,7 @@ def main():
     args = get_args()
 
     query = args.title
-    query = "Distinctive image features from scale-invariant keypoint"
+    #query = "Distinctive image features from scale-invariant keypoint"
     ctx = JobContext(query)
 
     searcher_lst = searcher.register_searcher.get_searcher_list()

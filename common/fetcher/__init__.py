@@ -1,21 +1,16 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 19:20:13 2014 +0800
+# Date: Sat May 10 21:47:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from lib.textutil import parse_file_size
-from lib.downloader import direct_download
+from lib.downloader import direct_download, ProgressPrinter
 from ukutil import check_filetype, import_all_modules
 from uklogger import *
-from job import JobContext, SearchResult
+from job import SearchResult
 
 from functools import wraps
 import ukconfig
-import sys
-import requests
-import os
-import traceback
 import re
 
 
@@ -34,6 +29,7 @@ class register_parser(object):
 
         self.type_match = kwargs.pop('typematch', None)
         self.legal = kwargs.pop('legal', True)
+        self.custom_downloader = kwargs.pop('custom_downloader', None)
 
         assert self.name not in self.parser_dict
 
@@ -43,7 +39,6 @@ class register_parser(object):
             'url', 'headers' to pass to downloader,
             'ctx_update': {} to update the context
         """
-        self.parser_dict[self.name] = func
 
         @wraps(func)
         def wrapper(res):
@@ -58,11 +53,12 @@ class register_parser(object):
                 return params
             except KeyboardInterrupt:
                 raise
-            except Exception as e:
+            except Exception:
                 log_exc("Error in parser '{0}' with url '{1}'".
                         format(self.name, res.url))
                 return None
         self.parser_list.append(self)
+        self.parser_dict[self.name] = self
         self.cb = wrapper
         return wrapper
 
@@ -84,11 +80,16 @@ class register_parser(object):
             return False
 
         try:
-            data = direct_download(res['url'], res.get('headers'),
-                                   progress_updater)
+            if progress_updater is None:
+                progress_updater = ProgressPrinter()
+            if self.custom_downloader is None:
+                data = direct_download(res['url'], progress_updater,
+                                       res.get('headers'))
+            else:
+                data = self.custom_downloader(res, progress_updater)
         except KeyboardInterrupt:
             raise
-        except Exception as e:
+        except Exception:
             log_exc("Error while downloading in parser '{0}' with" \
                     "url '{1}'".format(self.name, url))
             return False

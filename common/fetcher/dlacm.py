@@ -1,17 +1,41 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 10 19:28:36 2014 +0800
+# Date: Sat May 10 22:02:38 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
-import requests
-from bs4 import BeautifulSoup
 from uklogger import log_info
+import ukconfig
+from lib.textutil import parse_file_size
+
+from urlparse import urlparse
+import requests
+import human_curl
+from bs4 import BeautifulSoup
 
 HOSTNAME = 'dl.acm.org'
 
-@register_parser(name='dl.acm.org', urlmatch='dl.acm.org')
+def download(res, updater):
+    url = res['url']
+    log_info("Directly Download with URL {0} ...".format(url))
+    headers = {'Host': urlparse(url).netloc,
+               'User-Agent': ukconfig.USER_AGENT,
+               'Connection': 'Keep-Alive'
+              }
+    resp = human_curl.get(url, headers=headers,timeout=None)
+    total_length = resp.headers.get('content-length')
+    print total_length
+    if total_length < ukconfig.FILE_SIZE_MINIMUM:
+        raise Exception("File too small: " + parse_file_size(total_length))
+    if total_length > ukconfig.FILE_SIZE_MAXIMUM:
+        raise Exception("File too large: " + parse_file_size(total_length))
+    data = resp.content
+    updater.finish()
+    return data
+
+@register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
+                 custom_downloader=download)
 def dlacm(search_result):
     url = search_result.url
 

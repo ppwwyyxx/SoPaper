@@ -1,14 +1,17 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 10 19:58:01 2014 +0800
+# Date: Sat May 10 21:45:26 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
+import sys
+if __name__ == '__main__':
+    sys.path.append('../')
 from uklogger import *
 from lib.textutil import parse_file_size
 import ukconfig
 
-import sys
+import urllib
 import requests
 from urlparse import urlparse
 
@@ -35,17 +38,16 @@ class ProgressPrinter(object):
         self.total = size
 
 
-def direct_download(url, headers=None, progress_updater=None):
+def direct_download(url, progress_updater, headers=None):
     """ direct download according to ctx
         return the data
     """
     log_info("Directly Download with URL {0} ...".format(url))
 
-    if progress_updater is None:
-        progress_updater = ProgressPrinter()        # default updater
     if headers is None:
         headers = {'Host': urlparse(url).netloc,
-                   'User-Agent': ukconfig.USER_AGENT
+                   'User-Agent': ukconfig.USER_AGENT,
+                   'Connection': 'Keep-Alive'
                   }
 
     # for test only
@@ -58,10 +60,12 @@ def direct_download(url, headers=None, progress_updater=None):
     resp = requests.get(url, stream=True, headers=headers)
     total_length = resp.headers.get('content-length')
     if total_length is None:
+        data = resp.content
         progress_updater.finish()
-        return resp.content
+        return data
     else:
         total_length = int(total_length)
+        print total_length
         if total_length < ukconfig.FILE_SIZE_MINIMUM:
             raise Exception("File too small: " + parse_file_size(total_length))
         if total_length > ukconfig.FILE_SIZE_MAXIMUM:
@@ -75,3 +79,7 @@ def direct_download(url, headers=None, progress_updater=None):
             progress_updater.update(dl)
         progress_updater.finish()
         return ret
+
+if __name__ == '__main__':
+    data = direct_download('http://delivery.acm.org/10.1145/330000/322274/p615-yao.pdf?ip=59.66.132.22&id=322274&acc=ACTIVE%20SERVICE&key=BF85BBA5741FDC6E%2E587F3204F5B62A59%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=456185443&CFTOKEN=45860210&__acm__=1399725544_eebbed2ce2719c67c7a3642f2b21d80a')
+    print data
