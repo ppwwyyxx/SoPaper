@@ -1,4 +1,3 @@
-common/person-id.txt0*
 common/person-profile.txt*
 old-result
 
@@ -45,3 +44,4 @@ nosetests.xml
 
 # vim swap file
 *.swp
+*.pyc
