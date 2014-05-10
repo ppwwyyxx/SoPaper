@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 10 22:02:38 2014 +0800
+# Date: Sat May 10 22:05:03 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -24,8 +24,8 @@ def download(res, updater):
                'Connection': 'Keep-Alive'
               }
     resp = human_curl.get(url, headers=headers,timeout=None)
-    total_length = resp.headers.get('content-length')
-    print total_length
+    total_length = int(resp.headers.get('content-length'))
+    log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
         raise Exception("File too small: " + parse_file_size(total_length))
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:

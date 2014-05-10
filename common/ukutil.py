@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: ukutil.py
-# $Date: Sat May 10 18:27:03 2014 +0800
+# $Date: Sun May 11 00:08:08 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """common utility functions"""
@@ -55,6 +55,29 @@ def check_filetype(buf, need_type):
         return True
     else:
         return s
+
+def check_pdf(buf):
+    return check_filetype(buf, 'PDF document')
+
+def pdf_compress(data):
+    """ take a pdf data string, return a compressed string
+        compression is done using ps2pdf14 in ghostscript
+    """
+    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    f.write(data)
+    f.close()
+
+    f2 = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    f2.close()
+    os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
+
+    newdata = open(f2.name).read()
+    os.remove(f2.name)
+    os.remove(f.name)
+    if check_pdf(newdata):
+        return newdata
+    else:
+        return data
 
 if __name__ == '__main__':
     print check_filetype(open("./ukconfig.py").read(), 'PDF')

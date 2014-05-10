@@ -40,7 +40,11 @@ Usage:
 ./paper-downloadr.py -t "Distinctive image features from scale-invariant keypoints" -d /tmp
 ```
 
-To deploy the server, you'll need python2 with virtualenv. And then run the following command:
+To deploy the server, you'll need:
+* Python2 with virtualenv
+* ghostscript
+
+Run the following command to install all the python packages needed, and setup virtualenv
 
 	cd manage
 	./quickinstall

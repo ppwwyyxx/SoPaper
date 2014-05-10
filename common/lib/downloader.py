@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 10 21:45:26 2014 +0800
+# Date: Sun May 11 00:17:16 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -65,7 +65,6 @@ def direct_download(url, progress_updater, headers=None):
         return data
     else:
         total_length = int(total_length)
-        print total_length
         if total_length < ukconfig.FILE_SIZE_MINIMUM:
             raise Exception("File too small: " + parse_file_size(total_length))
         if total_length > ukconfig.FILE_SIZE_MAXIMUM:

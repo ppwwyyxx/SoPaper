@@ -1,21 +1,22 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 21:47:49 2014 +0800
+# Date: Sun May 11 00:12:48 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
-from ukutil import check_filetype, import_all_modules
+from ukutil import check_pdf, import_all_modules
 from uklogger import *
 from job import SearchResult
+
+try:
+    import ukdbconn
+except ImportError:
+    pass
 
 from functools import wraps
 import ukconfig
 import re
-
-
-def check_pdf(fname):
-    return check_filetype(fname, 'PDF document')
 
 class register_parser(object):
     parser_list = []
@@ -49,7 +50,10 @@ class register_parser(object):
                     return None
                 if 'ctx_update' not in params:
                     params['ctx_update'] = {}
-                params['ctx_update'].update({'source': self.name})
+                params['ctx_update'].update({
+                    'source': self.name,
+                    'page_url': res.url
+                })
                 return params
             except KeyboardInterrupt:
                 raise
@@ -94,19 +98,28 @@ class register_parser(object):
                     "url '{1}'".format(self.name, url))
             return False
 
-        ft = check_filetype(data, 'PDF document')
+        ft = check_pdf(data)
         if ft == True:
             ctx.success = True
             ctx.data = data
             log_info("Update metadata: {0}".format(str(res['ctx_update'])))
-            # TODO update metadata
+            ctx.update_meta_dict(res['ctx_update'])
 
             # write file
             if ukconfig.SAVE_TO_FILE:
                 filename = ctx.title + ".pdf"
                 log_info("Writing data to {0}".format(filename))
-                with open(filename, 'wb') as f:
-                    f.write(data)
+                try:
+                    with open(filename, 'wb') as f:
+                        f.write(data)
+                except IOError:
+                    log_exc("Failed to write to file")
+
+            if ukconfig.SAVE_TO_DB:
+                try:
+                    ukdbconn.new_paper(ctx)
+                except:
+                    log_exc("Failed to save to db")
             return True
         else:
             log_err("Wrong Format: {0}".format(ft))
