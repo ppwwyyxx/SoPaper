@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Sat May 10 23:23:54 2014 +0800
+# Date: Sun May 11 01:29:22 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -23,6 +23,14 @@ class JobContext(object):
     def update_meta_dict(self, meta):
         self.meta.update(meta)
 
+    def __str__(self):
+        d = {'title': self.title,
+             'success': self.success,
+             'meta': self.meta
+            }
+        return str(d)
+
+
 class SearchResult(object):
     def __init__(self, type, url):
         self.url = url
@@ -30,4 +38,6 @@ class SearchResult(object):
         self.searcher = None
 
     def __str__(self):
-        return str(self.searcher) + ", " + str(self.type) + ", "+ self.url
+        return str(self.searcher) + ", " + \
+                str(self.type) + ", " + \
+                self.url

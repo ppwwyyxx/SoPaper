@@ -1,11 +1,13 @@
-#!/usr/bin/env python2
+#!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Sun May 11 00:26:39 2014 +0800
+# Date: Sun May 11 01:34:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
 from job import JobContext
+import ukconfig
+ukconfig.SAVE_TO_DB = False
 
 if __name__ == '__main__':
     ctx = JobContext("Test Filename")
@@ -15,12 +17,13 @@ if __name__ == '__main__':
 
     #parser = register_parser.parser_dict['dl.acm.org']
     #url = "http://dl.acm.org/citation.cfm?id=2366157"
-    #url2 = "http://dl.acm.org/citation.cfm?id=322274"
     #sr = SearchResult(None, url)
 
     #parser = register_parser.parser_dict['ieeexplore.ieee.org']
-    #sr = SearchResult(None, "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=00726791")
+    ##sr = SearchResult(None, "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=00726791")
+    #sr = SearchResult(None, "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4244529")
+
 
     params = parser.run(ctx, sr)
-    print params
+    print ctx
 
