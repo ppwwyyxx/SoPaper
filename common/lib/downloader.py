@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 10 17:12:25 2014 +0800
+# Date: Sat May 10 17:58:30 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -17,6 +17,8 @@ class ProgressPrinter(object):
         self.total = 0
 
     def finish(self):
+        sys.stdout.write("\n")
+        sys.stdout.flush()
         log_info("Download finished")
 
     def update(self, done):
@@ -60,14 +62,14 @@ def direct_download(url, headers=None, progress_updater=None):
         return resp.content
     else:
         total_length = int(total_length)
+        if total_length < ukconfig.FILE_SIZE_MINIMUM:
+            raise Exception("File too small: " + parse_file_size(total_length))
         progress_updater.set_total(total_length)
         dl = 0
         ret = ""
         for data in resp.iter_content():
-            if dl == 0:
-                print type(data)
             dl += len(data)
             ret += data
             progress_updater.update(dl)
-        print type(ret)
+        progress_updater.finish()
         return ret

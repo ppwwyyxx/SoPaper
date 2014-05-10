@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Sat May 10 15:49:25 2014 +0800
+# Date: Sat May 10 17:44:03 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -19,7 +19,7 @@ import traceback
 
 GOOGLE_SCHOLAR_URL = "http://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt=1%2C5&as_sdtp="
 
-@register_searcher(name='Google Scholar')
+@register_searcher(name='Google Scholar', priority=10)
 def search(ctx):
     query = ctx.query
 
@@ -50,6 +50,5 @@ def search(ctx):
                 url = pdflink
                 ret.append(SearchResult('directpdf', url))
         except Exception as e:
-            log_exc("Item parse error: {0}".format(str(e)))
-            log_exc(traceback.format_exc())
+            log_exc("Search Item parse error: {0}".format(str(e)))
     return ret

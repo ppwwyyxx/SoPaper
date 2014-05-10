@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 17:09:53 2014 +0800
+# Date: Sat May 10 17:44:01 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import parse_file_size
@@ -68,6 +68,8 @@ class register_parser(object):
            len(self.url_match.findall(url)) == 0:
             return False
 
+        log_info("Parsing url {0} with parser {1}".
+                 format(url, self.name))
         res = self.cb(sr)
         if res is None:
             return False
@@ -80,7 +82,6 @@ class register_parser(object):
         except Exception as e:
             log_exc("Error while downloading in parser '{0}' with" \
                     "url '{1}'".format(self.name, url))
-            log_exc(traceback.format_exc())
             return False
 
         # XXX write to file to test
@@ -97,6 +98,8 @@ class register_parser(object):
             return True
         else:
             log_err("Format is not PDF! try next...")
+            if not ukconfig.KEEP_DOWNLOADED_FILE:
+                os.remove(filename)
             return False
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 17:09:00 2014 +0800
+# Date: Sat May 10 17:57:24 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from ukutil import import_all_modules
@@ -15,6 +15,7 @@ class register_searcher(object):
 
     def __init__(self, *args, **kwargs):
         self.name = kwargs.pop('name')
+        self.priority = kwargs.pop('priority', 5)
 
     def __call__(self, func):
         """ func: callable to be invoked, took a JobContext
@@ -25,6 +26,8 @@ class register_searcher(object):
         def wrapper(ctx):
             assert isinstance(ctx, JobContext)
             try:
+                log_info("Searching '{1}' with searcher: '{0}' ...".
+                         format(self.name, ctx.query))
                 res = func(ctx)
                 for r in res:
                     r.searcher = self.name
@@ -44,6 +47,12 @@ class register_searcher(object):
         res = self.cb(ctx)
         if res:
             ctx.search_results.extend(res)
+            log_info("Got the following results from {0}:\n".format(self.name) +
+                    "\n".join([str(r) for r in res]))
         return res
+
+    @staticmethod
+    def get_searcher_list():
+        return sorted(register_searcher.searcher_list, key=lambda x: x.priority, reverse=True)
 
 import_all_modules(__file__, __name__)

@@ -4,6 +4,7 @@ old-result
 
 *.py[cod]
 
+*.pdf
 # C extensions
 *.so
 
