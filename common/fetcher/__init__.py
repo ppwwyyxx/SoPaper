@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 18:28:14 2014 +0800
+# Date: Sat May 10 19:20:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import parse_file_size
@@ -25,11 +25,17 @@ def check_pdf(fname):
 class register_parser(object):
     parser_list = []
 
+    parser_dict = {}
+    """ save the original parser func"""
+
     def __init__(self, *args, **kwargs):
         self.name = kwargs.pop('name')
         self.url_match = re.compile(kwargs.pop('urlmatch'))
+
         self.type_match = kwargs.pop('typematch', None)
         self.legal = kwargs.pop('legal', True)
+
+        assert self.name not in self.parser_dict
 
     def __call__(self, func):
         """ func: callable to be invoked, took a 'SearchResult'
@@ -37,12 +43,15 @@ class register_parser(object):
             'url', 'headers' to pass to downloader,
             'ctx_update': {} to update the context
         """
+        self.parser_dict[self.name] = func
 
         @wraps(func)
         def wrapper(res):
             assert isinstance(res, SearchResult)
             try:
                 params = func(res)
+                if params is None:
+                    return None
                 if 'ctx_update' not in params:
                     params['ctx_update'] = {}
                 params['ctx_update'].update({'source': self.name})
@@ -107,7 +116,6 @@ class register_parser(object):
 def direct_link(search_result):
     return { 'url': search_result.url}
 
-import_all_modules(__file__, __name__)
+if __name__ != '__main__':
+    import_all_modules(__file__, __name__)
 
-if __name__ == '__main__':
-    pass
