@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 17:44:01 2014 +0800
+# Date: Sat May 10 18:28:14 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import parse_file_size
@@ -84,22 +84,22 @@ class register_parser(object):
                     "url '{1}'".format(self.name, url))
             return False
 
-        # XXX write to file to test
-        filename = ctx.title + ".pdf"
-        log_info("Writing data to {0}".format(filename))
-        with open(filename, 'wb') as f:
-            f.write(data)
-
-        if check_pdf(filename):
+        ft = check_filetype(data, 'PDF document')
+        if ft == True:
             ctx.success = True
             ctx.data = data
             log_info("Update metadata: {0}".format(str(res['ctx_update'])))
             # TODO update metadata
+
+            # write file
+            if ukconfig.SAVE_TO_FILE:
+                filename = ctx.title + ".pdf"
+                log_info("Writing data to {0}".format(filename))
+                with open(filename, 'wb') as f:
+                    f.write(data)
             return True
         else:
-            log_err("Format is not PDF! try next...")
-            if not ukconfig.KEEP_DOWNLOADED_FILE:
-                os.remove(filename)
+            log_err("Wrong Format: {0}".format(ft))
             return False
 
 
