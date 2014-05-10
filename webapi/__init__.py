@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # $File: __init__.py
-# $Date: Mon Mar 24 12:03:16 2014 +0800
+# $Date: Sat May 10 20:30:21 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """uknow informatin hub API website"""
@@ -25,9 +25,7 @@ login_manager = None
 def get_app():
     """load API modules and return the WSGI application"""
     global get_app, _app, login_manager
-    _app = Flask(__name__,
-                 instance_relative_config=True,
-                 instance_path=os.environ.get('SOA_CONFIG'))
+    _app = Flask(__name__)
     _app.config.from_object(DefaultConfig())
 
     _app.secret_key = 'WTF is this!!'       # Should have this to work

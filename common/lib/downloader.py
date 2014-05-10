@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 10 17:58:30 2014 +0800
+# Date: Sat May 10 19:58:01 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -64,6 +64,8 @@ def direct_download(url, headers=None, progress_updater=None):
         total_length = int(total_length)
         if total_length < ukconfig.FILE_SIZE_MINIMUM:
             raise Exception("File too small: " + parse_file_size(total_length))
+        if total_length > ukconfig.FILE_SIZE_MAXIMUM:
+            raise Exception("File too large: " + parse_file_size(total_length))
         progress_updater.set_total(total_length)
         dl = 0
         ret = ""

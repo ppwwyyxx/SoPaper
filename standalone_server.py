@@ -6,6 +6,8 @@
 from webapi import get_app
 import signal
 import sys
+import os
+import os.path
 
 
 def sigint_handler(s, f):
@@ -20,8 +22,9 @@ def main():
 
     app = get_app()
     try:
-        app.config.from_pyfile('api_website_config.py')
-    except IOError:
+        app.config.from_pyfile('../manage/api_website_config.py')
+    except IOError as e:
+        print e
         print 'WARNING: No configuration found, using builtin defaults.'
 
     app.run(app.config['API_HOST'], app.config['API_PORT'],

@@ -4,9 +4,9 @@ This is a project designed for researchers to conveniently getting papers they n
 It includes a command line tool ``paper-downloader.py``, to automatically search and download paper,
 as well as a server to provide integrated search/read/download experience.
 
-This project served as a course project for __Service Oriented Software Engineering(2014Spring)__
-and __Search Engine Technology(2014Spring)__, developed by:
-* [Yuxin Wu(ppwwyyxx)](mailto:ppwwyyxxc@gmail.com)
+This project served as a course project for *Service Oriented Software Engineering(2014Spring)*
+and *Search Engine Technology(2014Spring)*, developed by:
+* [Yuxin Wu (ppwwyyxx)](mailto:ppwwyyxxc@gmail.com)
 * Tiezheng Li
 * Yichen Wang
 
@@ -23,10 +23,11 @@ and the ``fetcher`` package is able to further analyse the result and download t
 * [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
 * [arxiv.org](http://arxiv.org)
 
-The command line tool will directly download the paper with a *clean filename*.
+The command line tool will directly download the paper with a __clean filename__+.
 
-The server provide RESTful APIs to query papers,
-and a interactive paper reading interface supported by [pdf2htmlEX](https://github.com/coolwanglu/pdf2htmlEX).
+The server provide:
+* RESTful APIs on papers
+* Interactive paper reading UI supported by [pdf2htmlEX](https://github.com/coolwanglu/pdf2htmlEX)
 
 ## How to Use
 To run the command line tool, you'll need the following installed:
