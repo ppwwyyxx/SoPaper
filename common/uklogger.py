@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: uklogger.py
-# $Date: Fri Apr 18 23:32:56 2014 +0800
+# $Date: Sun May 11 15:08:57 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """utilities for handling logging"""
@@ -27,15 +27,6 @@ def log_err(msg):
     """log an err message"""
     print colored('ERR', 'red', attrs=['blink']), msg
     # TODO: use log util, log to file, including time, module, etc.
-
-def log_query(msg):
-    """log all the queries"""
-    print colored('QUERY', 'green', attrs=['blink']), msg
-    try:
-        with open('/home/soa/query-log.txt', 'a') as f:
-            print >> f, time.ctime(), msg
-    except:
-        pass
 
 def log_exc(exc):
     """log an unexpected exception"""

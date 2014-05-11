@@ -1,8 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-# $File: ukdbconn.py
-# $Date: Sun May 11 13:47:05 2014 +0800
-# $Author: jiakai <jia.kai66@gmail.com>
+# File: ukdbconn.py
+# Date: Sun May 11 15:08:31 2014 +0800
+# Author: jiakai <jia.kai66@gmail.com>
+#         Yuxin Wu <ppwwyyxxc@gmail.com>
 
 """database connections"""
 
@@ -30,7 +31,9 @@ def get_mongo(coll_name=None):
     return _db[coll_name]
 
 def new_paper(ctx):
+    # TODO compress in sychronous
     data = pdf_compress(ctx.data)
+
     pid = global_counter('paper')
     log_info("Add new paper: {0}, size={1}, pid={2}".format(
         ctx.title, parse_file_size(len(data)), pid))
@@ -56,21 +59,18 @@ def update_view_cnt(pid):
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$inc': {'view_cnt': 1}})
 
-
 def global_counter(name, delta=1):
-    """atomically change a global int64 counter and return the newest value;
+    """ atomically change a global int64 counter and return the newest value;
     starting from 1
     mongo document structure:
     {
         _id: counter name
         val: current value
     }"""
-    coll_name = 'global_counter'
-    db = get_mongo()
-    rst = db.command('findAndModify', coll_name,
-                     query={'_id': name},
-                     update={'$inc': {'val': delta}},
-                     new=True)
+    db = get_mongo('global_counter')
+    rst = db.find_and_modify(query={'_id': name},
+                            update={'$inc': {'val': delta}},
+                            new=True)
     if rst['value']:
         return rst['value']['val']
     try:

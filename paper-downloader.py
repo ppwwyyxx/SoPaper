@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Sun May 11 12:58:10 2014 +0800
+# Date: Sun May 11 13:36:21 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -39,6 +39,7 @@ def main():
     args = get_args()
 
     query = args.title
+    directory = args.directory
     #query = "Distinctive image features from scale-invariant keypoint"
     ctx = JobContext(query)
 
@@ -51,7 +52,7 @@ def main():
             for parser in parser_lst:
                 succ = parser.run(ctx, sr)
                 if succ:
-                    filename = ctx.title + ".pdf"
+                    filename = os.path.join(directory, ctx.title + ".pdf")
                     log_info("Writing data to {0}".format(filename))
                     try:
                         with open(filename, 'wb') as f:
