@@ -1,16 +1,18 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: ukutil.py
-# $Date: Sun May 11 13:28:07 2014 +0800
+# $Date: Sun May 11 13:46:10 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """common utility functions"""
 
 import ukconfig
+from uklogger import *
 from importlib import import_module
 from pkgutil import walk_packages
 from datetime import datetime
 from subprocess import Popen, PIPE
+from lib.textutil import parse_file_size
 import tempfile
 import os
 

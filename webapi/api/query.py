@@ -1,12 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Sun May 11 13:19:35 2014 +0800
+# Date: Sun May 11 13:42:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
 from lib.textutil import title_beautify
-from search import handle_query
+from queryhandler import handle_query
 
 # api: /query?q=test
 @api_method('/query')

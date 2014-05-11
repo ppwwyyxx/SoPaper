@@ -1,13 +1,14 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sun May 11 13:20:24 2014 +0800
+# Date: Sun May 11 13:44:34 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
 from ukutil import check_pdf, import_all_modules
 from uklogger import *
 from job import SearchResult
+from dbsearch import search_exact
 
 try:
     import ukdbconn
@@ -92,7 +93,7 @@ class register_parser(object):
         # check updated title against db before download
         if ukconfig.USE_DB:
             newt = res['ctx_update'].get('title')
-            if  newt != ctx.title:
+            if newt and newt != ctx.title:
                 doc = search_exact(newt)
                 if res:
                     ctx.existing = doc

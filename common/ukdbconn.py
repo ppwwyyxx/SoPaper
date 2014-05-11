@@ -1,12 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: ukdbconn.py
-# $Date: Sun May 11 13:26:08 2014 +0800
+# $Date: Sun May 11 13:47:05 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """database connections"""
 
 import ukconfig
+from uklogger import *
 
 try:
     from pymongo import MongoClient
