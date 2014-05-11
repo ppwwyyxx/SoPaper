@@ -23,7 +23,7 @@ and the ``fetcher`` package is able to further analyse the result and download t
 * [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
 * [arxiv.org](http://arxiv.org)
 
-The command line tool will directly download the paper with a __clean filename__+.
+The command line tool will directly download the paper with a __clean filename__.
 
 The server provide:
 * RESTful APIs on papers
@@ -41,8 +41,9 @@ Usage:
 ```
 
 To deploy the server, you'll need:
-* Python2 with virtualenv
+* Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
+* libcurl (libcurl4-{openssl,nss,gnutls}-dev on debian/ubuntu)
 
 Run the following command to install all the python packages needed, and setup virtualenv
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-# $File: ukutil.py
-# $Date: Sun May 11 13:46:10 2014 +0800
-# $Author: jiakai <jia.kai66@gmail.com>
+# File: ukutil.py
+# Date: Sun May 11 15:08:44 2014 +0800
+# Author: jiakai <jia.kai66@gmail.com>
+#         Yuxin Wu <ppwwyyxxc@gmail.com>
 
 """common utility functions"""
 
@@ -77,7 +78,7 @@ def pdf_compress(data):
     newdata = open(f2.name).read()
     os.remove(f2.name)
     os.remove(f.name)
-    if check_pdf(newdata):
+    if len(newdata) < len(data) and check_pdf(newdata):
         log_info("Compress succeed: {0}->{1}".format(
             parse_file_size(len(data)), parse_file_size(len(newdata))))
         return newdata
