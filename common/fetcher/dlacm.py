@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 10 22:05:03 2014 +0800
+# Date: Sun May 11 13:08:53 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -16,6 +16,9 @@ from bs4 import BeautifulSoup
 
 HOSTNAME = 'dl.acm.org'
 
+# Bug in requests:
+# To download paper from dl.acm.org, human_curl must be used instead of requests
+# Seem unable to support streaming download with human_curl
 def download(res, updater):
     url = res['url']
     log_info("Directly Download with URL {0} ...".format(url))

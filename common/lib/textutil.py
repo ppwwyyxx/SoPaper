@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Sat May 10 14:54:51 2014 +0800
+# Date: Sun May 11 12:38:50 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -14,6 +14,8 @@ stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
 
 
 def title_beautify(title):
+    title = title.strip().lower()
+    title = " ".join(title.split())
     tk = title.title().split()
     for (idx, w) in enumerate(tk):
         if w.lower() in stopwords and not idx == 0:

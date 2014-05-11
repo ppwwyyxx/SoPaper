@@ -1,13 +1,13 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Sun May 11 01:34:10 2014 +0800
+# Date: Sun May 11 13:00:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
 from job import JobContext
 import ukconfig
-ukconfig.SAVE_TO_DB = False
+ukconfig.USE_DB = False
 
 if __name__ == '__main__':
     ctx = JobContext("Test Filename")

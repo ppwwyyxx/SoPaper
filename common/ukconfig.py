@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Sun May 11 00:11:00 2014 +0800
+# Date: Sun May 11 12:59:53 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 #download_method = 'wget'
@@ -19,11 +19,11 @@ except ImportError:
     USE_MAGIC_LIB = False
 
 SAVE_TO_FILE = True
-SAVE_TO_DB = True
+USE_DB = True
 try:
     import pymongo
 except ImportError:
-    SAVE_TO_DB = False
+    USE_DB = False
 
 mongo_conn = ('127.0.0.1', 27017)
 mongo_db = 'sopaper'

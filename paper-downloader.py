@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Sat May 10 20:34:49 2014 +0800
+# Date: Sun May 11 12:58:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -43,14 +43,21 @@ def main():
     ctx = JobContext(query)
 
     searcher_lst = searcher.register_searcher.get_searcher_list()
-    parser_lst = fetcher.register_parser.parser_list
+    parser_lst = fetcher.register_parser.get_parser_list()
 
     for s in searcher_lst:
         res = s.run(ctx)
         for sr in res:
             for parser in parser_lst:
-                suc = parser.run(ctx, sr)
-                if suc:
+                succ = parser.run(ctx, sr)
+                if succ:
+                    filename = ctx.title + ".pdf"
+                    log_info("Writing data to {0}".format(filename))
+                    try:
+                        with open(filename, 'wb') as f:
+                            f.write(ctx.data)
+                    except IOError:
+                        log_exc("Failed to write to file")
                     return
 
 

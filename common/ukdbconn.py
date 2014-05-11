@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: ukdbconn.py
-# $Date: Sun May 11 00:04:22 2014 +0800
+# $Date: Sun May 11 13:26:08 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """database connections"""
@@ -15,6 +15,7 @@ except ImportError:
 from pymongo.errors import DuplicateKeyError
 from bson.binary import Binary
 from ukutil import pdf_compress
+from lib.textutil import title_beautify, parse_file_size
 
 _db = None
 
@@ -30,11 +31,13 @@ def get_mongo(coll_name=None):
 def new_paper(ctx):
     data = pdf_compress(ctx.data)
     pid = global_counter('paper')
+    log_info("Add new paper: {0}, size={1}, pid={2}".format(
+        ctx.title, parse_file_size(len(data)), pid))
     doc = {
         '_id': pid,
         'pdf': Binary(data),
-        'title': ctx.title,
-        'view_cnt': 0,
+        'title': ctx.title.lower(),
+        'view_cnt': 1,
         'download_cnt': 0
     }
     doc.update(ctx.meta)
@@ -52,9 +55,6 @@ def update_view_cnt(pid):
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$inc': {'view_cnt': 1}})
 
-def update_download_cnt(pid):
-    db = get_mongo('paper')
-    db.update({'_id': pid}, {'$inc': {'download_cnt': 1}})
 
 def global_counter(name, delta=1):
     """atomically change a global int64 counter and return the newest value;

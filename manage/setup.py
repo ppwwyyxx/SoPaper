@@ -19,6 +19,8 @@ setup_args = dict(
         # network
         'beautifulsoup4>=4.3.2',
         'requests>=2.1.0',
+        'pycurl>=7.19',
+        'human_curl>=0.1.3',
 
         # pdf
         'python-magic>=0.4.6',

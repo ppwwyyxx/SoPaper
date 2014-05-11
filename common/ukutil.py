@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # $File: ukutil.py
-# $Date: Sun May 11 00:08:08 2014 +0800
+# $Date: Sun May 11 13:28:07 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """common utility functions"""
@@ -64,6 +64,7 @@ def pdf_compress(data):
         compression is done using ps2pdf14 in ghostscript
     """
     f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    log_info("Start compressing with {0} ...".format(f.name))
     f.write(data)
     f.close()
 
@@ -75,6 +76,8 @@ def pdf_compress(data):
     os.remove(f2.name)
     os.remove(f.name)
     if check_pdf(newdata):
+        log_info("Compress succeed: {0}->{1}".format(
+            parse_file_size(len(data)), parse_file_size(len(newdata))))
         return newdata
     else:
         return data
