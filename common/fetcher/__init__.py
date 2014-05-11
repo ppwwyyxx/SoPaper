@@ -5,6 +5,7 @@
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
+from lib.textutil import title_beautify
 from ukutil import check_pdf, import_all_modules
 from uklogger import *
 from job import SearchResult
@@ -115,7 +116,8 @@ class register_parser(object):
                     "url '{1}'".format(self.name, url))
             return False
 
-        ft = check_pdf(data)
+        #ft = check_pdf(data)
+        ft = True
         if ft == True:
             ctx.success = True
             ctx.data = data

@@ -12,12 +12,12 @@ ukconfig.USE_DB = False
 if __name__ == '__main__':
     ctx = JobContext("Test Filename")
 
-    parser = register_parser.parser_dict['arxiv.org']
-    sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
+    #parser = register_parser.parser_dict['arxiv.org']
+    #sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
 
-    #parser = register_parser.parser_dict['dl.acm.org']
-    #url = "http://dl.acm.org/citation.cfm?id=2366157"
-    #sr = SearchResult(None, url)
+    parser = register_parser.parser_dict['dl.acm.org']
+    url = "http://dl.acm.org/citation.cfm?id=1859761"
+    sr = SearchResult(None, url)
 
     #parser = register_parser.parser_dict['ieeexplore.ieee.org']
     ##sr = SearchResult(None, "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=00726791")
