@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Mon May 12 15:48:26 2014 +0800
+# Date: Mon May 12 16:22:18 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -44,6 +44,7 @@ def download(res, updater):
                  custom_downloader=download)
 def dlacm(search_result):
     url = search_result.url
+    ret = {}
 
     text = requests.get(url).text.encode('utf-8')
     #with open("/tmp/b.html", 'w') as f:
@@ -51,65 +52,84 @@ def dlacm(search_result):
     #text = open("/tmp/b.html").read()
     soup = BeautifulSoup(text)
     pdf = soup.findAll(attrs={'name': 'FullTextPDF'})
-    if not pdf:
-        return
-    url = pdf[0].get('href')
-    url = 'http://{0}/'.format(HOSTNAME) + url
-    log_info("dl.acm origin url: {0}".format(url))
-    r = requests.get(url, allow_redirects=False)
-    pdfurl = r.headers.get('location')
-    r = requests.get(pdfurl, allow_redirects=False)
-    pdfurl = r.headers.get('location')
+    if pdf:
+        try:
+            url = pdf[0].get('href')
+            url = 'http://{0}/'.format(HOSTNAME) + url
+            log_info("dl.acm origin url: {0}".format(url))
+            r = requests.get(url, allow_redirects=False)
+            pdfurl = r.headers.get('location')
+            r = requests.get(pdfurl, allow_redirects=False)
+            pdfurl = r.headers.get('location')
+            ret['url'] = pdfurl
+        except:
+            # probably something need to be fixed
+            log_exc('')
 
     titles = soup.findAll('title')
     title = titles[0].text
 
-    authors = soup.findAll(
-        attrs={'title': 'Author Profile Page'})
-    author = [a.text for a in authors]
+    try:
+        authors = soup.findAll(
+            attrs={'title': 'Author Profile Page'})
+        author = [a.text for a in authors]
+        ret['author'] = author
+    except:
+        pass
 
-    abstract_url = re.findall(r'\'tab_abstract.+\d+\'', text)[0][1:-1]
-    abstract_text = requests.get('http://{0}/'.format(HOSTNAME) + abstract_url).text.encode('utf-8')
-    abstract_soup = BeautifulSoup(abstract_text)
-    abstract = abstract_soup.findAll('p')[0].text
+    try:
+        abstract_url = re.findall(r'\'tab_abstract.+\d+\'', text)[0][1:-1]
+        abstract_text = requests.get('http://{0}/'.format(HOSTNAME) + abstract_url).text.encode('utf-8')
+        abstract_soup = BeautifulSoup(abstract_text)
+        abstract = abstract_soup.findAll('p')[0].text
+        ret['abstract'] = abstract
+    except:
+        pass
 
-    ref_url = re.findall(r'\'tab_references.+\d+\'', text)[0][1:-1]
-    ref_text = requests.get('http://{0}/'.format(HOSTNAME) + ref_url).text.encode('utf-8')
-    ref_soup = BeautifulSoup(ref_text)
-    trs = ref_soup.findAll('tr')
-    reference = []
-    for tr in trs:
-        records = tr.findAll('a')
-        if len(records) > 0:
-            href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
-            ref = records[0].text.strip()
-            reference.append({'ref': ref, 'href': href})
+    try:
+        ref_url = re.findall(r'\'tab_references.+\d+\'', text)[0][1:-1]
+        ref_text = requests.get('http://{0}/'.format(HOSTNAME) + ref_url).text.encode('utf-8')
+        ref_soup = BeautifulSoup(ref_text)
+        trs = ref_soup.findAll('tr')
+        reference = []
+        for tr in trs:
+            records = tr.findAll('a')
+            if len(records) > 0:
+                href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
+                ref = records[0].text.strip()
+                reference.append({'ref': ref, 'href': href})
+        ret['references'] = reference
+    except:
+        pass
 
-    cite_url = re.findall(r'\'tab_citings.+\d+\'', text)[0][1:-1]
-    cite_text = requests.get('http://{0}/'.format(HOSTNAME) + cite_url).text.encode('utf-8')
-    cite_soup = BeautifulSoup(cite_text)
-    trs = cite_soup.findAll('tr')
-    citing = []
-    for tr in trs:
-        records = tr.findAll('a')
-        if len(records) > 0:
-            href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
-            cite = records[0].text.strip()
-            citing.append({'citing': cite, 'href': href})
+    try:
+        cite_url = re.findall(r'\'tab_citings.+\d+\'', text)[0][1:-1]
+        cite_text = requests.get('http://{0}/'.format(HOSTNAME) + cite_url).text.encode('utf-8')
+        cite_soup = BeautifulSoup(cite_text)
+        trs = cite_soup.findAll('tr')
+        citing = []
+        for tr in trs:
+            records = tr.findAll('a')
+            if len(records) > 0:
+                href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
+                cite = records[0].text.strip()
+                citing.append({'citing': cite, 'href': href})
+        ret['citedby'] = citing
+    except:
+        pass
 
-    bibtex_url = re.findall(r'exportformats.+bibtex', text)[0]
-    bibtex_text = requests.get('http://{0}/'.format(HOSTNAME) + bibtex_url).text.encode('utf-8')
-    bibtex_soup = BeautifulSoup(bibtex_text)
-    pre = bibtex_soup.find('pre')
-    bibtex = pre.text.strip()
+    try:
+        bibtex_url = re.findall(r'exportformats.+bibtex', text)[0]
+        bibtex_text = requests.get('http://{0}/'.format(HOSTNAME) + bibtex_url).text.encode('utf-8')
+        bibtex_soup = BeautifulSoup(bibtex_text)
+        pre = bibtex_soup.find('pre')
+        bibtex = pre.text.strip()
+        ret['bibtex'] = bibtex
+    except:
+        pass
 
-    if url.find('pdf') != -1:
-        ret = {'url': pdfurl,
-               'ctx_update': {'title': title,
-                              'author': author,
-                              'abstract': abstract,
-                              'references': reference,
-                              'citings': citing,
-                              'bibtex': bibtex }
-              }
-        return ret
+    if not ret.get('bibtex') or not ret.get('citedby') \
+       or not ret.get('author') or not ret.get('references') \
+       or not ret.get('abstract'):
+        log_err('Error parsing metadata in {0}'.format(search_result.url))
+    return ret

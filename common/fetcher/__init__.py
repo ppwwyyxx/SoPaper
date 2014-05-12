@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Mon May 12 15:18:09 2014 +0800
+# Date: Mon May 12 16:27:30 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -100,6 +100,8 @@ class register_parser(object):
                     ctx.existing = doc
                     ukdbconn.update_meta(doc['_id'], res['ctx_update'])
                     return True
+        log_info("Update metadata: {0}".format(str(res['ctx_update'].keys())))
+        ctx.update_meta_dict(res['ctx_update'])
 
         try:
             if progress_updater is None:
@@ -121,8 +123,6 @@ class register_parser(object):
         if ft == True:
             ctx.success = True
             ctx.data = data
-            log_info("Update metadata: {0}".format(str(res['ctx_update'])))
-            ctx.update_meta_dict(res['ctx_update'])
             return True
         else:
             log_err("Wrong Format: {0}".format(ft))
