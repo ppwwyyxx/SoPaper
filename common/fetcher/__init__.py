@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sun May 11 13:44:34 2014 +0800
+# Date: Mon May 12 15:18:09 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -116,8 +116,8 @@ class register_parser(object):
                     "url '{1}'".format(self.name, url))
             return False
 
-        #ft = check_pdf(data)
-        ft = True
+        ft = check_pdf(data)
+        #ft = True
         if ft == True:
             ctx.success = True
             ctx.data = data
