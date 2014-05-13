@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Sun May 11 13:03:12 2014 +0800
+# Date: Tue May 13 20:39:35 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -27,7 +27,7 @@ class JobContext(object):
     def __str__(self):
         d = {'title': self.title,
              'success': self.success,
-             'meta': self.meta
+             'meta': self.meta.keys()
             }
         return str(d)
 

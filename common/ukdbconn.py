@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukdbconn.py
-# Date: Sun May 11 15:08:31 2014 +0800
+# Date: Tue May 13 20:36:46 2014 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -18,6 +18,7 @@ from pymongo.errors import DuplicateKeyError
 from bson.binary import Binary
 from ukutil import pdf_compress
 from lib.textutil import title_beautify, parse_file_size
+from threading import Thread
 
 _db = None
 
@@ -30,16 +31,20 @@ def get_mongo(coll_name=None):
         return _db
     return _db[coll_name]
 
-def new_paper(ctx):
-    # TODO compress in sychronous
-    data = pdf_compress(ctx.data)
+def compress_and_writeback(data, pid):
+    data = pdf_compress(data)
+    db = get_mongo('paper')
+    db.update({'_id': pid}, {'$set': {'pdf': Binary(data)}} )
+    log_info("Updated compressed pdf {0}: size={1}".format(
+        pid, parse_file_size(len(data))))
 
+def new_paper(ctx):
     pid = global_counter('paper')
     log_info("Add new paper: {0}, size={1}, pid={2}".format(
-        ctx.title, parse_file_size(len(data)), pid))
+        ctx.title, parse_file_size(len(ctx.data)), pid))
     doc = {
         '_id': pid,
-        'pdf': Binary(data),
+        'pdf': Binary(ctx.data),
         'title': ctx.title.lower(),
         'view_cnt': 1,
         'download_cnt': 0
@@ -48,7 +53,10 @@ def new_paper(ctx):
 
     db = get_mongo('paper')
     db.ensure_index('title')
-    db.insert(doc)
+    ret = db.insert(doc)
+
+    thread = Thread(target=compress_and_writeback, args=(ctx.data, pid))
+    thread.start()
     return pid
 
 def update_meta(pid, meta):
@@ -71,11 +79,12 @@ def global_counter(name, delta=1):
     rst = db.find_and_modify(query={'_id': name},
                             update={'$inc': {'val': delta}},
                             new=True)
-    if rst['value']:
-        return rst['value']['val']
+    k = rst.get('val')
+    if k:
+        return k
     try:
         val = long(1)
-        db[coll_name].insert({'_id': name, 'val': val})
+        db.insert({'_id': name, 'val': val})
         return val
     except DuplicateKeyError:
         return global_counter(name, delta)
