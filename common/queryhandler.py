@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sun May 11 13:43:31 2014 +0800
+# Date: Sun May 11 14:53:29 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import ukdbconn
@@ -44,10 +44,10 @@ def handle_query(query):
                     return ctx.existing
                 try:
                     pid = ukdbconn.new_paper(ctx)
-                    return {'_id': pid,
+                    return [{'_id': pid,
                             'title': ctx.title,
                             'view_cnt': 1,
                             'download_cnt': 0
-                           }
+                           }]
                 except:
                     log_exc("Failed to save to db")
