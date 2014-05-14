@@ -19,7 +19,8 @@ if __name__ == '__main__':
     ctx = JobContext("Test Filename")
 
     parser = register_parser.parser_dict['arxiv.org']
-    sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
+    #sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
+    sr = SearchResult(None, "http://arxiv.org/abs/1404.3610")
 
     #parser = register_parser.parser_dict['dl.acm.org']
     #url = "http://dl.acm.org/citation.cfm?id=1859761"

@@ -5,6 +5,7 @@
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
+from uklogger import *
 
 import re
 from bs4 import BeautifulSoup
