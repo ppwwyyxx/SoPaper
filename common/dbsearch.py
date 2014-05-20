@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Tue May 20 14:42:25 2014 +0800
+# Date: Tue May 20 17:49:20 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -9,6 +9,10 @@ import operator
 from ukdbconn import get_mongo
 from uklogger import *
 from lib.textutil import title_beautify, levenshtein
+
+SEARCH_RETURN_FIELDS = {'view_cnt': 1, 'download_cnt': 1,
+                        'title': 1, 'page': 1, 'source': 1,
+                        'page_url': 1}
 
 def beautify_results():
     def wrap(func):
@@ -23,17 +27,15 @@ def beautify_results():
 @beautify_results()
 def search_exact(query):
     db = get_mongo('paper')
-    res = list(db.find({'title': query},
-                       {'view_cnt': 1, 'download_cnt': 1, 'title': 1}
-                      ))
+    res = list(db.find({'title': query}, SEARCH_RETURN_FIELDS))
     return res
 
 @beautify_results()
 def search_startswith(query):
     db = get_mongo('paper')
-    res = list(db.find({'title': {'$regex': '^{0}'.format(query) } },
-                       {'view_cnt': 1, 'download_cnt': 1, 'title': 1}
-                      ))
+    res = list(db.find({'title':
+                        {'$regex': '^{0}'.format(query) } },
+                       SEARCH_RETURN_FIELDS))
     return res
 
 @beautify_results()
@@ -41,9 +43,11 @@ def search_regex(regex):
     db = get_mongo('paper')
     res = list(db.find({'title': {'$regex':
                                   '{0}'.format(query) }
-                       }, {'view_cnt': 1, 'download_cnt': 1, 'title': 1}
-                      ))
+                       }, SEARCH_RETURN_FIELDS))
     return res
+
+# XXX Hack!!
+# Similar Search in cached memory
 
 all_titles = []
 def similar_search(query):
@@ -59,8 +63,7 @@ def similar_search(query):
     res = max(ret, key=operator.itemgetter(1))
 
     db = get_mongo('paper')
-    res = db.find_one({'_id': res[0][1]},
-                      {'view_cnt': 1, 'download_cnt': 1, 'title': 1})
+    res = db.find_one({'_id': res[0][1]}, SEARCH_RETURN_FIELDS)
     return res
 
 

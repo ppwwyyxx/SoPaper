@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdf2html.py
-# Date: Tue May 20 16:24:07 2014 +0800
+# Date: Tue May 20 16:40:08 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -36,6 +36,9 @@ class PDF2Html(object):
         shutil.rmtree(self.outdir)
         if self.createfile:
             os.remove(self.fname)
+
+    def get_npages(self):
+        return self.npages
 
     def get(self, t):
         t = int(t)
