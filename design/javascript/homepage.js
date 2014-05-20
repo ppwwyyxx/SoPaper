@@ -98,7 +98,10 @@ $(document)
             .checkbox();
 
         $('.ui.bib.modal').modal('setting', 'closable', false)
-            .modal('attach events', '.blue.button', 'show');
+            .modal('attach events', '.bib.button', 'show');
+
+        $('.ui.ref.modal').modal('setting', 'closable', false)
+            .modal('attach events', '.ref.button', 'show');
 
 
         $('.ui.form')

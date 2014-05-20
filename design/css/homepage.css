@@ -45,6 +45,21 @@ body.progress .ui.progress .bar {
 .ui.icon.menu > .onleft.item{
   text-align: left;
 }
+
+.ui.bib.modal{
+  top: 60%;
+  left: 60%;
+  text-align: left;
+  width: 50%;
+}
+
+.ui.ref.modal{
+  top: 50%;
+  left: 50%;
+  text-align: left;
+  width: 70%;
+}
+
 .class-sprite{
   background-image: url(images/allcat.jpg);
   background-repeat: no-repeat;
