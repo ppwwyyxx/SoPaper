@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Tue May 20 14:23:17 2014 +0800
+# Date: Tue May 20 14:42:25 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -47,6 +47,7 @@ def search_regex(regex):
 
 all_titles = []
 def similar_search(query):
+    """ return one result that is most similar to query"""
     ret = []
     query = query.strip().lower()
     for cand in all_titles:
@@ -58,7 +59,8 @@ def similar_search(query):
     res = max(ret, key=operator.itemgetter(1))
 
     db = get_mongo('paper')
-    res = db.find_one({'_id': res[0][1]}, {'pdf': 0})
+    res = db.find_one({'_id': res[0][1]},
+                      {'view_cnt': 1, 'download_cnt': 1, 'title': 1})
     return res
 
 
