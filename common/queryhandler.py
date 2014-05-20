@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sun May 11 14:53:29 2014 +0800
+# Date: Tue May 20 14:26:12 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import ukdbconn
@@ -15,10 +15,18 @@ from dbsearch import *
 def handle_query(query):
     query = title_beautify(query)
     log_info("Get query: {0}".format(query))
+    # starts search
     res = search_startswith(query)
     if res:
         log_info("Found {0} results in db".format(len(res)))
         return res
+    # similar search
+    res = similar_search(query)
+    if res:
+        log_info("Found similar results in db: {0}".format(res['title']))
+        return [res]
+
+    # search on web
     searchers = searcher.register_searcher.get_searcher_list()
     parsers = fetcher.register_parser.get_parser_list()
     ctx = JobContext(query)
@@ -51,3 +59,8 @@ def handle_query(query):
                            }]
                 except:
                     log_exc("Failed to save to db")
+
+if __name__ == '__main__':
+    res = handle_query('test file')
+    print res
+
