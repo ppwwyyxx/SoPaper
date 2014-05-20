@@ -15,11 +15,18 @@
 	</head>
 	<body id="home" class="masthead">
 		<!-- Navigation Start-->
-		<div class="ui large fixed inverted menu">
+		<div class="ui large  inverted menu">
 			<a class="green item">
 			<i class="book icon"></i> <b>SoPaper</b>
 			</a>
+			<div class="item">
+				<div class="ui icon input" style="width:600px; margin-left:50px">
+					<input type="text" placeholder="Search papers, authors, conferences...">
+					<i class="search icon"></i>
+				</div>
+			</div>
 			<div class="right menu">
+				
 				<div class="ui dropdown item">
 					<i class="green user icon"></i>
 					ppwwyyxx
@@ -40,26 +47,99 @@
 			</div>
 		</div>
 		<!-- Navigation End-->
+		<div class="ui large wide vertical inverted labeled icon sidebar menu" id="menu">
+			<a class="item" href="#">
+			<i class="inverted circular red awesome download cloud icon"></i> <b>Download Paper</b>
+			</a>
+			<div class="onleft item">
+				<h2 class="ui header">
+				Ontology learning for the semantic web
+				</h2>
+			</div>
+			<div class="onleft item">
+				<h4 class="ui header">
+				<i class="users icon"></i>
+				Author(s): <a href="#">Yuxin Wu</a>, <a href="#">Tiezheng Li</a>
+				</h4>
+			</div>
+			<div class="onleft item">
+				<h4 class="ui header">
+				<i class="sitemap icon"></i>
+				Conference: <a href="#">SIGGRAPH 2013</a>
+				</h4>
+			</div>
+			<div class="onleft item">
+				<h4 class="ui header">
+				<i class="share icon"></i>
+				Citation: 20198
+				</h4>
+			</div>
+			<div class="onleft item">
+				<h4 class="ui header">
+				<i class="tags icon"></i>
+				Tags:
+				</h4>
+				<div class="ui labels">
+					<div class="ui label">
+						<a href="#">Semantic Web</a>
+					</div>
+					<div class="ui label">
+						<a href="#">Machine learning</a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ui buttons">
+					<div class="ui blue button">Bibtex</div>
+					<div class="or"></div>
+					<div class="ui green button">Reflist</div>
+				</div>
+				<div class="ui bib modal">
+					<i class="close icon"></i>
+					<div class="header">
+						Bibtex
+					</div>
+					<div class="content">
+						<div class="ui piled segment">
+						<p>@ARTICLE{ h. john:estimating,
+						AUTHOR = "George H. John and Pat Langley",
+						TITLE = "Estimating Continuous Distributions in Bayesian Classifiers",
+						JOURNAL = "CoRR",
+						PAGES = {-1--1},
+						YEAR = {2013},
+						}
+						</p>	
+						</div>
+					</div>
+					<div class="actions">
+						<div class="ui teal right labeled icon button"><i class="copy icon"></i> Copy to Clipboard</div>
+						<div class="ui button"> Close</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui black huge launch right attached button">
+			<i class="icon list layout"></i>
+			<span class="text"><b>DETAIL</b></span>
+		</div>
 		<!-- Main Content Start-->
 		<div class="ui page grid">
 			<div class="row">
 				<div class="five wide column">
 					<br/>
-					<div class="ui fluid icon input">
-						<input type="text" placeholder="Search...">
-						<i class="circular search icon"></i>
-					</div>
+					
 					<div class="ui piled green segment">
 						<h2 class="ui header">
-							<i class="inverted circular green bookmark icon"></i>
-							JiMuYun
+						<i class="inverted circular green bookmark icon"></i>
+						JiMuYun
 						</h2>
 						<div class="ui paper info">
 							<div class="ui comment">
 								<div class="avatar">
 									<i class="users icon">
+									Author(s):
 									</i>
-									Author(s): Yuxin Wu, Tiezheng Li
+									Yuxin Wu, Tiezheng Li
 								</div>
 							</div>
 							<div class="ui comment">
@@ -77,10 +157,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ui green icon button">
-						Download
-						<i class="download icon"></i>
 					</div>
 				</div>
 				<div class="eleven wide column">

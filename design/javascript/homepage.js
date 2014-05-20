@@ -1,5 +1,32 @@
 $(document)
     .ready(function() {
+        var $sidebarButton = $('.attached.launch.button');
+
+        handler = {
+            menu: {
+                mouseenter: function() {
+                    $(this)
+                        .stop()
+                        .animate({
+                            width: '155px'
+                        }, 300, function() {
+                            $(this).find('.text').show();
+                        });
+                },
+                mouseleave: function(event) {
+                    $(this).find('.text').hide();
+                    $(this)
+                        .stop()
+                        .animate({
+                            width: '70px'
+                        }, 300);
+                }
+            },
+        };
+
+        $sidebarButton
+            .on('mouseenter', handler.menu.mouseenter)
+            .on('mouseleave', handler.menu.mouseleave);
 
         var
         changeSides = function() {
@@ -70,8 +97,8 @@ $(document)
         $('.ui.checkbox')
             .checkbox();
 
-        $('.ui.modal').modal('setting', 'closable', false)
-            .modal('attach events', '.icon.button', 'show');
+        $('.ui.bib.modal').modal('setting', 'closable', false)
+            .modal('attach events', '.blue.button', 'show');
 
 
         $('.ui.form')
@@ -87,6 +114,13 @@ $(document)
 
         $('.masthead .information')
             .transition('scale in');
+
+        $('.ui.sidebar')
+            .sidebar();
+        $('.ui.sidebar').first()
+            .sidebar('attach events', '.attached.launch.button');
+        $('.attached.launch.button')
+            .removeClass('disabled');
 
         setInterval(changeSides, 3000);
 

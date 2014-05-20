@@ -20,10 +20,31 @@ body {
   min-width: 320px;
 }
 
+body.progress .ui.progress .bar {
+  -webkit-animation: finish 10s ease-in-out infinite;
+  -moz-animation: finish 10s ease-in-out infinite;
+  -ms-animation: finish 10s ease-in-out infinite;
+  animation: finish 10s ease-in-out infinite;
+}
+
+.ui.progress.inlist {
+  padding-left:10px;
+}
+
 /*******************************
           UI Overrides
 *******************************/
+.ui.sidebar .item  .icon{
+  display: inline;
+}
 
+.ui.sidebar .item  .labels{
+  margin-left: 32px;
+}
+
+.ui.icon.menu > .onleft.item{
+  text-align: left;
+}
 .class-sprite{
   background-image: url(images/allcat.jpg);
   background-repeat: no-repeat;
