@@ -8,7 +8,7 @@ $(document)
                     $(this)
                         .stop()
                         .animate({
-                            width: '155px'
+                            width: '175px'
                         }, 300, function() {
                             $(this).find('.text').show();
                         });
@@ -96,12 +96,17 @@ $(document)
 
         $('.ui.checkbox')
             .checkbox();
+        $('.ui.rating')
+            .rating();
 
         $('.ui.bib.modal').modal('setting', 'closable', false)
             .modal('attach events', '.bib.button', 'show');
 
         $('.ui.ref.modal').modal('setting', 'closable', false)
             .modal('attach events', '.ref.button', 'show');
+
+        $('.ui.com.modal').modal('setting', 'closable', false)
+            .modal('attach events', '.com.button', 'show');
 
 
         $('.ui.form')
@@ -120,10 +125,21 @@ $(document)
 
         $('.ui.sidebar')
             .sidebar();
-        $('.ui.sidebar').first()
-            .sidebar('attach events', '.attached.launch.button');
-        $('.attached.launch.button')
+        $('.ui.labeled.icon.sidebar').first()
+            .sidebar('attach events', '.detail.attached.launch.button');
+        $('.detail.attached.launch.button')
             .removeClass('disabled');
+        $('.ui.extremly.wide.sidebar').first()
+            .sidebar('attach events', '.summary.attached.launch.button');
+        $('.summary.attached.launch.button')
+            .removeClass('disabled');
+        $('.ui.message').hide();
+        $('.ui.rate.button').on('click', function() {
+            $('.ui.message').show();
+        });
+        $('.message .close').on('click', function() {
+            $(this).closest('.message').fadeOut();
+        });
 
         setInterval(changeSides, 3000);
 

@@ -663,7 +663,7 @@
 .ui.grid {
   display: block;
   text-align: left;
-  font-size: 0em;
+  /*font-size: 0em;*/
   margin: 0% -1.5%;
   padding: 0%;
   -webkit-box-sizing: border-box;
@@ -14874,7 +14874,8 @@ body.pushed.scrolling.ui.dimmable {
 .ui.right.thin.sidebar,
 .ui.right.sidebar,
 .ui.right.wide.sidebar,
-.ui.right.very.wide.sidebar {
+.ui.right.very.wide.sidebar,
+.ui.right.extremly.wide.sidebar {
   left: 100%;
   margin: 0px !important;
 }
@@ -15028,6 +15029,20 @@ body.pushed.scrolling.ui.dimmable {
   margin-left: -475px !important;
 }
 
+/* Extremely Wide */
+
+.ui.extremly.wide.sidebar {
+  width: 575px !important;
+  margin-left: -575px !important;
+}
+
+.ui.active.extremly.wide.sidebar {
+  margin-left: 0px !important;
+}
+
+.ui.active.right.extremly.wide.sidebar {
+  margin-left: -575px !important;
+}
 /*-------------------
        Height
 --------------------*/
@@ -17265,6 +17280,10 @@ ol.ui.list li,
 
 .ui.list .header {
   font-weight: bold;
+}
+
+.ui.list .metadata {
+  color: #A1CF64;
 }
 
 .ui.list .description {

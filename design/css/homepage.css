@@ -60,6 +60,14 @@ body.progress .ui.progress .bar {
   width: 70%;
 }
 
+.ui.com.modal{
+  width: 50%;
+}
+
+.keyword{
+  color:#D95C5C;
+  font-weight: bold;
+}
 .class-sprite{
   background-image: url(images/allcat.jpg);
   background-repeat: no-repeat;
