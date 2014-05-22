@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Thu May 22 10:43:04 2014 +0800
+# Date: Thu May 22 11:16:48 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
 import os
+from bson.binary import Binary
 
 from uklogger import *
 from ukdbconn import get_mongo

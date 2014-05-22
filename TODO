@@ -1,2 +1,4 @@
 paper metadata: author/abstract/title/bibtex/reference
 pdf2htmlEX
+
+refactor fetcher framework: use class instead of function

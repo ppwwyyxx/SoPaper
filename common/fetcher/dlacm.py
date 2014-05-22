@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Thu May 22 11:11:43 2014 +0800
+# Date: Thu May 22 11:19:45 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -24,7 +24,6 @@ DEFAULT_TIMEOUT = '300'   # 5 minutes
 # Seem unable to support streaming download with human_curl
 def download(res, updater):
     url = res['url']
-    print url
     log_info("Custom Directly Download with URL {0} ...".format(url))
     headers = {'Host': urlparse(url).netloc,
                'User-Agent': ukconfig.USER_AGENT,
