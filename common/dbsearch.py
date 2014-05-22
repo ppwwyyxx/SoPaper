@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Tue May 20 17:49:20 2014 +0800
+# Date: Thu May 22 15:58:17 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -12,7 +12,9 @@ from lib.textutil import title_beautify, levenshtein
 
 SEARCH_RETURN_FIELDS = {'view_cnt': 1, 'download_cnt': 1,
                         'title': 1, 'page': 1, 'source': 1,
-                        'page_url': 1}
+                        'page_url': 1,
+                        'author': 1, 'bibtex': 1, 'abstract': 1,
+                        'references': 1, 'citedby': 1}
 
 def beautify_results():
     def wrap(func):
@@ -72,13 +74,14 @@ def add_title_for_similar_search(cand):
     all_titles.append((cand[0].strip().lower(), cand[1]))
 
 def init_title_for_similar_search():
-    global all_titles
-    all_titles = []
+    if len(all_titles) > 0:
+        return
     db = get_mongo('paper')
     itr = db.find({}, {'title': 1})
     for cand in itr:
         add_title_for_similar_search((cand['title'], cand['_id']))
 
+init_title_for_similar_search()
+
 if __name__ == '__main__':
-    init_title_for_similar_search()
     print similar_search('test file')

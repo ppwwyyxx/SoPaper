@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Thu May 22 11:16:48 2014 +0800
+# Date: Thu May 22 15:53:05 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -19,6 +19,7 @@ def do_addhtml(data, pid):
     converter = PDF2Html(data, filename=None)
     npage = converter.get_npages()
     htmls = [converter.get(x) for x in range(npage + 1)]
+    converter.clean()
 
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$set': {'page': npage, 'html': htmls}})
