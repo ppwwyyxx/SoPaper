@@ -1,16 +1,42 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Tue May 20 14:26:12 2014 +0800
+# Date: Thu May 22 11:01:54 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-import ukdbconn
+from bson.binary import Binary
+from threading import Thread
+
+from ukdbconn import get_mongo, global_counter
 from uklogger import *
-from lib.textutil import title_beautify
+from lib.textutil import title_beautify, parse_file_size
 import searcher
 import fetcher
 from job import JobContext
 from dbsearch import *
+from pdfprocess import pdf_postprocess
+
+def new_paper(ctx):
+    pid = global_counter('paper')
+    log_info("Add new paper: {0}, size={1}, pid={2}".format(
+        ctx.title, parse_file_size(len(ctx.data)), pid))
+    doc = {
+        '_id': pid,
+        'pdf': Binary(ctx.data),
+        'title': ctx.title.lower(),
+        'view_cnt': 1,
+        'download_cnt': 0
+    }
+    doc.update(ctx.meta)
+
+    db = get_mongo('paper')
+    db.ensure_index('title')
+    ret = db.insert(doc)
+
+    thread = Thread(target=pdf_postprocess, args=(ctx.data, pid))
+    thread.start()
+    return pid
+
 
 def handle_query(query):
     query = title_beautify(query)
@@ -51,7 +77,7 @@ def handle_query(query):
                     log_info("Found {0} results in db".format(len(ctx.existing)))
                     return ctx.existing
                 try:
-                    pid = ukdbconn.new_paper(ctx)
+                    pid = new_paper(ctx)
                     return [{'_id': pid,
                             'title': ctx.title,
                             'view_cnt': 1,

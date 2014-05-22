@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ieee.py
-# Date: Sat May 10 19:29:43 2014 +0800
+# Date: Thu May 22 11:15:25 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -20,6 +20,7 @@ CITATION_URL = "http://ieeexplore.ieee.org/xpl/abstractCitations.jsp?tp=&arnumbe
 def ieee(search_result):
     url = search_result.url
     ret = {}
+    meta = {}
 
     try:
         number = re.findall('arnumber=[0-9]*', url)[0]
@@ -38,21 +39,21 @@ def ieee(search_result):
         soup = BeautifulSoup(text)
         titles = soup.findAll('h1')
         title = titles[0].text.strip()
-        ret['title'] = title
+        meta['title'] = title
     except:
         pass
 
     try:
         authors = soup.findAll(attrs={'name': 'citation_author'})
         author = [a.get('content') for a in authors]
-        ret['author'] = author
+        meta['author'] = author
     except:
         pass
 
     try:
         abstract_div = soup.findAll(attrs={'class': 'article'})
         abstract = abstract_div[0].text.strip()
-        ret['abstract'] = abstract
+        meta['abstract'] = abstract
     except:
         pass
 
@@ -81,7 +82,7 @@ def ieee(search_result):
                 if not 'http' in href:
                     href = "http://{0}{1}".format(HOSTNAME, href)
             reference.append({'ref': ref, 'href': href})
-        ret['references'] = reference
+        meta['references'] = reference
     except:
         pass
 
@@ -110,17 +111,18 @@ def ieee(search_result):
                 href = "http://{0}{1}".format(HOSTNAME,
                     re.findall(r'/xpl/articleDetails.jsp\?arnumber=[0-9]+', link[0].get('href'))[0])
             citing.append({'citing': cite, 'href': href})
-        ret['citedby'] = citing
+        meta['citedby'] = citing
     except:
         pass
 
     """
-    there are still difficulties to get the bibtex
+    there are still difficulties getting the bibtex
     """
 
     if not ret.get('bibtex') or not ret.get('citedby') \
        or not ret.get('author') or not ret.get('references') \
        or not ret.get('abstract'):
-        log_err('Error parsing metadata in {0}'.format(search_result.url))
+        log_info('Missing metadata in {0}'.format(search_result.url))
 
+    ret['ctx_update'] = meta
     return ret

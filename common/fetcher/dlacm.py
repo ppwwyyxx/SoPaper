@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Mon May 12 16:22:18 2014 +0800
+# Date: Thu May 22 11:11:43 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -24,7 +24,8 @@ DEFAULT_TIMEOUT = '300'   # 5 minutes
 # Seem unable to support streaming download with human_curl
 def download(res, updater):
     url = res['url']
-    log_info("Directly Download with URL {0} ...".format(url))
+    print url
+    log_info("Custom Directly Download with URL {0} ...".format(url))
     headers = {'Host': urlparse(url).netloc,
                'User-Agent': ukconfig.USER_AGENT,
                'Connection': 'Keep-Alive'
@@ -33,6 +34,8 @@ def download(res, updater):
     total_length = int(resp.headers.get('content-length'))
     log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
+        with open("/tmp/a.txt", 'w') as f:
+            f.write(resp.content)
         raise Exception("File too small: " + parse_file_size(total_length))
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:
         raise Exception("File too large: " + parse_file_size(total_length))
@@ -45,6 +48,7 @@ def download(res, updater):
 def dlacm(search_result):
     url = search_result.url
     ret = {}
+    meta = {}
 
     text = requests.get(url).text.encode('utf-8')
     #with open("/tmp/b.html", 'w') as f:
@@ -73,7 +77,7 @@ def dlacm(search_result):
         authors = soup.findAll(
             attrs={'title': 'Author Profile Page'})
         author = [a.text for a in authors]
-        ret['author'] = author
+        meta['author'] = author
     except:
         pass
 
@@ -82,7 +86,7 @@ def dlacm(search_result):
         abstract_text = requests.get('http://{0}/'.format(HOSTNAME) + abstract_url).text.encode('utf-8')
         abstract_soup = BeautifulSoup(abstract_text)
         abstract = abstract_soup.findAll('p')[0].text
-        ret['abstract'] = abstract
+        meta['abstract'] = abstract
     except:
         pass
 
@@ -98,7 +102,7 @@ def dlacm(search_result):
                 href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
                 ref = records[0].text.strip()
                 reference.append({'ref': ref, 'href': href})
-        ret['references'] = reference
+        meta['references'] = reference
     except:
         pass
 
@@ -114,7 +118,7 @@ def dlacm(search_result):
                 href = 'http://{0}/'.format(HOSTNAME) + records[0].get('href')
                 cite = records[0].text.strip()
                 citing.append({'citing': cite, 'href': href})
-        ret['citedby'] = citing
+        meta['citedby'] = citing
     except:
         pass
 
@@ -124,12 +128,14 @@ def dlacm(search_result):
         bibtex_soup = BeautifulSoup(bibtex_text)
         pre = bibtex_soup.find('pre')
         bibtex = pre.text.strip()
-        ret['bibtex'] = bibtex
+        meta['bibtex'] = bibtex
     except:
         pass
 
     if not ret.get('bibtex') or not ret.get('citedby') \
        or not ret.get('author') or not ret.get('references') \
        or not ret.get('abstract'):
-        log_err('Error parsing metadata in {0}'.format(search_result.url))
+        log_info('missing metadata in {0}'.format(search_result.url))
+
+    ret['ctx_update'] = meta
     return ret

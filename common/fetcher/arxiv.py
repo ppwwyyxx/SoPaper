@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: arxiv.py
-# Date: Sat May 10 19:16:07 2014 +0800
+# Date: Thu May 22 11:13:05 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -16,6 +16,7 @@ ARXIV_PAT = re.compile('arxiv\.org/[^/]*/(?P<id>.*)')
 def arxiv(search_result):
     url = search_result.url
     ret = {}
+    meta = {}
 
     try:
         match = ARXIV_PAT.search(url).groupdict()
@@ -31,7 +32,7 @@ def arxiv(search_result):
     try:
         title = soup.findAll(attrs={'name': 'citation_title'})[0]
         title = title.get('content')
-        ret['title'] = title
+        meta['title'] = title
     except:
         pass
 
@@ -39,7 +40,7 @@ def arxiv(search_result):
         authors = soup.findAll(attrs={'class': 'authors'})[0]
         authors = authors.findAll('a')
         author = [a.text for a in authors]
-        ret['author'] = author
+        meta['author'] = author
     except:
         pass
 
@@ -47,7 +48,7 @@ def arxiv(search_result):
         abstract = soup.findAll(attrs={'class': 'abstract mathjax'})[0]
         abstract = abstract.text.strip()
         abstract = abstract[abstract.find(':')+1:].strip()
-        ret['abstract'] = abstract
+        meta['abstract'] = abstract
     except:
         pass
 
@@ -58,12 +59,13 @@ def arxiv(search_result):
         bibtex_soup = BeautifulSoup(bibtex_text)
         pre = bibtex_soup.findAll('pre')[0]
         bibtex = pre.text
-        ret['bibtex'] = bibtex
+        meta['bibtex'] = bibtex
     except:
         pass
 
     if not ret.get('bibtex') or not ret.get('author') \
        or not ret.get('abstract') or not ret.get('title'):
-        log_err('Error parsing metadata in {0}'.format(search_result.url))
+        log_info('Missing metadata in {0}'.format(search_result.url))
 
+    ret['ctx_update'] = meta
     return ret

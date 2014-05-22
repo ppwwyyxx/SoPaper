@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Mon May 12 16:27:30 2014 +0800
+# Date: Thu May 22 11:11:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -40,9 +40,9 @@ class register_parser(object):
 
     def __call__(self, func):
         """ func: callable to be invoked, took a 'SearchResult'
-            func return a dict, with
+        func return a dict, with keys:
             'url', 'headers' to pass to downloader,
-            'ctx_update': {} to update the context
+            'ctx_update': a dict to update the context
         """
 
         @wraps(func)
