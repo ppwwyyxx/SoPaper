@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukutil.py
-# Date: Sun May 11 15:08:44 2014 +0800
+# Date: Thu May 22 10:42:20 2014 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -61,29 +61,6 @@ def check_filetype(buf, need_type):
 
 def check_pdf(buf):
     return check_filetype(buf, 'PDF document')
-
-def pdf_compress(data):
-    """ take a pdf data string, return a compressed string
-        compression is done using ps2pdf14 in ghostscript
-    """
-    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    log_info("Start compressing with {0} ...".format(f.name))
-    f.write(data)
-    f.close()
-
-    f2 = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    f2.close()
-    os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
-
-    newdata = open(f2.name).read()
-    os.remove(f2.name)
-    os.remove(f.name)
-    if len(newdata) < len(data) and check_pdf(newdata):
-        log_info("Compress succeed: {0}->{1}".format(
-            parse_file_size(len(data)), parse_file_size(len(newdata))))
-        return newdata
-    else:
-        return data
 
 if __name__ == '__main__':
     print check_filetype(open("./ukconfig.py").read(), 'PDF')

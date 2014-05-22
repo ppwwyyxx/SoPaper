@@ -1,14 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukdbconn.py
-# Date: Tue May 20 17:57:47 2014 +0800
+# Date: Thu May 22 10:43:12 2014 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
 """database connections"""
 
-import ukconfig
-from uklogger import *
 
 try:
     from pymongo import MongoClient
@@ -16,10 +14,13 @@ except ImportError:
     from pymongo import Connection as MongoClient
 from pymongo.errors import DuplicateKeyError
 from bson.binary import Binary
-from ukutil import pdf_compress
-from lib.textutil import title_beautify, parse_file_size
-from lib.pdf2html import PDF2Html
 from threading import Thread
+
+import ukconfig
+from uklogger import *
+from lib.textutil import title_beautify, parse_file_size
+from pdfprocess import pdf_postprocess
+
 
 _db = None
 
@@ -32,26 +33,6 @@ def get_mongo(coll_name=None):
         return _db
     return _db[coll_name]
 
-def do_addhtml(data, pid):
-    # to html
-    converter = PDF2Html(data, filename=None)
-    npage = converter.get_npages()
-    htmls = [converter.get(x) for x in range(npage + 1)]
-
-    db = get_mongo('paper')
-    db.update({'_id': pid}, {'$set': {'page': npage, 'html': htmls}})
-    log_info("Add html for pdf {0}, page={1}".format(pid, npage))
-
-def pdf_postprocess(data, pid):
-    """ post-process routine right after adding a new pdf"""
-    # compress
-    data = pdf_compress(data)
-    db = get_mongo('paper')
-    db.update({'_id': pid}, {'$set': {'pdf': Binary(data)}} )
-    log_info("Updated compressed pdf {0}: size={1}".format(
-        pid, parse_file_size(len(data))))
-
-    do_addhtml(data, pid)
 
 def new_paper(ctx):
     pid = global_counter('paper')
