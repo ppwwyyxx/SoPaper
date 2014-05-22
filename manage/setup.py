@@ -11,6 +11,9 @@ setup_args = dict(
         # database
         'pymongo>=2.6.3',
 
+        # IR & NLP
+        'xappy>=0.5',
+
         # tool
         'sphinx>=1.1.3',
         'pep8>=1.4.6',

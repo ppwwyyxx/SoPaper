@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: run-xp.py
-# Date: Thu May 22 13:50:25 2014 +0800
+# Date: Thu May 22 15:15:43 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from indexer import *
@@ -16,12 +16,13 @@ db = './xapian-database'
 def index():
     indexer = XapianIndexer(db)
 
-    for f in glob.glob('./zbigniew-herbert/*.txt'):
-        content = open(f).read()
+    for idx, f in enumerate(glob.glob('./zbigniew-herbert/*.txt')):
+        text = open(f).read()
 
-        doc = {'content': content}
-        doc['id'] = '1'
+        doc = {'text': text}
+        doc['id'] = idx
         doc['title'] = os.path.basename(f)
+        doc['author'] = ['Yuxin Wu', 'Angela Doudou']
         indexer.add_doc(doc)
     indexer.flush()
 

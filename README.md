@@ -44,6 +44,7 @@ To deploy the server, you'll need:
 * Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
 * libcurl (libcurl4-{openssl,nss,gnutls}-dev on debian/ubuntu)
+* xapian (libxapian-dev & python2-xapian on debian/ubuntu)
 
 Run the following command to install all the python packages needed, and setup virtualenv
 

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # $File: setenv.sh
-# $Date: Thu May 08 10:17:43 2014 +0800
+# $Date: Thu May 22 15:00:35 2014 +0800
 # $Author: jiakai <jia.kai66@gmail.com>
 
 # zsh compatibility when direct sourcing from shell
@@ -36,6 +36,9 @@ do
 	PYTHONPATH=$PYTHONPATH:$project_root/$i
 done
 export PYTHONPATH=$PYTHONPATH:$project_root
+
+DEBIAN_PYTHON_PATH=/usr/lib/python2.7/dist-packages
+[[ -d $DEBIAN_PYTHON_PATH ]] && export PYTHONPATH=$PYTHONPATH:$DEBIAN_PYTHON_PATH
 
 if [ `uname` = 'Darwin' ]
 then
