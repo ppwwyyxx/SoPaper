@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Fri May 23 15:44:22 2014 +0800
+# Date: Fri May 23 22:08:07 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -13,7 +13,7 @@ from ukdbconn import get_mongo
 from ukutil import check_pdf
 from lib.pdf2html import PDF2Html
 from lib.textutil import parse_file_size
-from contentsearch import sopaper_indexer, pdf2text
+import contentsearch
 
 def do_addhtml(data, pid):
     # convert to html
@@ -60,13 +60,13 @@ def do_compress(data, pid):
     return data
 
 def do_buildindex(ctx, pid):
-    text = pdf2text(ctx.data)
+    text = contentsearch.pdf2text(ctx.data)
     doc = {'text': text,
            'title': ctx.title,
            'author': ctx.meta['author'],
            'id': pid
           }
-    sopaper_indexer.add_paper(doc)
+    contentsearch.do_add_paper(doc)
 
 def pdf_postprocess(ctx, pid):
     """ post-process routine right after adding a new pdf"""

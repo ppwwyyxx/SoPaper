@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: Fri May 23 12:15:40 2014 +0800
+# Date: Fri May 23 22:02:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+
+__all__ = ['xapian_indexer']
 
 import os
 import threading
@@ -12,10 +14,8 @@ from xappy import IndexerConnection, FieldActions, UnprocessedDocument, Field
 from xappy import errors
 
 from xpcommon import FIELD_NUM, STOPWORDS
-from lib.singleton import Singleton
 
 class XapianIndexer(object):
-    __metaclass__ = Singleton
 
     def __init__(self, dirname):
         self.dbPath = os.path.abspath(dirname)

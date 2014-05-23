@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Fri May 23 21:18:37 2014 +0800
+# Date: Fri May 23 21:53:15 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -18,6 +18,9 @@ class XapianSearcher(object):
         self.dbPath = os.path.abspath(dirname)
         self.conn = SearchConnection(self.dbPath)
         # can use 'reopen()' to open the db again
+
+    def reopen(self):
+        self.conn.reopen()
 
     def search(self, query, offset=0, page_size=10, summary_len=300):
         query = self.conn.spell_correct(query)
@@ -39,5 +42,5 @@ class XapianSearcher(object):
         ret = map(transform, res)
         return ret
 
-
-
+    def close(self):
+        self.conn.close()

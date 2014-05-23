@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Fri May 23 21:06:18 2014 +0800
+# Date: Fri May 23 21:22:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -34,6 +34,9 @@ def get_args():
                         required=False, default='.')
     ret = parser.parse_args()
     return ret
+
+def search_run(searcher, ctx):
+    return searcher.run(ctx)
 
 def main():
     global args
