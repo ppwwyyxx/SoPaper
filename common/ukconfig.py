@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Fri May 23 12:13:20 2014 +0800
+# Date: Fri May 23 20:24:51 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 #download_method = 'wget'
@@ -30,5 +30,9 @@ mongo_db = 'sopaper'
 
 
 import os
-XP_DB_DIR = os.path.join(os.environ['HOME'],
-                         'sopaper-xapian-db')
+DB_DIR_NAME = 'xapian-db'
+XP_DB_DIR = os.path.join(os.path.dirname(__file__),
+                         '../{0}'.format(DB_DIR_NAME))
+
+SEARCH_PAGE_SIZE = 10
+SEARCH_SUMMARY_LEN = 300

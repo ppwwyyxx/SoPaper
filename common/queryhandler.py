@@ -1,11 +1,12 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Fri May 23 12:19:18 2014 +0800
+# Date: Fri May 23 21:15:47 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
 from threading import Thread
+from multiprocessing import Pool
 
 from ukdbconn import get_mongo, global_counter
 from uklogger import *
@@ -15,6 +16,7 @@ import fetcher
 from job import JobContext
 from dbsearch import *
 from pdfprocess import pdf_postprocess
+from contentsearch import sopaper_searcher
 
 def new_paper(ctx):
     pid = global_counter('paper')
@@ -37,10 +39,12 @@ def new_paper(ctx):
     thread.start()
     return pid
 
+def search_run(searcher, ctx):
+    return searcher.run(ctx)
 
-def handle_query(query):
+def handle_title_query(query):
     query = title_beautify(query)
-    log_info("Get query: {0}".format(query))
+    log_info("Get title query: {0}".format(query))
     # starts search
     res = search_startswith(query)
     if res:
@@ -57,16 +61,26 @@ def handle_query(query):
     parsers = fetcher.register_parser.get_parser_list()
     ctx = JobContext(query)
 
-    for s in searchers:
-        srs = s.run(ctx)
+    args = zip(searchers, [ctx] * len(searchers))
+    pool = Pool()
+    as_results = [pool.apply_async(search_run, arg) for arg in args]
+
+    for s in as_results:
+        s = s.get()
+        srs = s['results']
 
         # try search database with updated title
-        if ctx.title != query:
-            query = ctx.title
-            res = search_exact(query)
-            if res:
-                log_info("Found {0} results in db".format(len(res)))
-                return res
+        try:
+            updated_title = s['ctx_update']['title']
+        except KeyError:
+            pass
+        else:
+            if updated_title != query:
+                query = updated_title
+                res = search_exact(query)
+                if res:
+                    log_info("Found {0} results in db".format(len(res)))
+                    return res
 
         for sr in srs:
             for parser in parsers:
@@ -78,15 +92,22 @@ def handle_query(query):
                     return ctx.existing
                 try:
                     pid = new_paper(ctx)
-                    return [{'_id': pid,
+                    ret = [{'_id': pid,
                             'title': ctx.title,
                             'view_cnt': 1,
                             'download_cnt': 0
                            }]
+                    ret[0].update(ctx.meta)
                 except:
                     log_exc("Failed to save to db")
 
+def handle_content_query(query):
+    res = sopaper_searcher.search(query)
+    return res
+
 if __name__ == '__main__':
-    res = handle_query('test file')
+    #res = handle_title_query('test test test this is not a paper name')
+    res = handle_content_query('from')
+
     print res
 

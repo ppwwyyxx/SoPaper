@@ -1,12 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Sun May 11 14:53:44 2014 +0800
+# Date: Fri May 23 20:26:45 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
 from lib.textutil import title_beautify
-from queryhandler import handle_query
+from queryhandler import handle_title_query
 
 # api: /query?q=test
 @api_method('/query')
@@ -16,7 +16,7 @@ def query():
     """
     query = request.values.get('q')
 
-    res = handle_query(query)
+    res = handle_title_query(query)
     return {'status': 'ok',
             'results': res}
 

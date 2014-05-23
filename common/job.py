@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Tue May 13 20:39:35 2014 +0800
+# Date: Fri May 23 20:59:12 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -12,14 +12,8 @@ class JobContext(object):
         self.query = title_beautify(query)
         self.success = False
         self.title = query
-        self.search_results = []
         self.existing = None
         self.meta = {}
-
-    def update_title(self, title):
-        title = title_beautify(title)
-        log_info("Using new title: {0}".format(title))
-        self.title = title
 
     def update_meta_dict(self, meta):
         self.meta.update(meta)

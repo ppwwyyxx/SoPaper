@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Fri May 23 12:39:02 2014 +0800
+# Date: Fri May 23 15:44:22 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -12,8 +12,8 @@ from uklogger import *
 from ukdbconn import get_mongo
 from ukutil import check_pdf
 from lib.pdf2html import PDF2Html
-from lib.textutil import parse_file_size, filter_nonascii
-from contentsearch import sopaper_indexer
+from lib.textutil import parse_file_size
+from contentsearch import sopaper_indexer, pdf2text
 
 def do_addhtml(data, pid):
     # convert to html
@@ -58,22 +58,6 @@ def do_compress(data, pid):
     log_info("Updated compressed pdf {0}: size={1}".format(
         pid, parse_file_size(len(data))))
     return data
-
-def pdf2text(data):
-    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    f.write(data)
-    f.close()
-
-    os.system('pdftotext "{0}"'.format(f.name))
-    fout = f.name.replace('.pdf', '.txt')
-    text = open(fout).read()
-
-    os.remove(f.name)
-    os.remove(fout)
-
-    text = filter_nonascii(text)
-    # TODO filter formulas..
-    return text
 
 def do_buildindex(ctx, pid):
     text = pdf2text(ctx.data)

@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Thu May 22 11:11:10 2014 +0800
+# Date: Fri May 23 21:10:59 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -58,8 +58,9 @@ class register_parser(object):
                     'source': self.name,
                     'page_url': res.url
                 })
-                if params['ctx_update'].get('title'):
-                    params['ctx_update']['title'] = title_beautify(params['ctx_update']['title'])
+                t = params['ctx_update'].get('title')
+                if t:
+                    params['ctx_update']['title'] = title_beautify(t)
                 return params
             except KeyboardInterrupt:
                 raise

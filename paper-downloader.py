@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Sun May 11 13:36:21 2014 +0800
+# Date: Fri May 23 21:06:18 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -11,6 +11,7 @@
 import sys
 import os
 import os.path
+from multiprocessing import Pool
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                             'common'))
 
@@ -43,12 +44,17 @@ def main():
     #query = "Distinctive image features from scale-invariant keypoint"
     ctx = JobContext(query)
 
-    searcher_lst = searcher.register_searcher.get_searcher_list()
-    parser_lst = fetcher.register_parser.get_parser_list()
+    searchers = searcher.register_searcher.get_searcher_list()
+    parsers = fetcher.register_parser.get_parser_list()
 
-    for s in searcher_lst:
-        res = s.run(ctx)
-        for sr in res:
+    args = zip(searchers, [ctx] * len(searchers))
+    pool = Pool()
+    as_results = [pool.apply_async(search_run, arg) for arg in args]
+
+    for s in as_results:
+        s = s.get()
+        srs = s['results']
+        for sr in srs:
             for parser in parser_lst:
                 succ = parser.run(ctx, sr)
                 if succ:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: google.py
-# Date: Sat May 10 17:44:21 2014 +0800
+# Date: Fri May 23 21:02:48 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_searcher
@@ -27,7 +27,8 @@ def parse_google_link(url):
 def search(ctx):
     query = ctx.query
 
-    ret = []
+    ret = {}
+    srs = []
 
     r = requests.get(GOOGLE_URL.format(query))
     text = r.text.encode('utf-8')
@@ -45,11 +46,12 @@ def search(ctx):
             if findpdf and findpdf[0].text == '[PDF]':
                 pdflink = rst.findAll('a')[0].get('href')
                 url = parse_google_link(pdflink)
-                ret.append(SearchResult('directpdf', url))
+                srs.append(SearchResult('directpdf', url))
             else:
                 url = rst.findAll('a')[0].get('href')
                 url = parse_google_link(url)
-                ret.append(SearchResult(None, url))
+                srs.append(SearchResult(None, url))
         except Exception as e:
             log_exc("Search Item parse error: {0}".format(str(e)))
+    ret['results'] = srs
     return ret

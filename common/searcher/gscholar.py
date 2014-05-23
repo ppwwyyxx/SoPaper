@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Sat May 10 17:44:03 2014 +0800
+# Date: Fri May 23 21:02:24 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -23,14 +23,15 @@ GOOGLE_SCHOLAR_URL = "http://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt
 def search(ctx):
     query = ctx.query
 
-    ret = []
+    ret = {}
+    srs = []
 
     r = requests.get(GOOGLE_SCHOLAR_URL.format(query))
     text = r.text.encode('utf-8')
 
     soup = BeautifulSoup(text)
     results = soup.findAll(attrs={'class': 'gs_r'})
-    title_updated = False
+    title_updated = None
     for rst in results:
         try:
             h3 = rst.findAll('h3')[0]
@@ -39,16 +40,18 @@ def search(ctx):
             if not title_correct(query, real_title):
                 continue
             if not title_updated:
-                ctx.update_title(real_title)
-                title_updated = True
-            url = h3.find('a').get('href')
-            ret.append(SearchResult(None, url))
+                title_updated = title_beautify(real_title)
+                log_info("Title updated: {0}".format(title_updated))
+                ret['ctx_update']['title'] = title_updated
+            url = str(h3.find('a').get('href'))
+            srs.append(SearchResult(None, url))
 
             findpdf = rst.findAll(attrs={'class': 'gs_ggs'})
             if findpdf:
                 pdflink = findpdf[0].find('a').get('href')
-                url = pdflink
-                ret.append(SearchResult('directpdf', url))
+                url = str(pdflink)
+                srs.append(SearchResult('directpdf', url))
         except Exception as e:
             log_exc("Search Item parse error: {0}".format(str(e)))
+    ret['results'] = srs
     return ret

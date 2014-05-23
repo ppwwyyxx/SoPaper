@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 10 17:57:24 2014 +0800
+# Date: Fri May 23 20:57:50 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from ukutil import import_all_modules
@@ -19,7 +19,10 @@ class register_searcher(object):
 
     def __call__(self, func):
         """ func: callable to be invoked, took a JobContext
-            func return list of 'SearchResult'
+            func cannot change JobContext
+            func return a dict with keys:
+                results : list of 'SearchResult'
+                ctx_update: dict
         """
 
         @wraps(func)
@@ -29,7 +32,7 @@ class register_searcher(object):
                 log_info("Searching '{1}' with searcher: '{0}' ...".
                          format(self.name, ctx.query))
                 res = func(ctx)
-                for r in res:
+                for r in res['results']:
                     r.searcher = self.name
                 return res
             except KeyboardInterrupt:
@@ -45,10 +48,9 @@ class register_searcher(object):
     def run(self, ctx):
         """ run this searcher against the context given"""
         res = self.cb(ctx)
-        if res:
-            ctx.search_results.extend(res)
+        if res and res['results']:
             log_info("Got the following results from {0}:\n".format(self.name) +
-                    "\n".join([str(r) for r in res]))
+                    "\n".join([str(r) for r in res['results']]))
         return res
 
     @staticmethod
