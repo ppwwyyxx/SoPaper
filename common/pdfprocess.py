@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Fri May 23 12:31:30 2014 +0800
+# Date: Fri May 23 12:39:02 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -12,7 +12,7 @@ from uklogger import *
 from ukdbconn import get_mongo
 from ukutil import check_pdf
 from lib.pdf2html import PDF2Html
-from lib.textutil import parse_file_size
+from lib.textutil import parse_file_size, filter_nonascii
 from contentsearch import sopaper_indexer
 
 def do_addhtml(data, pid):
@@ -69,7 +69,10 @@ def pdf2text(data):
     text = open(fout).read()
 
     os.remove(f.name)
-    os.remove(fout.name)
+    os.remove(fout)
+
+    text = filter_nonascii(text)
+    # TODO filter formulas..
     return text
 
 def do_buildindex(ctx, pid):
@@ -89,3 +92,12 @@ def pdf_postprocess(ctx, pid):
 
     ctx.data = data
     do_buildindex(ctx, pid)
+
+
+if __name__ == '__main__':
+    import sys
+    f = sys.argv[1]
+    data = open(f).read()
+
+    text = pdf2text(data)
+    print text

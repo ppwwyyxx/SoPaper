@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: xpcommon.py
-# Date: Thu May 22 14:27:18 2014 +0800
+# Date: Fri May 23 12:35:53 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 FIELD_NUM = {'id': 0,
@@ -10,4 +10,8 @@ FIELD_NUM = {'id': 0,
              'author': 3
             }
 
-STOPWORDS = set([x.strip() for x in open('./stopwords.txt').readlines()])
+import os
+
+STOPWORDS_FILE = os.path.join(os.path.dirname(__file__), 'stopwords.txt')
+
+STOPWORDS = set([x.strip() for x in open(STOPWORDS_FILE).readlines()])

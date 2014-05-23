@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Sun May 11 12:38:50 2014 +0800
+# Date: Fri May 23 12:38:09 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -69,3 +69,6 @@ def name_clean(name):
     p = re.compile('\(.*?\)', re.DOTALL)
     ret = p.sub('', name).strip()
     return ensure_unicode(ret)
+
+def filter_nonascii(string):
+    return filter(lambda x: ord(x) < 128, string)
