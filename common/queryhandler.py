@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Thu May 22 15:54:35 2014 +0800
+# Date: Fri May 23 12:19:18 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -33,7 +33,7 @@ def new_paper(ctx):
     db.ensure_index('title')
     ret = db.insert(doc)
 
-    thread = Thread(target=pdf_postprocess, args=(ctx.data, pid))
+    thread = Thread(target=pdf_postprocess, args=(ctx, pid))
     thread.start()
     return pid
 

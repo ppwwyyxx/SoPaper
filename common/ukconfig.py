@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Sun May 11 15:09:35 2014 +0800
+# Date: Fri May 23 12:13:20 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 #download_method = 'wget'
@@ -18,8 +18,8 @@ try:
 except ImportError:
     USE_MAGIC_LIB = False
 
-SAVE_TO_FILE = True
 USE_DB = True
+USE_INDEXER = True
 try:
     import pymongo
 except ImportError:
@@ -27,3 +27,8 @@ except ImportError:
 
 mongo_conn = ('127.0.0.1', 27017)
 mongo_db = 'sopaper'
+
+
+import os
+XP_DB_DIR = os.path.join(os.environ['HOME'],
+                         'sopaper-xapian-db')

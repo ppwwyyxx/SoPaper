@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Thu May 22 15:53:05 2014 +0800
+# Date: Fri May 23 12:31:30 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -13,6 +13,7 @@ from ukdbconn import get_mongo
 from ukutil import check_pdf
 from lib.pdf2html import PDF2Html
 from lib.textutil import parse_file_size
+from contentsearch import sopaper_indexer
 
 def do_addhtml(data, pid):
     # convert to html
@@ -56,8 +57,35 @@ def do_compress(data, pid):
     db.update({'_id': pid}, {'$set': {'pdf': Binary(data)}} )
     log_info("Updated compressed pdf {0}: size={1}".format(
         pid, parse_file_size(len(data))))
+    return data
 
-def pdf_postprocess(data, pid):
+def pdf2text(data):
+    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    f.write(data)
+    f.close()
+
+    os.system('pdftotext "{0}"'.format(f.name))
+    fout = f.name.replace('.pdf', '.txt')
+    text = open(fout).read()
+
+    os.remove(f.name)
+    os.remove(fout.name)
+    return text
+
+def do_buildindex(ctx, pid):
+    text = pdf2text(ctx.data)
+    doc = {'text': text,
+           'title': ctx.title,
+           'author': ctx.meta['author'],
+           'id': pid
+          }
+    sopaper_indexer.add_paper(doc)
+
+def pdf_postprocess(ctx, pid):
     """ post-process routine right after adding a new pdf"""
-    do_compress(data, pid)
+    data = ctx.data
+    data = do_compress(data, pid)
     do_addhtml(data, pid)
+
+    ctx.data = data
+    do_buildindex(ctx, pid)

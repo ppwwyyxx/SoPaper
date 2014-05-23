@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Thu May 22 11:01:42 2014 +0800
+# Date: Fri May 23 12:11:36 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
@@ -12,6 +12,7 @@ from queryhandler import new_paper
 import sys
 
 ukconfig.USE_DB = False
+ukconfig.USE_INDEXER = False
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:

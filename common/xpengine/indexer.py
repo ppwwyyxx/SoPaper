@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: Thu May 22 15:23:33 2014 +0800
+# Date: Fri May 23 12:15:40 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
 import threading
+import shutil
 import xappy
 from xappy import IndexerConnection, FieldActions, UnprocessedDocument, Field
 from xappy import errors
@@ -57,9 +58,13 @@ class XapianIndexer(object):
             self.lock.release()
 
 
-
     def flush(self):
         self.dbconn.flush()
 
     def close(self):
         self.dbconn.close()
+
+    def clear(self):
+        self.close()
+        shutil.rmtree(self.dbPath)
+        self.__init__(self.dbPath)
