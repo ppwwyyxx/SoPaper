@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Fri May 23 22:17:09 2014 +0800
+# Date: Sat May 24 00:11:56 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -10,6 +10,7 @@ from threading import Lock, Condition
 
 from xpengine.indexer import XapianIndexer
 from xpengine.searcher import XapianSearcher
+from lib.singleton import Singleton
 import ukconfig
 from ukdbconn import get_mongo
 from lib.textutil import filter_nonascii
@@ -21,7 +22,9 @@ def pdf2text(data):
     f.write(data)
     f.close()
 
-    os.system('pdftotext "{0}"'.format(f.name))
+    ret = os.system('pdftotext "{0}"'.format(f.name))
+    if ret != 0:
+        return Exception("pdftotext return error!")
     fout = f.name.replace('.pdf', '.txt')
     text = open(fout).read()
 
@@ -36,6 +39,7 @@ class SoPaperSearcher(object):
     """ Search by content of paper
         Don't instantiate me
     """
+    __metaclass__ = Singleton
 
     def __init__(self):
         self.searcher = XapianSearcher(DB_DIR)
@@ -45,8 +49,6 @@ class SoPaperSearcher(object):
                summary_len=ukconfig.SEARCH_SUMMARY_LEN):
         res = self.searcher.search(query, offset, page_size, summary_len)
         return res
-
-sopaper_searcher = SoPaperSearcher()
 
 class SoPaperIndexer(object):
     """ Don't instantiate me
@@ -61,7 +63,7 @@ class SoPaperIndexer(object):
         assert doc.get('id')
         self.indexer.add_doc(doc)
         self.indexer.flush()
-        sopaper_searcher.searcher.reopen()
+        SoPaperSearcher().searcher.reopen()
 
     def rebuild(self):
         """ should only be called when no searcher is active"""
@@ -90,8 +92,8 @@ def do_add_paper(doc):
     indexer_lock.acquire()
     idxer = SoPaperIndexer()
     idxer.add_paper(doc)
+    SoPaperSearcher().searcher.reopen()
     indexer_lock.release()
 
 if __name__ == '__main__':
-    sopaper_searcher.close()
-    sopaper_indexer.rebuild()
+    SoPaperIndexer().rebuild()

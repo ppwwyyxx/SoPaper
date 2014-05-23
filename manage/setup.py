@@ -9,7 +9,7 @@ setup_args = dict(
         #'pyjade>=1.6',
 
         # database
-        'pymongo>=2.6.3',
+        'pymongo>=2.7',
 
         # IR & NLP
         'xappy>=0.5',

@@ -45,6 +45,10 @@ To deploy the server, you'll need:
 * ghostscript
 * libcurl (libcurl4-{openssl,nss,gnutls}-dev on debian/ubuntu)
 * xapian (libxapian-dev & python2-xapian on debian/ubuntu)
+* pdf2htmlEx installed. See its [download guide](https://github.com/coolwanglu/pdf2htmlEX/wiki/Download)
+* poppler-utils which provide the 'pdftotext' command line util
+
+Note: on debian/ubuntu, make sure you do *not* have 'python2-bson' package installed.
 
 Run the following command to install all the python packages needed, and setup virtualenv
 

@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Fri May 23 22:08:07 2014 +0800
+# Date: Sat May 24 00:12:52 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -37,7 +37,9 @@ def pdf_compress(data):
 
     f2 = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     f2.close()
-    os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
+    ret = os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
+    if ret != 0:
+        raise Exception("ps2pdf14 return error!")
 
     newdata = open(f2.name).read()
     os.remove(f2.name)
@@ -70,12 +72,15 @@ def do_buildindex(ctx, pid):
 
 def pdf_postprocess(ctx, pid):
     """ post-process routine right after adding a new pdf"""
-    data = ctx.data
-    data = do_compress(data, pid)
-    do_addhtml(data, pid)
+    try:
+        data = ctx.data
+        data = do_compress(data, pid)
+        do_addhtml(data, pid)
 
-    ctx.data = data
-    do_buildindex(ctx, pid)
+        ctx.data = data
+        do_buildindex(ctx, pid)
+    except Exception as e:
+        log_exc("Postprocess Failed")
 
 
 if __name__ == '__main__':

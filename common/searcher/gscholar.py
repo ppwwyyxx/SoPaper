@@ -1,14 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Fri May 23 21:02:24 2014 +0800
+# Date: Sat May 24 00:05:55 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
 from . import register_searcher
 from job import SearchResult
 from uklogger import *
-from lib.textutil import title_correct, filter_title_fileformat
+from lib.textutil import title_correct, filter_title_fileformat, title_beautify
 
 import re
 import requests
@@ -24,6 +24,7 @@ def search(ctx):
     query = ctx.query
 
     ret = {}
+    ret['ctx_update'] = {}
     srs = []
 
     r = requests.get(GOOGLE_SCHOLAR_URL.format(query))

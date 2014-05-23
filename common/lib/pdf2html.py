@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdf2html.py
-# Date: Tue May 20 16:40:08 2014 +0800
+# Date: Sat May 24 00:11:17 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -27,9 +27,11 @@ class PDF2Html(object):
 
     def convert(self):
         self.outdir = tempfile.mkdtemp(prefix='sop')
-        os.system('pdf2htmlEX "{0}" 0.html --dest-dir={1}'.
+        ret = os.system('pdf2htmlEX "{0}" 0.html --dest-dir={1}'.
                   format(self.fname, self.outdir) + \
                   ' --split-pages=1 --page-filename %d.html')
+        if ret != 0:
+            raise Exception("pdf2htmlEx return error!")
         self.npages = len(os.listdir(self.outdir)) - 1
 
     def clean(self):

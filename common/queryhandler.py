@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Fri May 23 22:03:53 2014 +0800
+# Date: Sat May 24 00:03:37 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -17,7 +17,7 @@ from job import JobContext
 from dbsearch import *
 from pdfprocess import pdf_postprocess
 
-import contentsearch
+from contentsearch import SoPaperSearcher
 
 def new_paper(ctx):
     pid = global_counter('paper')
@@ -102,9 +102,10 @@ def handle_title_query(query):
                 except:
                     log_exc("Failed to save to db")
 
+sp_searcher = SoPaperSearcher()
 def handle_content_query(query):
     log_info("Get content query: {0}".format(query))
-    res = content_search.sopaper_searcher.search(query)
+    res = sp_searcher.search(query)
     return res
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukdbconn.py
-# Date: Thu May 22 11:01:02 2014 +0800
+# Date: Sat May 24 00:06:26 2014 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -49,9 +49,10 @@ def global_counter(name, delta=1):
     rst = db.find_and_modify(query={'_id': name},
                             update={'$inc': {'val': delta}},
                             new=True)
-    k = rst.get('val')
-    if k:
-        return k
+    if rst:
+        k = rst.get('val')
+        if k:
+            return k
     try:
         val = long(1)
         db.insert({'_id': name, 'val': val})

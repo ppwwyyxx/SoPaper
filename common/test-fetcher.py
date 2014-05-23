@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Fri May 23 12:11:36 2014 +0800
+# Date: Sat May 24 00:29:47 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
@@ -24,8 +24,9 @@ if __name__ == '__main__':
     #sr = SearchResult(None, "http://arxiv.org/abs/1404.3610")
 
     parser = register_parser.parser_dict['dl.acm.org']
-    url = "http://dl.acm.org/citation.cfm?id=1859761"
-    #url = "http://dl.acm.org/citation.cfm?id=2366157"
+    #url = "http://dl.acm.org/citation.cfm?id=1859761"  # twitter
+    url = "http://dl.acm.org/citation.cfm?id=996342"    # SIFT
+    #url = "http://dl.acm.org/citation.cfm?id=2366157"  # big
     sr = SearchResult(None, url)
 
     #parser = register_parser.parser_dict['ieeexplore.ieee.org']
