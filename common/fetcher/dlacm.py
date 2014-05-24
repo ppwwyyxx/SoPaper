@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 24 16:33:37 2014 +0800
+# Date: Sat May 24 20:10:48 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -117,7 +117,9 @@ class DLAcm(FetcherBase):
         try:
             log_info("Getting cited ...")
             cite_url = re.findall(r'\'tab_citings.+\d+\'', self.text)[0][1:-1]
-            cite_text = requests.get('http://{0}/'.format(HOSTNAME) + cite_url).text.encode('utf-8')
+            cite_text = requests.get('http://{0}/'.format(HOSTNAME) +
+                                     cite_url, timeout=5
+                                    ).text.encode('utf-8')
             cite_soup = BeautifulSoup(cite_text)
             trs = cite_soup.findAll('tr')
             citing = []
@@ -130,6 +132,8 @@ class DLAcm(FetcherBase):
             meta['citedby'] = citing
         except KeyboardInterrupt:
             raise
+        except requests.exceptions.Timeout:
+            pass
         except:
             pass
 

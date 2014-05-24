@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Sat May 24 15:57:32 2014 +0800
+# Date: Sat May 24 20:05:07 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     #parser = register_parser.parser_dict['arxiv.org']
     #sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
-    #sr = SearchResult(None, "http://arxiv.org/abs/1404.3610")
+    #sr = SearchResult(None, "  http://arxiv.org/abs/1404.3610")
 
     #parser = register_parser.parser_dict['dl.acm.org']
     #url = "http://dl.acm.org/citation.cfm?id=1859761"  # twitter

@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 17:34:46 2014 +0800
+# Date: Sat May 24 20:15:08 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -55,11 +55,18 @@ def _do_fetcher_download(fetcher_inst, updater):
 def start_download(dl_candidates, ctx, pid):
     updater = ProgressPrinter()
     for (parser, sr) in dl_candidates:
-        data = _do_fetcher_download(parser.get_cls()(sr), updater)
+        name = parser.name
+        fetcher_inst = parser.get_cls()(sr)
+        url = fetcher_inst.url
+        data = _do_fetcher_download(fetcher_inst, updater)
         if data:
             db = get_mongo('paper')
-            db.update({'_id': pid}, {'$set': {'pdf': Binary(data)}} )
-
+            db.update({'_id': pid},
+                      {'$set': {
+                        'pdf': Binary(data),
+                        'page_url': url,
+                        'source': name
+                      }})
             postprocess(data, ctx, pid)
             return
 
@@ -93,6 +100,8 @@ def handle_title_query(query):
     all_search_results = []
     for s in async_results:
         s = s.get()
+        if s is None:
+            continue
         srs = s['results']
 
         # try search database with updated title
@@ -146,7 +155,7 @@ def handle_title_query(query):
                }]
         ret[0].update(ctx.meta)
 
-        if download_candidates:
+        if len(download_candidates) > 0:
             thread = Thread(target=start_download, args=(download_candidates,
                                                          ctx, pid))
             thread.start()
@@ -163,7 +172,8 @@ def handle_content_query(query):
 
 if __name__ == '__main__':
     #res = handle_title_query('test test test this is not a paper name')
-    res = handle_title_query('Intriguing properties of neural networks')
-    #res = handle_content_query('from')
+    #res = handle_title_query('Intriguing properties of neural networks')
+    #res = handle_content_query('neural networks')
+    res = handle_title_query("Targeting HIV-related Medication Side Effects and Sentiment Using Twitter Data")
     print res
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: base.py
-# Date: Sat May 24 16:00:59 2014 +0800
+# Date: Sat May 24 20:15:23 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -40,10 +40,6 @@ class FetcherBase(object):
         if self.meta is not None:
             return self.meta
         self.meta = self._do_get_meta()
-        self.meta['source'] = self.name
-        self.meta['page_url'] = self.url
-        if len(self.meta) < 3:
-            log_info('missing metadata in {0}'.format(self.url))
         return self.meta
 
     def get_title(self):
