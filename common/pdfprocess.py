@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sat May 24 17:33:30 2014 +0800
+# Date: Sat May 24 20:17:01 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -83,14 +83,14 @@ def postprocess(data, ctx, pid):
     try:
         log_info("Start converting to html {0}".format(pid))
         do_addhtml(data, pid)
-    except:
-        pass
+    except Exception as e:
+        log_exc("Error converting to html")
 
     try:
         log_info("Start converting to text {0}".format(pid))
         do_buildindex(ctx, data, pid)
-    except:
-        pass
+    except Exception as e:
+        log_exc("Error converting to text")
 
 if __name__ == '__main__':
     import sys
