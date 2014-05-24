@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 24 20:10:48 2014 +0800
+# Date: Sat May 24 22:09:17 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -63,7 +63,7 @@ class DLAcm(FetcherBase):
                 # probably something need to be fixed
                 log_exc('')
         else:
-            raise RecoverableErr("No available download")
+            raise RecoverableErr("dl.acm has no available download at {0}".format(self.url))
         return download(pdfurl, updater)
 
     def _do_get_title(self):

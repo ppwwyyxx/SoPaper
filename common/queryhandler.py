@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 21:42:50 2014 +0800
+# Date: Sat May 24 22:08:18 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -81,7 +81,7 @@ def start_download(dl_candidates, ctx, pid):
                         'source': name
                       }})
             postprocess(data, ctx, pid)
-            progress_dict.pop(self.pid, None)
+            progress_dict.pop(pid, None)
             return
 
 def search_run(searcher, ctx):
