@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ieee.py
-# Date: Sat May 24 15:58:27 2014 +0800
+# Date: Sat May 24 16:16:48 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -18,7 +18,8 @@ REFERENCE_URL = "http://ieeexplore.ieee.org/xpl/abstractReferences.jsp?tp=&arnum
 CITATION_URL = "http://ieeexplore.ieee.org/xpl/abstractCitations.jsp?tp=&arnumber={0}"
 
 @register_parser(name='ieeexplore.ieee.org',
-                 urlmatch='ieeexplore.ieee.org')
+                 urlmatch='ieeexplore.ieee.org',
+                 meta_field=['author', 'abstract', 'references', 'citedby'])
 class IEEE(FetcherBase):
     def _do_pre_parse(self):
         text = requests.get(self.url).text.encode('utf-8')

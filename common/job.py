@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Fri May 23 20:59:12 2014 +0800
+# Date: Sat May 24 17:14:27 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
 from uklogger import *
+from multiprocessing import Pool
 
 class JobContext(object):
     def __init__(self, query):
@@ -13,10 +14,20 @@ class JobContext(object):
         self.success = False
         self.title = query
         self.existing = None
+        self.downloader = []
         self.meta = {}
 
     def update_meta_dict(self, meta):
         self.meta.update(meta)
+
+    def need_field(self, fields):
+        for f in fields:
+            if f not in self.meta:
+                return True
+        return False
+
+    def add_downloader(self, fetcher_inst):
+        self.downloader.append(fetcher_inst)
 
     def __str__(self):
         d = {'title': self.title,

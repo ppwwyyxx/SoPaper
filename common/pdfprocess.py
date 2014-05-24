@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sat May 24 11:41:04 2014 +0000
+# Date: Sat May 24 17:33:30 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -51,17 +51,21 @@ def pdf_compress(data):
         return data
 
 def do_compress(data, pid):
-    # compress
-    data = pdf_compress(data)
+    """ this *must* succeed adding the pdf"""
+    try:
+        # compress
+        data = pdf_compress(data)
+    except:
+        pass
 
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$set': {'pdf': Binary(data)}} )
-    log_info("Updated compressed pdf {0}: size={1}".format(
+    log_info("Updated pdf {0}: size={1}".format(
         pid, parse_file_size(len(data))))
     return data
 
-def do_buildindex(ctx, pid):
-    text = contentsearch.pdf2text(ctx.data)
+def do_buildindex(ctx, data, pid):
+    text = contentsearch.pdf2text(data)
     doc = {'text': text,
            'title': ctx.title,
            'id': pid
@@ -71,21 +75,22 @@ def do_buildindex(ctx, pid):
         doc['author'] = author
     contentsearch.do_add_paper(doc)
 
-def pdf_postprocess(ctx, pid):
+def postprocess(data, ctx, pid):
     """ post-process routine right after adding a new pdf"""
+    log_info("Start compressing {0}".format(pid))
+    data = do_compress(data, pid)
+
     try:
-        data = ctx.data
-        log_info("Start compressing {0}".format(pid))
-        data = do_compress(data, pid)
         log_info("Start converting to html {0}".format(pid))
         do_addhtml(data, pid)
+    except:
+        pass
 
-        ctx.data = data
+    try:
         log_info("Start converting to text {0}".format(pid))
-        do_buildindex(ctx, pid)
-    except Exception as e:
-        log_exc("Postprocess Failed")
-
+        do_buildindex(ctx, data, pid)
+    except:
+        pass
 
 if __name__ == '__main__':
     import sys

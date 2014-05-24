@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 24 15:49:45 2014 +0800
+# Date: Sat May 24 16:33:37 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -37,10 +37,11 @@ def download(url, updater):
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:
         raise RecoverableErr("File too large: " + parse_file_size(total_length))
     data = resp.content
-    updater.finish()
+    updater.finish(data)
     return data
 
-@register_parser(name='dl.acm.org', urlmatch='dl.acm.org')
+@register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
+                 meta_field=['author', 'bibtex', 'citedby', 'references', 'abstract'])
 class DLAcm(FetcherBase):
     def _do_pre_parse(self):
         self.text = requests.get(self.url).text.encode('utf-8')

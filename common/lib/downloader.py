@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 24 10:57:46 2014 +0000
+# Date: Sat May 24 17:32:00 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -13,14 +13,17 @@ from lib.exc import RecoverableErr
 import ukconfig
 
 import urllib
+import os
+import tempfile
 import requests
 from urlparse import urlparse
 
 class ProgressPrinter(object):
     def __init__(self):
         self.total = 0
+        self.last_done_len = -1
 
-    def finish(self):
+    def finish(self, data):
         sys.stdout.write("\n")
         sys.stdout.flush()
         log_info("Download finished")
@@ -29,9 +32,11 @@ class ProgressPrinter(object):
         assert self.total != 0
         width = 50
         done_len = int(width * done / self.total)
-        sys.stdout.write("\r[{0}>{1}]".format('=' * done_len,
-                                              ' ' * (width - done_len)))
-        sys.stdout.flush()
+        if done_len > self.last_done_len:
+            sys.stdout.write("\r[{0}>{1}]".format('=' * done_len,
+                                                  ' ' * (width - done_len)))
+            sys.stdout.flush()
+        self.last_done_len = done_len
 
     def set_total(self, size):
         """size: number of bytes"""
@@ -55,14 +60,19 @@ def direct_download(url, progress_updater, headers=None):
     if ukconfig.download_method == 'wget':
         headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
                             in headers.iteritems()])
-        os.system('wget "{0}" -O "{1}" {2}'.format(url, filename, headers))
-        return
+        tf = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
+        tf.close()
+        os.system('wget "{0}" -O "{1}" {2}'.format(url, tf.name, headers))
+        data = open(tf.name).read()
+        progress_updater.finish(data)
+        os.remove(tf.name)
+        return data
 
     resp = requests.get(url, stream=True, headers=headers)
     total_length = resp.headers.get('content-length')
     if total_length is None:
         data = resp.content
-        progress_updater.finish()
+        progress_updater.finish(data)
         return data
     else:
         total_length = int(total_length)
@@ -77,7 +87,7 @@ def direct_download(url, progress_updater, headers=None):
             dl += len(data)
             ret += data
             progress_updater.update(dl)
-        progress_updater.finish()
+        progress_updater.finish(data)
         return ret
 
 if __name__ == '__main__':

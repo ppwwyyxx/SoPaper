@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 24 16:01:03 2014 +0800
+# Date: Sat May 24 17:24:40 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -21,6 +21,7 @@ from functools import wraps
 import ukconfig
 import re
 
+
 class register_parser(object):
     parser_dict = {}
     """ save the original parser func"""
@@ -32,17 +33,31 @@ class register_parser(object):
         self.type_match = kwargs.pop('typematch', None)
         self.legal = kwargs.pop('legal', True)
 
+        """ what meta field this fetcher might provide"""
+        self.support_meta_field = kwargs.pop('meta_field', [])
+
+        """ whether this fetcher should be considered multiple times l
+            during a search.
+            For now, only 'DirectPdfParser' shall be considered multiple times
+        """
+        self.repeatable = kwargs.pop('repeatable', False)
+
         assert self.name not in self.parser_dict
 
     @staticmethod
     def get_parser_list():
         return register_parser.parser_dict.values()
 
+    def get_cls(self):
+        """ get instance with specific search result"""
+        return self.fetcher_cls
+
     def __call__(self, fetcher_cls):
         """ fetcher_cls: subclass of FetcherBase to be used
             'url', 'headers' to pass to downloader,
             'ctx_update': a dict to update the context
         """
+        self.fetcher_cls = fetcher_cls
 
         @wraps(fetcher_cls)
         def wrapper(res):
@@ -63,6 +78,13 @@ class register_parser(object):
         self.cb = wrapper
         return wrapper
 
+    def can_run(self, sr):
+        if (self.type_match is None
+            or self.type_match != sr.type) and \
+           len(self.url_match.findall(sr.url)) == 0:
+            return False
+        return True
+
     def run(self, ctx, sr, progress_updater=None):
         """ run this parser against the SearchResult given
             return True/False indicate success,
@@ -72,22 +94,18 @@ class register_parser(object):
                         or ctx.existing will contain a existing doc in db.
         """
         url = sr.url
-        if (self.type_match is None
-            or self.type_match != sr.type) and \
-           len(self.url_match.findall(url)) == 0:
-            return False
-
         log_info("Parsing url {0} with parser {1}".
                  format(url, self.name))
         fetcher_inst = self.cb(sr)
         if fetcher_inst is None:
             return False
 
-        # check updated title against db before download
         newt = fetcher_inst.get_title()
         if newt and newt != ctx.title:
             ctx.title = newt
             log_info("Using new title: {0}".format(ctx.title))
+
+            # check updated title against db before download
             if ukconfig.USE_DB:
                 doc = search_exact(newt)
                 if res:
@@ -96,24 +114,9 @@ class register_parser(object):
                     return True
         log_info("Update metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
         ctx.update_meta_dict(fetcher_inst.get_meta())
-
-        if progress_updater is None:
-            progress_updater = ProgressPrinter()
-        succ = fetcher_inst.download(progress_updater)
-        if not succ:
-            return False
-
-        ft = check_pdf(fetcher_inst.get_data())
-        #ft = True
-        if ft == True:
-            ctx.success = True
-            ctx.data = fetcher_inst.get_data()
-            return True
-        else:
-            log_err("Wrong Format: {0}".format(ft))
-            return False
-
-
+        # if can download
+        ctx.add_downloader(fetcher_inst)
+        return True
 
 if __name__ != '__main__':
     import_all_modules(__file__, __name__)

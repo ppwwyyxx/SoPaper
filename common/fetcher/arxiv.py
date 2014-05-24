@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: arxiv.py
-# Date: Sat May 24 15:57:18 2014 +0800
+# Date: Sat May 24 17:14:40 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -13,7 +13,8 @@ import requests
 
 ARXIV_PAT = re.compile('arxiv\.org/[^/]*/(?P<id>.*)')
 
-@register_parser(name='arxiv.org', urlmatch='arxiv.org')
+@register_parser(name='arxiv.org', urlmatch='arxiv.org',
+                meta_field=['author', 'bibtex', 'abstract'])
 class Arxiv(FetcherBase):
     def _do_pre_parse(self):
         text = requests.get(self.url).text.encode('utf-8')
