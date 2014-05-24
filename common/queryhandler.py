@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 10:53:52 2014 +0000
+# Date: Sat May 24 12:43:57 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -31,6 +31,7 @@ def new_paper(ctx):
         'download_cnt': 0
     }
     doc.update(ctx.meta)
+    doc['title'] = doc['title'].lower()
 
     db = get_mongo('paper')
     db.ensure_index('title')

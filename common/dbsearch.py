@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Thu May 22 15:58:17 2014 +0800
+# Date: Sat May 24 11:56:11 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -84,4 +84,4 @@ def init_title_for_similar_search():
 init_title_for_similar_search()
 
 if __name__ == '__main__':
-    print similar_search('test file')
+    print search_exact(title_beautify('Intriguing properties of neural networks'))
