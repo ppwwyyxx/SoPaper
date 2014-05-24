@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="SearchApp">
 	<head>
 		<!-- Standard Meta -->
 		<meta charset="utf-8" />
@@ -7,20 +7,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 		<!-- Site Properities -->
 		<title>Sopaper</title>
-		<link rel="stylesheet" type="text/css" href="css/semantic.css">
-		<link rel="stylesheet" type="text/css" href="css/homepage.css">
-		<script src="javascript/jquery.js"></script>
-		<script src="javascript/semantic.js"></script>
-		<script src="javascript/homepage.js"></script>
+		<link rel="stylesheet" type="text/css" href="static/css/semantic.css">
+		<link rel="stylesheet" type="text/css" href="static/css/homepage.css">
+		<script src="/javascript/angular.min.js"></script>
+		<script src="/javascript/angular-resource.min.js"></script>
+		<script src="/javascript/angular-route.min.js"></script>
+		<script src="static/javascript/jquery.js"></script>
+		<script src="static/javascript/semantic.js"></script>
+		<script src="static/javascript/homepage.js"></script>
+
 	</head>
-	<body id="home" class="masthead">
+	<body id="home" class="masthead" ng-controller="SearchCtrl">
 		<!-- Navigation Start-->
 		<div class="ui large inverted menu">
 			<a class="green item">
-			<i class="book icon"></i> <b>SoPaper </b>
+			<i class="book icon"></i> <b>SoPaper</b>
 			</a>
 			<div class="right menu">
-				
 				<div class="ui dropdown item">
 					<i class="green user icon"></i>
 					ppwwyyxx

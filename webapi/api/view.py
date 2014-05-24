@@ -5,14 +5,17 @@
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, redirect, url_for, make_response
-
+from flask import render_template
 @app.route('/')
 def home():
     return redirect(url_for('static', filename='index.html'))
 
-@app.route('/search')
+@app.route('/search/<string:search_word>')
 def search():
-    return redirect(url_for('static', filename='search.html'))
+    res = api.query2(search_word)
+    return render_template('search.html',result=res)
+
+    # redirect(url_for('static', filename='search.html'))
 
 
 @app.route('/api')

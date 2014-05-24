@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>hello</title>
-</head>
-<body>
-	hello world!
-
-</body>
+<html lang="en" ng-app="SearchApp">
+	<head>
+		<!-- Standard Meta -->
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<!-- Site Properities -->
+		<title>Sopaper</title>
+		<link rel="stylesheet" type="text/css" href="css/semantic.css">
+		<link rel="stylesheet" type="text/css" href="css/homepage.css">
+		<script src="javascript/angular.min.js"></script>
+		<script src="javascript/angular-resource.min.js"></script>
+		<script src="javascript/angular-route.min.js"></script>
+		<script src="javascript/jquery.js"></script>
+		<script src="javascript/semantic.js"></script>
+		<script src="javascript/homepage.js"></script>
+		<script src="javascript/search.js"></script>
+		
+	</head>
+	<body id="home" class="masthead" ng-controller="SearchCtrl">
+		<!-- Navigation Start-->
+		<div class="ui large inverted menu">
+			<a class="green item">
+			<i class="book icon"></i> <b>SoPaper</b>
+			</a>
+			<div class="right menu">
+				<a class="green item">
+				<b>Sign in </b><i class="setting icon"></i>
+				</a>
+			</div>
+		</div>
+		<!-- Navigation End-->
+		<div class="ui page grid">
+			<h1 class="ui header">Sopaper</h1>
+			<div class="row"></div>		
+			<div class="ui fluid input">
+				<input type="text"  placeholder="Search papers, authors, conferences..." id="Searchword" ng-model="keyword">
+				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
+			</div>
+			<div class="footer">
+				This is a project designed for researchers to conveniently getting papers they need.
+			</div>
+		</div>
+	</body>
 </html>
