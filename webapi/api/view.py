@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: view.py
-# Date: Thu May 22 13:14:31 2014 +0800
+# Date: Sat May 24 21:43:28 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, redirect, url_for, make_response
@@ -34,6 +34,8 @@ api: /query?q=test
 
 api: /html?pid=2&page=0,1,3,5
 0 is the html framework
+
+api: /download_available?pid=1
 """
     ret = ret.strip().replace('\n', '<br/>')
     resp = make_response(ret)

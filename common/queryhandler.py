@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 21:11:49 2014 +0800
+# Date: Sat May 24 21:42:50 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -57,16 +57,12 @@ progress_dict = {}
 class Updater(ProgressPrinter):
     def __init__(self, pid):
         self.pid = pid
-        super(Updater).__init__()
+        super(Updater, self).__init__()
 
     def update(self, done):
         percent = float(done) / self.total
         progress_dict[self.pid] = percent
-        super(Updater).update(done)
-
-    def finish(self, data):
-        progress_dict.pop(self.pid, None)
-        super(Updater).finish(data)
+        super(Updater, self).update(done)
 
 def start_download(dl_candidates, ctx, pid):
     updater = Updater(pid)
@@ -85,6 +81,7 @@ def start_download(dl_candidates, ctx, pid):
                         'source': name
                       }})
             postprocess(data, ctx, pid)
+            progress_dict.pop(self.pid, None)
             return
 
 def search_run(searcher, ctx):
@@ -160,7 +157,8 @@ def handle_title_query(query):
                         log_info("Found {0} results in db".format(len(ctx.existing)))
                         return [ctx.existing]
 
-    if not found:
+    # no metadata or downloadable source found
+    if not found and len(download_candidates) == 0:
         return None
     # Save data, return data and start downloading
     try:
