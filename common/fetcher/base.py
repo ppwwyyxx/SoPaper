@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: base.py
-# Date: Sat May 24 20:15:23 2014 +0800
+# Date: Sat May 24 21:32:32 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -68,8 +68,8 @@ class FetcherBase(object):
             log_info(str(e))
             return False
         except Exception:
-            log_exc("Error while downloading in parser '{0}' with" \
-                    "url '{1}'".format(self.name, self.url))
+            log_exc("Error while downloading with" \
+                    "url '{0}'".format(self.url))
             return False
 
     def get_data(self):

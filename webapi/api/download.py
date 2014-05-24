@@ -1,12 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: download.py
-# Date: Sun May 11 14:46:27 2014 +0800
+# Date: Sat May 24 21:36:42 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from . import app, make_response, request
+from . import app, make_response, request, api_method
 from ukdbconn import get_mongo
+from uklogger import *
 from lib.textutil import title_beautify
+from queryhandler import progress_dict
 
 # api: /download?pid=1
 @app.route('/download')
@@ -36,3 +38,26 @@ def download():
     resp.headers['Content-Disposition'] = \
             'attachment; filename="{0}".pdf'.format(title)
     return resp
+
+# api: /download_available?pid=1
+@api_method('/download_available')
+def available():
+    pid = long(request.values.get('pid'))
+    #log_info("Query available of {0} with dic={1}".
+                 #format(pid, str(progress_dict)))
+    prgs = progress_dict.get(pid)
+    if prgs is None:
+        db = get_mongo('paper')
+        doc = db.find_one({'_id': pid}, {'page': 1})
+        if not doc:
+            return {'status': 'error',
+                    'reason': 'no such item'}
+        if doc.get('page'):
+            prgs = 'done'
+        else:
+            prgs = 'failed'
+
+    return {'status': 'ok',
+            'progress': str(prgs)
+           }
+
