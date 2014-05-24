@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Sat May 24 00:11:56 2014 +0800
+# Date: Sat May 24 10:35:02 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -42,6 +42,8 @@ class SoPaperSearcher(object):
     __metaclass__ = Singleton
 
     def __init__(self):
+        if not os.path.isdir(DB_DIR):
+            SoPaperIndexer().rebuild()
         self.searcher = XapianSearcher(DB_DIR)
 
     def search(self, query, offset=0,
@@ -53,20 +55,23 @@ class SoPaperSearcher(object):
 class SoPaperIndexer(object):
     """ Don't instantiate me
     """
+    __metaclass__ = Singleton
 
     def __init__(self):
         self.indexer = XapianIndexer(DB_DIR)
+
+    def _do_add_paper(self, doc):
+        self.indexer.add_doc(doc)
 
     def add_paper(self, doc):
         assert doc.get('text')
         assert doc.get('title')
         assert doc.get('id')
-        self.indexer.add_doc(doc)
+        self._do_add_paper(doc)
         self.indexer.flush()
         SoPaperSearcher().searcher.reopen()
 
     def rebuild(self):
-        """ should only be called when no searcher is active"""
         self.indexer.clear()
 
         db = get_mongo('paper')
@@ -84,7 +89,7 @@ class SoPaperIndexer(object):
             except KeyError:
                 author = []
             doc['author'] = author
-            self.indexer.add_doc(doc)
+            self.indexer.do_add_doc(doc)
         self.indexer.flush()
 
 indexer_lock = Lock()
