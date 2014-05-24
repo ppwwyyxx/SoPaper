@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # $File: __init__.py
-# $Date: Sat May 10 20:30:21 2014 +0800
+# $Date: Sat May 24 11:18:11 2014 +0000
 # $Author: jiakai <jia.kai66@gmail.com>
 
 """uknow informatin hub API website"""

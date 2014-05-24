@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sat May 24 11:04:16 2014 +0000
+# Date: Sat May 24 11:41:04 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -19,7 +19,7 @@ def do_addhtml(data, pid):
     # convert to html
     converter = PDF2Html(data, filename=None)
     npage = converter.get_npages()
-    htmls = [converter.get(x) for x in range(npage + 1)]
+    htmls = [Binary(converter.get(x)) for x in range(npage + 1)]
     converter.clean()
 
     db = get_mongo('paper')
