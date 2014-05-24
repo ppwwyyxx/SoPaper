@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Fri May 23 12:38:09 2014 +0800
+# Date: Sat May 24 20:48:53 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string

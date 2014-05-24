@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 20:15:08 2014 +0800
+# Date: Sat May 24 21:11:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -52,9 +52,26 @@ def _do_fetcher_download(fetcher_inst, updater):
         log_err("Wrong Format: {0}".format(ft))
         return None
 
+progress_dict = {}
+
+class Updater(ProgressPrinter):
+    def __init__(self, pid):
+        self.pid = pid
+        super(Updater).__init__()
+
+    def update(self, done):
+        percent = float(done) / self.total
+        progress_dict[self.pid] = percent
+        super(Updater).update(done)
+
+    def finish(self, data):
+        progress_dict.pop(self.pid, None)
+        super(Updater).finish(data)
+
 def start_download(dl_candidates, ctx, pid):
-    updater = ProgressPrinter()
+    updater = Updater(pid)
     for (parser, sr) in dl_candidates:
+        progress_dict[pid] = 0.0
         name = parser.name
         fetcher_inst = parser.get_cls()(sr)
         url = fetcher_inst.url
@@ -141,7 +158,7 @@ def handle_title_query(query):
                     found = True
                     if ctx.existing is not None:
                         log_info("Found {0} results in db".format(len(ctx.existing)))
-                        return ctx.existing
+                        return [ctx.existing]
 
     if not found:
         return None

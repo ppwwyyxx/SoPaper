@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: google.py
-# Date: Fri May 23 21:02:48 2014 +0800
+# Date: Sat May 24 20:48:09 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_searcher
@@ -25,7 +25,7 @@ def parse_google_link(url):
 
 @register_searcher(name='Google')
 def search(ctx):
-    query = ctx.query
+    query = ctx.query.lower()
 
     ret = {}
     srs = []

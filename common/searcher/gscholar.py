@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Sat May 24 00:05:55 2014 +0800
+# Date: Sat May 24 20:48:24 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -21,7 +21,7 @@ GOOGLE_SCHOLAR_URL = "http://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt
 
 @register_searcher(name='Google Scholar', priority=10)
 def search(ctx):
-    query = ctx.query
+    query = ctx.query.lower()
 
     ret = {}
     ret['ctx_update'] = {}
