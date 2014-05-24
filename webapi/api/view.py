@@ -10,6 +10,11 @@ from . import app, redirect, url_for, make_response
 def home():
     return redirect(url_for('static', filename='index.html'))
 
+@app.route('/search')
+def search():
+    return redirect(url_for('static', filename='search.html'))
+
+
 @app.route('/api')
 def api():
     """ show all the apis"""
