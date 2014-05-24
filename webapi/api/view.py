@@ -8,7 +8,12 @@ from . import app, redirect, url_for, make_response
 from flask import render_template
 @app.route('/')
 def home():
-    return redirect(url_for('static', filename='index.html'))
+    return render_template('index.html')
+
+@app.route('/search')
+def nosearch():
+    return render_template('search.html')
+
 
 @app.route('/search/<string:search_word>')
 def search():

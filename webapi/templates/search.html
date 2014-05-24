@@ -9,12 +9,13 @@
 		<title>Sopaper</title>
 		<link rel="stylesheet" type="text/css" href="static/css/semantic.css">
 		<link rel="stylesheet" type="text/css" href="static/css/homepage.css">
-		<script src="/javascript/angular.min.js"></script>
-		<script src="/javascript/angular-resource.min.js"></script>
-		<script src="/javascript/angular-route.min.js"></script>
+		<script src="static/javascript/angular.min.js"></script>
+		<script src="static/javascript/angular-resource.min.js"></script>
+		<script src="static/javascript/angular-route.min.js"></script>
 		<script src="static/javascript/jquery.js"></script>
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
+		<script src="static/javascript/search.js"></script>
 
 	</head>
 	<body id="home" class="masthead" ng-controller="SearchCtrl">
@@ -48,26 +49,25 @@
 			<i class="inverted circular red awesome download cloud icon"></i> <b>Download Paper</b>
 			</a>
 			<div class="onleft item">
-				<h2 class="ui header">
-				Ontology learning for the semantic web
+				<h2 class="ui header" id="paper_title" ng-bind="paper_title">
 				</h2>
 			</div>
 			<div class="onleft item">
 				<h4 class="ui header">
 				<i class="users icon"></i>
-				Author(s): <a href="#">Yuxin Wu</a>, <a href="#">Tiezheng Li</a>
-				</h4>
-			</div>
-			<div class="onleft item">
-				<h4 class="ui header">
-				<i class="sitemap icon"></i>
-				Conference: <a href="#">SIGGRAPH 2013</a>
+				Author(s): <a href="#" ng-repeat="author in paper_author" ng-bind="{{author}}, "> <span>,</span></a>
 				</h4>
 			</div>
 			<div class="onleft item">
 				<h4 class="ui header">
 				<i class="share icon"></i>
-				Citation: 20198
+				Citation: <span ng-bind="paper_citednum"></span>
+				</h4>
+			</div>
+			<div class="onleft item">
+				<h4 class="ui header">
+				<i class="cloud download icon"></i>
+				Download: <span ng-bind="paper_download_count"></span>
 				</h4>
 			</div>
 			<div class="onleft item">
@@ -77,10 +77,10 @@
 				</h4>
 				<div class="ui labels">
 					<div class="ui label">
-						<a href="#">Semantic Web</a>
+						<a href="#">Computer Science</a>
 					</div>
 					<div class="ui label">
-						<a href="#">Machine learning</a>
+						<a href="#">Engineering</a>
 					</div>
 				</div>
 			</div>
@@ -97,14 +97,7 @@
 					</div>
 					<div class="content">
 						<div class="ui piled segment">
-							<p>@ARTICLE{ h. john:estimating,<br/>
-							AUTHOR = "George H. John and Pat Langley",<br/>
-							TITLE = "Estimating Continuous Distributions in Bayesian Classifiers",<br/>
-							JOURNAL = "CoRR",<br/>
-							PAGES = {-1--1},<br/>
-							YEAR = {2013},<br/>
-							}<br/>
-							</p>
+							<p ng-bind="paper_bibtex"></p>
 						</div>
 					</div>
 					<div class="actions">
@@ -119,8 +112,8 @@
 					</div>
 					<div class="content">
 						<div class="ui piled segment">
-							<p>Fayyad U M, Piatetsky-Shapiro G, Smyth P, et al. Advances in knowledge discovery and data mining[J]. 1996.<br/>
-							Berry M J, Linoff G. Data mining techniques: for marketing, sales, and customer support[M]. John Wiley Sons, Inc., 1997.<br/>
+							<p ng-repeat="aref in paper_references" ng-bind="aref">
+							<a href="{{aref.href}}">aref.ref</a>
 							</p>
 						</div>
 					</div>
@@ -256,9 +249,9 @@
 				<i class="book icon"></i> <b>SoPaper</b>
 				</a>
 			</div>
-			<div class="ui action input" style="width:500px; margin-left:40px">
-				<input type="text"  placeholder="Search papers, authors, conferences...">
-				<div class="ui icon button"><i class="search icon"></i></div>
+			<div class="ui fluid input" style="width:500px; margin-left:40px">
+				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
+				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
 			</div>
 			<div class="ui page grid">
 				<h4 class="ui header" style="margin-top:10px">

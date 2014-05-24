@@ -108,9 +108,9 @@ class register_parser(object):
             # check updated title against db before download
             if ukconfig.USE_DB:
                 doc = search_exact(newt)
-                if res:
-                    ctx.existing = doc
-                    ukdbconn.update_meta(doc['_id'], fetcher_inst.get_meta())
+                if doc:
+                    ctx.existing = doc[0]
+                    ukdbconn.update_meta(doc[0]['_id'], fetcher_inst.get_meta())
                     return True
         log_info("Update metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
         ctx.update_meta_dict(fetcher_inst.get_meta())

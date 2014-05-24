@@ -47,15 +47,11 @@ body.progress .ui.progress .bar {
 }
 
 .ui.bib.modal{
-  top: 60%;
-  left: 60%;
   text-align: left;
   width: 50%;
 }
 
 .ui.ref.modal{
-  top: 50%;
-  left: 50%;
   text-align: left;
   width: 70%;
 }

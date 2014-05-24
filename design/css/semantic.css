@@ -14999,11 +14999,11 @@ body.pushed.scrolling.ui.dimmable {
   margin-left: -275px !important;
 }
 
-/* Wide */
+/* Wide 350 orginal*/
 
 .ui.wide.sidebar {
-  width: 350px !important;
-  margin-left: -350px !important;
+  width: 600px !important;
+  margin-left: -600px !important;
 }
 
 .ui.active.wide.sidebar {
@@ -15011,14 +15011,14 @@ body.pushed.scrolling.ui.dimmable {
 }
 
 .ui.active.right.wide.sidebar {
-  margin-left: -350px !important;
+  margin-left: -600px !important;
 }
 
-/* Very Wide */
+/* Very Wide  475 orginal*/
 
 .ui.very.wide.sidebar {
-  width: 475px !important;
-  margin-left: -475px !important;
+  width: 600px !important;
+  margin-left: -600px !important;
 }
 
 .ui.active.very.wide.sidebar {
@@ -15026,14 +15026,14 @@ body.pushed.scrolling.ui.dimmable {
 }
 
 .ui.active.right.very.wide.sidebar {
-  margin-left: -475px !important;
+  margin-left: -600px !important;
 }
 
 /* Extremely Wide */
 
 .ui.extremly.wide.sidebar {
-  width: 575px !important;
-  margin-left: -575px !important;
+  width: 675px !important;
+  margin-left: -675px !important;
 }
 
 .ui.active.extremly.wide.sidebar {
@@ -15041,7 +15041,7 @@ body.pushed.scrolling.ui.dimmable {
 }
 
 .ui.active.right.extremly.wide.sidebar {
-  margin-left: -575px !important;
+  margin-left: -675px !important;
 }
 /*-------------------
        Height
