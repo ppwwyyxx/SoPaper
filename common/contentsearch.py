@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Sat May 24 10:35:02 2014 +0000
+# Date: Sat May 24 11:10:25 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -24,7 +24,7 @@ def pdf2text(data):
 
     ret = os.system('pdftotext "{0}"'.format(f.name))
     if ret != 0:
-        return Exception("pdftotext return error!")
+        return Exception("pdftotext return error! original file: {0}".format(f.name))
     fout = f.name.replace('.pdf', '.txt')
     text = open(fout).read()
 
@@ -75,8 +75,7 @@ class SoPaperIndexer(object):
         self.indexer.clear()
 
         db = get_mongo('paper')
-        itr = db.find({}, {'pdf': 1, 'title': 1,
-                           'meta.author': 1})
+        itr = db.find({}, {'pdf': 1, 'title': 1 })
         for res in itr:
             print res.get('meta')
             text = pdf2text(res['pdf'])
@@ -84,12 +83,7 @@ class SoPaperIndexer(object):
                    'title': res['title'],
                    'id': res['_id']
                   }
-            try:
-                author = res['meta']['author']
-            except KeyError:
-                author = []
-            doc['author'] = author
-            self.indexer.do_add_doc(doc)
+            self._do_add_paper(doc)
         self.indexer.flush()
 
 indexer_lock = Lock()
@@ -101,4 +95,5 @@ def do_add_paper(doc):
     indexer_lock.release()
 
 if __name__ == '__main__':
+    print "Rebuilding..."
     SoPaperIndexer().rebuild()

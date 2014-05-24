@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Fri May 23 21:10:59 2014 +0800
+# Date: Sat May 24 11:01:38 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -10,6 +10,7 @@ from ukutil import check_pdf, import_all_modules
 from uklogger import *
 from job import SearchResult
 from dbsearch import search_exact
+from lib.exc import RecoverableErr
 
 try:
     import ukdbconn
@@ -114,6 +115,9 @@ class register_parser(object):
                 data = self.custom_downloader(res, progress_updater)
         except KeyboardInterrupt:
             raise
+        except RecoverableErr as e:
+            log_info(str(e))
+            return False
         except Exception:
             log_exc("Error while downloading in parser '{0}' with" \
                     "url '{1}'".format(self.name, url))

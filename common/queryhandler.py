@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 10:32:25 2014 +0000
+# Date: Sat May 24 10:53:52 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -99,6 +99,7 @@ def handle_title_query(query):
                             'download_cnt': 0
                            }]
                     ret[0].update(ctx.meta)
+                    return ret
                 except:
                     log_exc("Failed to save to db")
 

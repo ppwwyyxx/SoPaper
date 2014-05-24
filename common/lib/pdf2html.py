@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdf2html.py
-# Date: Sat May 24 00:11:17 2014 +0800
+# Date: Sat May 24 11:10:54 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -31,7 +31,7 @@ class PDF2Html(object):
                   format(self.fname, self.outdir) + \
                   ' --split-pages=1 --page-filename %d.html')
         if ret != 0:
-            raise Exception("pdf2htmlEx return error!")
+            raise Exception("pdf2htmlEx return error! original file: {0}".format(self.fname))
         self.npages = len(os.listdir(self.outdir)) - 1
 
     def clean(self):

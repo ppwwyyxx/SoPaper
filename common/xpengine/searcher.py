@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Fri May 23 21:53:15 2014 +0800
+# Date: Sat May 24 10:46:59 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -34,9 +34,6 @@ class XapianSearcher(object):
                     'title': r.data['title'][0],
                     'content': r.summarise('text', maxlen=summary_len)
                    }
-            author = r.data.get('author')
-            if author:
-                doc['author'] = author
             return doc
 
         ret = map(transform, res)

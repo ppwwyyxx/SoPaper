@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sat May 24 00:12:52 2014 +0800
+# Date: Sat May 24 11:04:16 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -31,7 +31,6 @@ def pdf_compress(data):
         compression is done using ps2pdf14 in ghostscript
     """
     f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    log_info("Start compressing with {0} ...".format(f.name))
     f.write(data)
     f.close()
 
@@ -39,7 +38,7 @@ def pdf_compress(data):
     f2.close()
     ret = os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
     if ret != 0:
-        raise Exception("ps2pdf14 return error!")
+        raise Exception("ps2pdf14 return error! original data in {0}".format(f.name))
 
     newdata = open(f2.name).read()
     os.remove(f2.name)
@@ -65,19 +64,24 @@ def do_buildindex(ctx, pid):
     text = contentsearch.pdf2text(ctx.data)
     doc = {'text': text,
            'title': ctx.title,
-           'author': ctx.meta['author'],
            'id': pid
           }
+    author = ctx.meta.get('author')
+    if author:
+        doc['author'] = author
     contentsearch.do_add_paper(doc)
 
 def pdf_postprocess(ctx, pid):
     """ post-process routine right after adding a new pdf"""
     try:
         data = ctx.data
+        log_info("Start compressing {0}".format(pid))
         data = do_compress(data, pid)
+        log_info("Start converting to html {0}".format(pid))
         do_addhtml(data, pid)
 
         ctx.data = data
+        log_info("Start converting to text {0}".format(pid))
         do_buildindex(ctx, pid)
     except Exception as e:
         log_exc("Postprocess Failed")

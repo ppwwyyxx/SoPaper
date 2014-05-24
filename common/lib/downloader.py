@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sun May 11 00:17:16 2014 +0800
+# Date: Sat May 24 10:57:46 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -9,6 +9,7 @@ if __name__ == '__main__':
     sys.path.append('../')
 from uklogger import *
 from lib.textutil import parse_file_size
+from lib.exc import RecoverableErr
 import ukconfig
 
 import urllib
@@ -66,9 +67,9 @@ def direct_download(url, progress_updater, headers=None):
     else:
         total_length = int(total_length)
         if total_length < ukconfig.FILE_SIZE_MINIMUM:
-            raise Exception("File too small: " + parse_file_size(total_length))
+            raise RecoverableErr("File too small: " + parse_file_size(total_length))
         if total_length > ukconfig.FILE_SIZE_MAXIMUM:
-            raise Exception("File too large: " + parse_file_size(total_length))
+            raise RecoverableErr("File too large: " + parse_file_size(total_length))
         progress_updater.set_total(total_length)
         dl = 0
         ret = ""

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: Fri May 23 22:02:10 2014 +0800
+# Date: Sat May 24 10:46:53 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 __all__ = ['xapian_indexer']
@@ -26,8 +26,6 @@ class XapianIndexer(object):
                                      weight=5, language='en')
         self.dbconn.add_field_action('text', FieldActions.INDEX_FREETEXT,
                                      language='en', spell=True)
-        self.dbconn.add_field_action('author', FieldActions.INDEX_FREETEXT,
-                                     language='en')
 
         self.lock = threading.Lock()
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Thu May 22 11:19:45 2014 +0800
+# Date: Sat May 24 10:57:57 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
-from . import register_parser
+from . import register_parser, RecoverableErr
 from uklogger import *
 import ukconfig
 from lib.textutil import parse_file_size
@@ -35,9 +35,9 @@ def download(res, updater):
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
         with open("/tmp/a.txt", 'w') as f:
             f.write(resp.content)
-        raise Exception("File too small: " + parse_file_size(total_length))
+        raise RecoverableErr("File too small: " + parse_file_size(total_length))
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:
-        raise Exception("File too large: " + parse_file_size(total_length))
+        raise RecoverableErr("File too large: " + parse_file_size(total_length))
     data = resp.content
     updater.finish()
     return data
