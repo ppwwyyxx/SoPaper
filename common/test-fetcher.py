@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Sat May 24 00:29:47 2014 +0800
+# Date: Sat May 24 15:57:32 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
@@ -23,15 +23,15 @@ if __name__ == '__main__':
     #sr = SearchResult(None, "http://arxiv.org/abs/1312.6680")
     #sr = SearchResult(None, "http://arxiv.org/abs/1404.3610")
 
-    parser = register_parser.parser_dict['dl.acm.org']
+    #parser = register_parser.parser_dict['dl.acm.org']
     #url = "http://dl.acm.org/citation.cfm?id=1859761"  # twitter
-    url = "http://dl.acm.org/citation.cfm?id=996342"    # SIFT
+    #url = "http://dl.acm.org/citation.cfm?id=996342"    # SIFT # Large Number of cited
     #url = "http://dl.acm.org/citation.cfm?id=2366157"  # big
-    sr = SearchResult(None, url)
+    #sr = SearchResult(None, url)
 
-    #parser = register_parser.parser_dict['ieeexplore.ieee.org']
+    parser = register_parser.parser_dict['ieeexplore.ieee.org']
     ##sr = SearchResult(None, "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=00726791")
-    #sr = SearchResult(None, "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4244529")
+    sr = SearchResult(None, "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4244529")
 
 
     params = parser.run(ctx, sr)

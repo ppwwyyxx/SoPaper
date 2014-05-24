@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 24 11:01:38 2014 +0000
+# Date: Sat May 24 16:01:03 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -31,7 +31,6 @@ class register_parser(object):
 
         self.type_match = kwargs.pop('typematch', None)
         self.legal = kwargs.pop('legal', True)
-        self.custom_downloader = kwargs.pop('custom_downloader', None)
 
         assert self.name not in self.parser_dict
 
@@ -39,30 +38,21 @@ class register_parser(object):
     def get_parser_list():
         return register_parser.parser_dict.values()
 
-    def __call__(self, func):
-        """ func: callable to be invoked, took a 'SearchResult'
-        func return a dict, with keys:
+    def __call__(self, fetcher_cls):
+        """ fetcher_cls: subclass of FetcherBase to be used
             'url', 'headers' to pass to downloader,
             'ctx_update': a dict to update the context
         """
 
-        @wraps(func)
+        @wraps(fetcher_cls)
         def wrapper(res):
             assert isinstance(res, SearchResult)
             try:
-                params = func(res)
-                if params is None:
-                    return None
-                if 'ctx_update' not in params:
-                    params['ctx_update'] = {}
-                params['ctx_update'].update({
-                    'source': self.name,
-                    'page_url': res.url
-                })
-                t = params['ctx_update'].get('title')
-                if t:
-                    params['ctx_update']['title'] = title_beautify(t)
-                return params
+                fetcher = fetcher_cls(res)
+                fetcher.name = self.name
+                fetcher.get_title()
+                fetcher.get_meta()
+                return fetcher
             except KeyboardInterrupt:
                 raise
             except Exception:
@@ -89,54 +79,41 @@ class register_parser(object):
 
         log_info("Parsing url {0} with parser {1}".
                  format(url, self.name))
-        res = self.cb(sr)
-        if res is None:
+        fetcher_inst = self.cb(sr)
+        if fetcher_inst is None:
             return False
 
         # check updated title against db before download
-        if ukconfig.USE_DB:
-            newt = res['ctx_update'].get('title')
-            if newt and newt != ctx.title:
+        newt = fetcher_inst.get_title()
+        if newt and newt != ctx.title:
+            ctx.title = newt
+            log_info("Using new title: {0}".format(ctx.title))
+            if ukconfig.USE_DB:
                 doc = search_exact(newt)
                 if res:
                     ctx.existing = doc
-                    ukdbconn.update_meta(doc['_id'], res['ctx_update'])
+                    ukdbconn.update_meta(doc['_id'], fetcher_inst.get_meta())
                     return True
-        log_info("Update metadata: {0}".format(str(res['ctx_update'].keys())))
-        ctx.update_meta_dict(res['ctx_update'])
+        log_info("Update metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
+        ctx.update_meta_dict(fetcher_inst.get_meta())
 
-        try:
-            if progress_updater is None:
-                progress_updater = ProgressPrinter()
-            if self.custom_downloader is None:
-                data = direct_download(res['url'], progress_updater,
-                                       res.get('headers'))
-            else:
-                data = self.custom_downloader(res, progress_updater)
-        except KeyboardInterrupt:
-            raise
-        except RecoverableErr as e:
-            log_info(str(e))
-            return False
-        except Exception:
-            log_exc("Error while downloading in parser '{0}' with" \
-                    "url '{1}'".format(self.name, url))
+        if progress_updater is None:
+            progress_updater = ProgressPrinter()
+        succ = fetcher_inst.download(progress_updater)
+        if not succ:
             return False
 
-        ft = check_pdf(data)
+        ft = check_pdf(fetcher_inst.get_data())
         #ft = True
         if ft == True:
             ctx.success = True
-            ctx.data = data
+            ctx.data = fetcher_inst.get_data()
             return True
         else:
             log_err("Wrong Format: {0}".format(ft))
             return False
 
 
-@register_parser(name='direct link', urlmatch='.*\.pdf', typematch='directpdf')
-def direct_link(search_result):
-    return { 'url': search_result.url}
 
 if __name__ != '__main__':
     import_all_modules(__file__, __name__)
