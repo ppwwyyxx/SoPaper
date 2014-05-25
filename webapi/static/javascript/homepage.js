@@ -107,6 +107,8 @@ $(document)
 
         $('.ui.com.modal').modal('setting', 'closable', false)
             .modal('attach events', '.com.button', 'show');
+        $('.ui.sharing.modal').modal('setting', 'closable', false)
+            .modal('attach events', '.sharing.button', 'show');
 
 
         $('.ui.form')

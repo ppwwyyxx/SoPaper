@@ -19,7 +19,7 @@
 	</head>
 	<body id="home" class="masthead" ng-controller="SearchCtrl">
 		<!-- Navigation Start-->
-		<div class="ui large inverted menu">
+		<div class="ui large inverted menu" style="margin-top:0px">
 			<a class="green item">
 			<i class="book icon"></i> <b>SoPaper</b>
 			</a>
@@ -141,27 +141,73 @@
 				</div>
 				<div class="item">
 					<ng-switch on="zan">
-					<div ng-switch-when="true" class="ui green vertical fade button">
-							<i class="thumbs up icon"></i>
+					<div ng-switch-when="1" class="ui green button">
+						<i class="thumbs up icon"></i>
 					</div>
-					<div ng-switch-when="false" class="ui basic inverted vertical fade animated rate button">
+					<div ng-switch-when="0" class="ui basic inverted vertical fade animated uprate button">
 						<div class="hidden content">Useful</div>
 						<div class="visible content">
-							<i class="thumbs up  icon"></i>
+							<i class="thumbs up icon"></i>
 						</div>
+					</div>
+					<div ng-switch-when="2" class="ui basic inverted disabled button">
+						<i class="thumbs up icon"></i>
 					</div>
 					</ng-switch>
 					
-					<div class="ui basic inverted vertical fade animated rate button">
+					<ng-switch on="cai">
+					<div ng-switch-when="1" class="ui red button">
+						<i class="thumbs down icon"></i>
+					</div>
+					<div ng-switch-when="0" class="ui basic inverted vertical fade animated downrate button">
 						<div class="hidden content">Junk</div>
 						<div class="visible content">
 							<i class="thumbs down icon"></i>
 						</div>
 					</div>
-					<div class="ui basic inverted vertical fade animated button">
+					<div ng-switch-when="2" class="ui basic inverted disabled button">
+						<i class="thumbs down icon"></i>
+					</div>
+					</ng-switch>
+					<div class="ui basic inverted vertical fade animated sharing button">
 						<div class="hidden content">Share</div>
 						<div class="visible content">
 							<i class="share sign icon"></i>
+						</div>
+					</div>
+					<div class="ui sharing modal">
+						<i class="close icon"></i>
+						<div class="header">
+							Share this paper to:
+						</div>
+						<div class="content">
+							<div class="ui piled segment" style="height:60px">
+								<!-- JiaThis Button BEGIN -->
+								<div class="jiathis_style_32x32">
+									<a class="jiathis_button_qzone"></a>
+									<a class="jiathis_button_tsina"></a>
+									<a class="jiathis_button_tqq"></a>
+									<a class="jiathis_button_weixin"></a>
+									<a class="jiathis_button_renren"></a>
+									<a class="jiathis_button_cqq"></a>
+									<a class="jiathis_button_t163"></a>
+									<a class="jiathis_button_kaixin001"></a>
+									<a class="jiathis_button_feixin"></a>
+									<a class="jiathis_button_douban"></a>
+									<a class="jiathis_button_hi"></a>
+									<a class="jiathis_button_googleplus"></a>
+									<a class="jiathis_button_twitter"></a>
+									<a class="jiathis_button_fb"></a>
+									<a class="jiathis_button_evernote"></a>
+									<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+									<a class="jiathis_counter_style"></a>
+								</div>
+								<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1397118670180681" charset="utf-8"></script>
+								<!-- JiaThis Button END -->
+							</div>
+						</div>
+						<div class="actions">
+							<div class="ui button"> Close</div>
 						</div>
 					</div>
 					<div class="ui basic inverted vertical fade animated com button">
@@ -261,8 +307,7 @@
 				</a>
 			</div>
 			<div class="ui fluid input" style="width:500px; margin-left:40px">
-				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
-				{[{keyword}]}
+				<input type="text"  placeholder="Search papers, authors, conferences..." value="Advances in knowledge discovery and data mining"ng-model="keyword">
 				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
 			</div>
 			<div class="ui page grid">

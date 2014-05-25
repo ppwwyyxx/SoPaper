@@ -35,8 +35,9 @@ function SearchCtrl($scope, $http) {
     $scope.paper_title = "So easy";
     $scope.hasbibtex = false;
     $scope.hasreferences = false;
-    $scope.zan = false;
-    $scope.cai = false;
+    $scope.zan = 0;
+    $scope.cai = 0;
+
     $scope.Search = function() {
         $.ajax({
             type: 'GET',
@@ -68,10 +69,11 @@ function SearchCtrl($scope, $http) {
             if (typeof $scope.paper_references != 'undefined')
                 $scope.hasreferences = true;
             $scope.paper_download_count = data.results[0].download_cnt;
-            $scope.zan = false;
-            $scope.cai = false;
+            $scope.zan = 0;
+            $scope.cai = 0;
 
             $scope.$digest();
+            /* UI Settings */
             $(".ui.labeled.icon.sidebar")
                 .sidebar("show");
             $(".ui.extremly.wide.sidebar")
@@ -85,6 +87,42 @@ function SearchCtrl($scope, $http) {
 
             $('.ui.com.modal').modal('setting', 'closable', false)
                 .modal('attach events', '.com.button', 'show');
+            $('.ui.uprate.button').on('click', function() {
+                $('.ui.message').show();
+                $.ajax({
+                    type: 'GET',
+                    url: '/mark?pid=' + $scope.paper_pid + '&mark=1',
+                    data: {},
+                    dataType: 'json'
+                }).success(function(data, status, headers, config) {
+                    console.log('OK');
+                    console.log(data);
+                    $scope.zan = 1;
+                    $scope.cai = 2;
+                    $scope.$digest();
+                }).error(function(data, status) {
+                    console.log('status' + status);
+                    console.log(data);
+                });
+            });
+            $('.ui.downrate.button').on('click', function() {
+                $('.ui.message').show();
+                $.ajax({
+                    type: 'GET',
+                    url: '/mark?pid=' + $scope.paper_pid + '&mark=-1',
+                    data: {},
+                    dataType: 'json'
+                }).success(function(data, status, headers, config) {
+                    console.log('OK');
+                    console.log(data);
+                    $scope.cai = 1;
+                    $scope.zan = 2;
+                    $scope.$digest();
+                }).error(function(data, status) {
+                    console.log('status' + status);
+                    console.log(data);
+                });
+            });
 
         }).error(function(data, status) {
             console.log('status' + status);
@@ -92,22 +130,6 @@ function SearchCtrl($scope, $http) {
         });
     };
 
-    $scope.zan = function() {
-        $.ajax({
-            type: 'GET',
-            url: '/mark?pid=' + $scope.paper_pid + '&mark=1',
-            data: {},
-            dataType: 'json'
-        }).success(function(data, status, headers, config) {
-            console.log('OK');
-            console.log(data);
-            $scope.zan = true;
-            $scope.$digest();
-        }).error(function(data, status) {
-            console.log('status' + status);
-            console.log(data);
-        });
-    };
 
     $scope.Download = function() {
         $.ajax({
