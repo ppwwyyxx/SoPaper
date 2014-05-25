@@ -52,13 +52,13 @@
 				<h2 class="ui header" id="paper_title" ng-bind="paper_title">
 				</h2>
 			</div>
-			<div class="onleft item">
+			<div class="onleft item" ng-if="hasauthor">
 				<h4 class="ui header">
 				<i class="users icon"></i>
-				Author(s): <a href="#" ng-repeat="author in paper_author" ng-bind="author"> <span>,</span></a>
+				Author(s): <a href="#" ng-repeat="author in paper_author" style="word-wrap:break-word;overflow:hidden;"> {[{author}]} <span>&nbsp; &nbsp;</span></a>
 				</h4>
 			</div>
-			<div class="onleft item">
+			<div class="onleft item" ng-if="hascitedby">
 				<h4 class="ui header">
 				<i class="share icon"></i>
 				Citation: <span ng-bind="paper_citednum"></span>
@@ -85,11 +85,19 @@
 				</div>
 			</div>
 			<div class="item">
+				
 				<div class="ui buttons">
-					<div class="ui bib blue button">Bibtex</div>
+					<ng-switch on="hasbibtex">
+						<div ng-switch-when="true" class="ui bib blue button">Bibtex</div>
+						<div ng-switch-when="false" class="ui bib disabled button">Bibtex</div>
+					</ng-switch>
 					<div class="or"></div>
-					<div class="ui ref green button">Reflist</div>
+					<ng-switch on="hasreferences">
+						<div ng-switch-when="true" class="ui ref green button">Reflist</div>
+						<div ng-switch-when="false" class="ui ref disabled button">Reflist</div>
+					</ng-switch>
 				</div>
+
 				<div class="ui bib modal">
 					<i class="close icon"></i>
 					<div class="header">
@@ -111,9 +119,9 @@
 						Reference list
 					</div>
 					<div class="content">
-						<div class="ui piled segment">
-							<p ng-repeat="aref in paper_references" ng-bind="aref">
-							<a href="{{aref.href}}">aref.ref</a>
+						<div class="ui piled segment" style="height:400px;overflow:scroll">
+							<p ng-repeat="aref in paper_references">
+								<a href="{[{aref.href}]}">{[{aref.ref}]}</a>
 							</p>
 						</div>
 					</div>
