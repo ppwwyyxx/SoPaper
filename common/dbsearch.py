@@ -14,7 +14,9 @@ SEARCH_RETURN_FIELDS = {'view_cnt': 1, 'download_cnt': 1,
                         'title': 1, 'page': 1, 'source': 1,
                         'page_url': 1,
                         'author': 1, 'bibtex': 1, 'abstract': 1,
-                        'references': 1, 'citedby': 1}
+                        'references': 1, 'citedby': 1,
+                        'comments': {'$slice': 10},
+                        'cmt_count': 1}
 
 def beautify_results():
     def wrap(func):

@@ -21,6 +21,7 @@ def do_comment():
 
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$push': {'comments': {'cmt': comment, 'uid': uid}}})
+    db.update({'_id': pid}, {'$inc': {'cmt_count': 1}})
     log_info("Add {0}'s comment to pdf {1}".format(uid, pid))
 
     return {'status': 'ok'}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: download.py
-# Date: Sat May 24 21:36:42 2014 +0800
+# Date: Sun May 25 17:08:48 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, make_response, request, api_method
@@ -42,9 +42,13 @@ def download():
 # api: /download_available?pid=1
 @api_method('/download_available')
 def available():
-    pid = long(request.values.get('pid'))
-    #log_info("Query available of {0} with dic={1}".
-                 #format(pid, str(progress_dict)))
+    try:
+        pid = long(request.values.get('pid'))
+        #log_info("Query available of {0} with dic={1}".
+                     #format(pid, str(progress_dict)))
+    except:
+        return {'status': 'error',
+                'reason': 'Invalid Request'}
     prgs = progress_dict.get(pid)
     if prgs is None:
         db = get_mongo('paper')
@@ -53,11 +57,10 @@ def available():
             return {'status': 'error',
                     'reason': 'no such item'}
         if doc.get('page'):
-            prgs = 'done'
+            doc['progress'] = 'done'
         else:
-            prgs = 'failed'
+            doc['progress'] = 'failed'
 
-    return {'status': 'ok',
-            'progress': str(prgs)
-           }
+    doc.update({'status': 'ok'})
+    return doc
 

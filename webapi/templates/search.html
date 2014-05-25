@@ -12,12 +12,13 @@
 		<script src="static/javascript/angular.min.js"></script>
 		<script src="static/javascript/angular-resource.min.js"></script>
 		<script src="static/javascript/angular-route.min.js"></script>
+		<script src="static/javascript/angular-sanitize.min.js"></script>
 		<script src="static/javascript/jquery.js"></script>
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
 		<script src="static/javascript/search.js"></script>
 	</head>
-	<body id="home" class="masthead" ng-controller="SearchCtrl">
+	<body id="home" ng-controller="SearchCtrl">
 		<!-- Navigation Start-->
 		<div class="ui large inverted menu" style="margin-top:0px">
 			<a class="green item">
@@ -44,7 +45,7 @@
 		</div>
 		<!-- Navigation End-->
 		<div class="ui large wide vertical inverted labeled icon sidebar menu" id="menu">
-			<a class="item" href="#">
+			<a class="item" ng-href = "{[{downloadahref}]}">
 			<i class="inverted circular red awesome download cloud icon"></i> <b>Download Paper</b>
 			</a>
 			<div class="onleft item">
@@ -391,10 +392,8 @@
 		<!-- Search Summary End-->
 		
 		<!-- Main Content Start-->
-		<div class="ui page grid">
-			<div class="row">
-				<p>PDF FILE GOES HERE</p>
-			</div>
+		<div class="ui page">
+			<div ng-bind-html-unsafe="pdfhtml"></div>
 			<!-- SideBar Start-->
 			<!-- SideBar End-->
 			

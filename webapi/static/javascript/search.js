@@ -1,4 +1,5 @@
-var SearchApp = angular.module('SearchApp', ['ngResource', 'ngRoute']);
+var SearchApp = angular.module('SearchApp', ['ngResource', 'ngRoute', 'ngSanitize']);
+
 
 SearchApp.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
@@ -33,7 +34,7 @@ $(document).ready(function() {
 
 var PAPER_PER_PAGE = 3;
 
-function SearchCtrl($scope, $http) {
+function SearchCtrl($scope, $http, $sce) {
     $scope.paper_title = "So easy";
     $scope.hasbibtex = false;
     $scope.hasreferences = false;
@@ -55,6 +56,7 @@ function SearchCtrl($scope, $http) {
             $scope.search_type = data.type;
             if ($scope.search_type == 'title') {
                 $scope.paper_pid = data.results[0]._id;
+                console.log(data.results[0]._id);
                 $scope.paper_title = data.results[0].title;
                 $scope.paper_abstract = data.results[0].abstract;
                 $scope.paper_author = data.results[0].author;
@@ -72,7 +74,9 @@ function SearchCtrl($scope, $http) {
                 $scope.paper_download_count = data.results[0].download_cnt;
                 $scope.zan = 0;
                 $scope.cai = 0;
-
+                $scope.downloadahref = '/download?pid=' + $scope.paper_pid;
+                $scope.haspdf = data.results[0].haspdf;
+                $scope.paperpage = data.results[0].page;
                 $scope.$digest();
                 /* UI Settings */
                 $(".ui.labeled.icon.sidebar")
@@ -103,6 +107,7 @@ function SearchCtrl($scope, $http) {
                         $scope.$digest();
                     }).error(function(data, status) {
                         console.log('status' + status);
+                        has
                         console.log(data);
                     });
                 });
@@ -148,6 +153,40 @@ function SearchCtrl($scope, $http) {
         });
     };
 
+    $scope.Download = function() {
+        $.ajax({
+            type: 'GET',
+            url: '/download?pid=' + $scope.paper_pid,
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('Downloading...');
+            console.log(data);
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+    };
+
+    function ReadHTML(page) {
+        $.ajax({
+            type: 'GET',
+            url: '/html?pid=' + $scope.paper_pid + '&page=0',
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('html comes');
+            console.log(data);
+            $scope.pdfhtml = $sce.trustAsHtml(data.htmls['0']);
+            $scope.$digest();
+            console.log($scope.pdfhtml);
+            nakedhtml = document.createElement('div');
+            nakedhtml.innerHTML = $scope.pdfhtml;
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+    }
 
     function Tryingdownload() {
         $.ajax({
@@ -160,12 +199,16 @@ function SearchCtrl($scope, $http) {
             console.log(data);
             if (data.progress == 'done') {
                 console.log('download_complete');
+                $scope.downloadahref = '/download?pid=' + $scope.paper_pid;
+                ReadHTML();
+                return;
             } else if (data.progress == 'failed') {
                 alert('Due to law, This paper is unable to download');
             } else {
                 console.log(data.progress);
-                Tryingdownload();
-                //setTimeout("Tryingdownload()", 2000);
+                //Tryingdownload();
+                setTimeout(Tryingdownload, 2000);
+
             }
         }).error(function(data, status) {
             console.log('status' + status);

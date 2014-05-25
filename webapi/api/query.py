@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Sun May 25 22:50:40 2014 +0800
+# Date: Sun May 25 16:48:24 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
