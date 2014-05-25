@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sat May 24 22:08:18 2014 +0800
+# Date: Sun May 25 19:00:57 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -189,6 +189,6 @@ if __name__ == '__main__':
     #res = handle_title_query('test test test this is not a paper name')
     #res = handle_title_query('Intriguing properties of neural networks')
     #res = handle_content_query('neural networks')
-    res = handle_title_query("Targeting HIV-related Medication Side Effects and Sentiment Using Twitter Data")
-    print res
+    res = handle_title_query("The WEKA data mining software: an update")
+    #print res
 

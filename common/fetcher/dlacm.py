@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat May 24 22:09:17 2014 +0800
+# Date: Sun May 25 19:37:54 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -30,7 +30,12 @@ def download(url, updater):
                'Connection': 'Keep-Alive'
               }
     resp = human_curl.get(url, headers=headers, timeout=DEFAULT_TIMEOUT)
-    total_length = int(resp.headers.get('content-length'))
+    try:
+        total_length = int(resp.headers.get('content-length'))
+    except:
+        pdfurl = resp.headers.get('location')
+        return download(pdfurl, updater)
+
     log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
         raise RecoverableErr("File too small: " + parse_file_size(total_length))
@@ -46,12 +51,14 @@ class DLAcm(FetcherBase):
     def _do_pre_parse(self):
         self.text = requests.get(self.url).text.encode('utf-8')
         #with open("/tmp/b.html", 'w') as f:
-            #f.write(text)
+            #f.write(self.text)
         #text = open("/tmp/b.html").read()
         self.soup = BeautifulSoup(self.text)
 
     def _do_download(self, updater):
         pdf = self.soup.findAll(attrs={'name': 'FullTextPDF'})
+        if not pdf:
+            pdf = self.soup.findAll(attrs={'name': 'FullTextPdf'})
         if pdf:
             try:
                 url = pdf[0].get('href')
@@ -67,8 +74,8 @@ class DLAcm(FetcherBase):
         return download(pdfurl, updater)
 
     def _do_get_title(self):
-        titles = self.soup.findAll('title')
-        return titles[0].text
+        titles = self.soup.findAll(attrs={'name': 'citation_title'})
+        return titles[0]['content']
 
     def _do_get_meta(self):
         meta = {}
