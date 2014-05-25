@@ -317,9 +317,9 @@
 			</div>
 			<div class="ui page grid">
 				<h4 class="ui header" style="margin-top:10px">
-				About 280 results (0.003s)
+					About {[{ paper_cnt }]} results (in 0.003s)
 				</h4>
-				<div class="ui secondary pointing menu">
+				<!--div class="ui secondary pointing menu">
 					<a class="active item">
 					<i class="book icon"></i> Papers
 					</a>
@@ -327,21 +327,21 @@
 					<i class="user icon"></i> Authors
 					</a>
 					<a class="item">
-					<i class="sitemap icon"></i> Conferences
+					<i class="sitemap icon"></i> Content
 					</a>
-				</div>
+				</div-->
 				<div class="ui divided list">
-					<div class="item">
+					<div class="item" ng-repeat ="p in currentpapers">
 						<i class="bookmark icon"></i>
 						<div class="content">
-							<a class="header">Advances in knowledge discovery and data mining</a>
+							<a class="header"> {[{ p.title }]}</a>
 							<div class="metadata">
 								UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
 							</div>
-							<div class="description"> Advances in Knowledge Discovery and <span class="keyword">Data Mining</span> brings together the latest research--in statistics, databases, machine learning, and artificial intelligence--that are part of the exciting and rapidly growing field of Knowledge Discovery and <span class="keyword">Data Mining</span>. ...</div>
+							<div class="description"> {[{p.content}]}</div>
 						</div>
 					</div>
-					<div class="item">
+					<!--div class="item">
 						<i class="bookmark icon"></i>
 						<div class="content">
 							<a class="header">Data mining techniques: for marketing, sales, and customer support</a>
@@ -360,7 +360,7 @@
 							</div>
 							<div class="description"> Advances in Knowledge Discovery and <span class="keyword">Data Mining</span> brings together the latest research--in statistics, databases, machine learning, and artificial intelligence--that are part of the exciting and rapidly growing field of Knowledge Discovery and <span class="keyword">Data Mining</span>. ...</div>
 						</div>
-					</div>
+					</div-->
 				</div>
 				<div class="ui pagination menu" style="margin-left:40px">
 					<a class="icon item">

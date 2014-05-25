@@ -19,7 +19,15 @@ def html():
     except Exception:
         return {'status': 'error',
                 'reason': 'invalid request'}
+    # this is for test
+    res = {}
+    for p in pages:
+        res[p] = open(p + '.html').read()
 
+    return {'status': 'ok',
+            'htmls': res}
+            
+    # this is test end
     db = get_mongo('paper')
     doc = db.find_one({'_id': pid}, {'page': 1, 'html': 1})
 
