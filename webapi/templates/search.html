@@ -16,7 +16,6 @@
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
 		<script src="static/javascript/search.js"></script>
-
 	</head>
 	<body id="home" class="masthead" ng-controller="SearchCtrl">
 		<!-- Navigation Start-->
@@ -88,16 +87,15 @@
 				
 				<div class="ui buttons">
 					<ng-switch on="hasbibtex">
-						<div ng-switch-when="true" class="ui bib blue button">Bibtex</div>
-						<div ng-switch-when="false" class="ui bib disabled button">Bibtex</div>
+					<div ng-switch-when="true" class="ui bib blue button">Bibtex</div>
+					<div ng-switch-when="false" class="ui bib disabled button">Bibtex</div>
 					</ng-switch>
 					<div class="or"></div>
 					<ng-switch on="hasreferences">
-						<div ng-switch-when="true" class="ui ref green button">Reflist</div>
-						<div ng-switch-when="false" class="ui ref disabled button">Reflist</div>
+					<div ng-switch-when="true" class="ui ref green button">Reflist</div>
+					<div ng-switch-when="false" class="ui ref disabled button">Reflist</div>
 					</ng-switch>
 				</div>
-
 				<div class="ui bib modal">
 					<i class="close icon"></i>
 					<div class="header">
@@ -121,12 +119,11 @@
 					<div class="content">
 						<div class="ui piled segment" style="height:400px;overflow:scroll">
 							<p ng-repeat="aref in paper_references">
-								<a href="{[{aref.href}]}">{[{aref.ref}]}</a>
+							<a href="{[{aref.href}]}">{[{aref.ref}]}</a>
 							</p>
 						</div>
 					</div>
 					<div class="actions">
-						<div class="ui teal right labeled icon button"><i class="copy icon"></i> Copy to Clipboard</div>
 						<div class="ui button"> Close</div>
 					</div>
 				</div>
@@ -143,12 +140,18 @@
 					</div>
 				</div>
 				<div class="item">
-					<div class="ui basic inverted vertical fade animated rate button">
+					<ng-switch on="zan">
+					<div ng-switch-when="true" class="ui green vertical fade button">
+							<i class="thumbs up icon"></i>
+					</div>
+					<div ng-switch-when="false" class="ui basic inverted vertical fade animated rate button">
 						<div class="hidden content">Useful</div>
 						<div class="visible content">
 							<i class="thumbs up  icon"></i>
 						</div>
 					</div>
+					</ng-switch>
+					
 					<div class="ui basic inverted vertical fade animated rate button">
 						<div class="hidden content">Junk</div>
 						<div class="visible content">
@@ -340,7 +343,7 @@
 		<!-- Main Content Start-->
 		<div class="ui page grid">
 			<div class="row">
-					<p>PDF FILE GOES HERE</p>	
+				<p>PDF FILE GOES HERE</p>
 			</div>
 			<!-- SideBar Start-->
 			<!-- SideBar End-->

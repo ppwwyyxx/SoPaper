@@ -4,6 +4,7 @@ SearchApp.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');
 });
+
 /*
 $(document).ready(function() {
 
@@ -34,6 +35,8 @@ function SearchCtrl($scope, $http) {
     $scope.paper_title = "So easy";
     $scope.hasbibtex = false;
     $scope.hasreferences = false;
+    $scope.zan = false;
+    $scope.cai = false;
     $scope.Search = function() {
         $.ajax({
             type: 'GET',
@@ -65,6 +68,8 @@ function SearchCtrl($scope, $http) {
             if (typeof $scope.paper_references != 'undefined')
                 $scope.hasreferences = true;
             $scope.paper_download_count = data.results[0].download_cnt;
+            $scope.zan = false;
+            $scope.cai = false;
 
             $scope.$digest();
             $(".ui.labeled.icon.sidebar")
@@ -85,7 +90,25 @@ function SearchCtrl($scope, $http) {
             console.log('status' + status);
             console.log(data);
         });
-    }
+    };
+
+    $scope.zan = function() {
+        $.ajax({
+            type: 'GET',
+            url: '/mark?pid=' + $scope.paper_pid + '&mark=1',
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('OK');
+            console.log(data);
+            $scope.zan = true;
+            $scope.$digest();
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+    };
+
     $scope.Download = function() {
         $.ajax({
             type: 'GET',
