@@ -27,7 +27,6 @@ def get_app():
     global get_app, _app, login_manager
     _app = Flask(__name__)
     _app.config.from_object(DefaultConfig())
-
     _app.secret_key = 'WTF is this!!'       # Should have this to work
 
     login_manager = LoginManager()

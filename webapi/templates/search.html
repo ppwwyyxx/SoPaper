@@ -55,7 +55,7 @@
 			<div class="onleft item">
 				<h4 class="ui header">
 				<i class="users icon"></i>
-				Author(s): <a href="#" ng-repeat="author in paper_author" ng-bind="{{author}}, "> <span>,</span></a>
+				Author(s): <a href="#" ng-repeat="author in paper_author" ng-bind="author"> <span>,</span></a>
 				</h4>
 			</div>
 			<div class="onleft item">
@@ -251,6 +251,7 @@
 			</div>
 			<div class="ui fluid input" style="width:500px; margin-left:40px">
 				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
+				{[{keyword}]}
 				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
 			</div>
 			<div class="ui page grid">

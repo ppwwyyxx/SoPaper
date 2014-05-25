@@ -1,5 +1,9 @@
 var SearchApp = angular.module('SearchApp', ['ngResource', 'ngRoute']);
 
+SearchApp.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+});
 /*
 $(document).ready(function() {
 
