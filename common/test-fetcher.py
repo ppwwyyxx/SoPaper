@@ -1,13 +1,13 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Sun May 25 19:38:06 2014 +0800
+# Date: Sun May 25 23:17:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
 from job import JobContext
 import ukconfig
-from queryhandler import new_paper, _do_fetcher_download
+from queryhandler import new_paper, do_fetcher_download
 
 import sys
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     #params = parser.run(ctx, sr)
 
     fetcher_inst = parser.get_cls()(sr)
-    _do_fetcher_download(fetcher_inst, None)
+    do_fetcher_download(fetcher_inst, None)
 
     print ctx.title
     if ukconfig.USE_DB and ctx.success:

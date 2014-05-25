@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Fri May 23 21:22:10 2014 +0800
+# Date: Sun May 25 23:24:45 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -11,6 +11,7 @@
 import sys
 import os
 import os.path
+import argparse
 from multiprocessing import Pool
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                             'common'))
@@ -18,8 +19,11 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
 import searcher
 from job import JobContext
 import fetcher
-
-import argparse
+from fetcher import do_fetcher_download
+from ukutil import pdf_compress
+from uklogger import *
+import ukconfig
+ukconfig.download_method = 'wget'
 
 def get_args():
     desc = 'SoPaper command line tool -- ' \
@@ -53,22 +57,45 @@ def main():
     args = zip(searchers, [ctx] * len(searchers))
     pool = Pool()
     as_results = [pool.apply_async(search_run, arg) for arg in args]
+    download_candidates = []
 
     for s in as_results:
         s = s.get()
+        if s is None:
+            continue
         srs = s['results']
+
+        # try search database with updated title
+        try:
+            updated_title = s['ctx_update']['title']
+        except KeyError:
+            pass
+        else:
+            if updated_title != ctx.title:
+                log_info("Using new title: {0}".format(updated_title))
+                ctx.title = updated_title
+
         for sr in srs:
-            for parser in parser_lst:
-                succ = parser.run(ctx, sr)
-                if succ:
-                    filename = os.path.join(directory, ctx.title + ".pdf")
-                    log_info("Writing data to {0}".format(filename))
-                    try:
-                        with open(filename, 'wb') as f:
-                            f.write(ctx.data)
-                    except IOError:
-                        log_exc("Failed to write to file")
-                    return
+            for parser in parsers:
+                if parser.can_run(sr):
+                    download_candidates.append((parser, sr))
+
+    for (parser, sr) in download_candidates:
+        fetcher_inst = parser.get_cls()(sr)
+        data = do_fetcher_download(fetcher_inst, None)
+        if data:
+            try:
+                data = pdf_compress(data)
+            except:
+                log_err("PDF compress failed, you may need to install poppler-utils")
+            filename = os.path.join(directory, ctx.title + ".pdf")
+            log_info("Writing data to {0}".format(filename))
+            try:
+                with open(filename, 'wb') as f:
+                    f.write(data)
+            except IOError:
+                log_exc("Failed to write to file")
+            return
 
 
 if __name__ == '__main__':

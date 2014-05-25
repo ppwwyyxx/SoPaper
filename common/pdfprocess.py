@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sun May 25 19:32:36 2014 +0800
+# Date: Sun May 25 23:21:20 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -10,7 +10,7 @@ from bson.binary import Binary
 
 from uklogger import *
 from ukdbconn import get_mongo
-from ukutil import check_pdf
+from ukutil import check_pdf, pdf_compress
 from lib.pdf2html import PDF2Html
 from lib.textutil import parse_file_size
 import contentsearch
@@ -25,30 +25,6 @@ def do_addhtml(data, pid):
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$set': {'page': npage, 'html': htmls}})
     log_info("Add html for pdf {0}, page={1}".format(pid, npage))
-
-def pdf_compress(data):
-    """ take a pdf data string, return a compressed string
-        compression is done using ps2pdf14 in ghostscript
-    """
-    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    f.write(data)
-    f.close()
-
-    f2 = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    f2.close()
-    ret = os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
-    if ret != 0:
-        raise Exception("ps2pdf14 return error! original data in {0}".format(f.name))
-
-    newdata = open(f2.name).read()
-    os.remove(f2.name)
-    os.remove(f.name)
-    if len(newdata) < len(data) and check_pdf(newdata):
-        log_info("Compress succeed: {0}->{1}".format(
-            parse_file_size(len(data)), parse_file_size(len(newdata))))
-        return newdata
-    else:
-        return data
 
 def do_compress(data, pid):
     """ this *must* succeed adding the pdf"""

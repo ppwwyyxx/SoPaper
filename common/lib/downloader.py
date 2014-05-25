@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sat May 24 17:32:00 2014 +0800
+# Date: Sun May 25 23:25:18 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -56,7 +56,7 @@ def direct_download(url, progress_updater, headers=None):
                    'Connection': 'Keep-Alive'
                   }
 
-    # for test only
+    # for test and cmd tools only
     if ukconfig.download_method == 'wget':
         headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
                             in headers.iteritems()])

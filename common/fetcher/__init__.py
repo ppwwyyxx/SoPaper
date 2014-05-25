@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sat May 24 22:07:00 2014 +0800
+# Date: Sun May 25 23:23:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -9,18 +9,31 @@ from lib.textutil import title_beautify
 from ukutil import check_pdf, import_all_modules
 from uklogger import *
 from job import SearchResult
-from dbsearch import search_exact
 from lib.exc import RecoverableErr
 
 try:
     import ukdbconn
+    from dbsearch import search_exact
 except ImportError:
+    # for cmd tools to use
     pass
 
 from functools import wraps
 import ukconfig
 import re
 
+def do_fetcher_download(fetcher_inst, updater):
+    succ = fetcher_inst.download(updater)
+    if not succ:
+        return None
+
+    ft = check_pdf(fetcher_inst.get_data())
+    if ft == True:
+        data = fetcher_inst.get_data()
+        return data
+    else:
+        log_err("Wrong Format: {0}".format(ft))
+        return None
 
 class register_parser(object):
     parser_dict = {}

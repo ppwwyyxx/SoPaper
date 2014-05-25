@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sun May 25 22:47:08 2014 +0800
+# Date: Sun May 25 23:22:49 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -12,6 +12,7 @@ from ukdbconn import get_mongo, global_counter
 from uklogger import *
 from ukutil import check_pdf
 from lib.textutil import title_beautify, parse_file_size
+from fetcher import do_fetcher_download
 import searcher
 import fetcher
 from job import JobContext
@@ -39,19 +40,6 @@ def new_paper(ctx):
     ret = db.insert(doc)
     return pid
 
-def _do_fetcher_download(fetcher_inst, updater):
-    succ = fetcher_inst.download(updater)
-    if not succ:
-        return None
-
-    ft = check_pdf(fetcher_inst.get_data())
-    if ft == True:
-        data = fetcher_inst.get_data()
-        return data
-    else:
-        log_err("Wrong Format: {0}".format(ft))
-        return None
-
 progress_dict = {}
 
 class Updater(ProgressPrinter):
@@ -71,7 +59,7 @@ def start_download(dl_candidates, ctx, pid):
         name = parser.name
         fetcher_inst = parser.get_cls()(sr)
         url = fetcher_inst.url
-        data = _do_fetcher_download(fetcher_inst, updater)
+        data = do_fetcher_download(fetcher_inst, updater)
         if data:
             db = get_mongo('paper')
             db.update({'_id': pid},
