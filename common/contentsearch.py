@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Sun May 25 19:32:07 2014 +0800
+# Date: Sun May 25 22:45:12 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -77,7 +77,6 @@ class SoPaperIndexer(object):
         db = get_mongo('paper')
         itr = db.find({}, {'pdf': 1, 'title': 1 })
         for res in itr:
-            print res.get('meta')
             text = pdf2text(res['pdf'])
             doc = {'text': text,
                    'title': res['title'],

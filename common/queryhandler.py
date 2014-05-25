@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sun May 25 19:00:57 2014 +0800
+# Date: Sun May 25 22:47:08 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -183,7 +183,18 @@ sp_searcher = SoPaperSearcher()
 def handle_content_query(query):
     log_info("Get content query: {0}".format(query))
     res = sp_searcher.search(query)
-    return res
+    db = get_mongo('paper')
+
+    ret = []
+    for r in res:
+        pid = long(r['_id'])
+        # XXX should find use '$in' and then do sorting
+        doc = db.find_one({'_id': pid}, SEARCH_RETURN_FIELDS)
+        if not doc:
+            raise Exception("Impossible! Mongo doesn't have this paper in index: {0}".format(pid))
+        doc['content'] = r['content']
+        ret.append(doc)
+    return ret
 
 if __name__ == '__main__':
     #res = handle_title_query('test test test this is not a paper name')

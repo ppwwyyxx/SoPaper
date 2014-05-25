@@ -1,12 +1,26 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Sat May 24 21:15:36 2014 +0800
+# Date: Sun May 25 22:50:40 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
 from lib.textutil import title_beautify
 from queryhandler import handle_title_query, handle_content_query
+
+
+def transform(r):
+    if r.get('page'):
+        r['haspdf'] = 1
+    else:
+        r['haspdf'] = 0
+
+    try:
+        r['citecnt'] = len(r['citedby'])
+        del r['citedby']
+    except:
+        r['citecnt'] = 0
+    return r
 
 def do_query(query):
     tp = 'title'
@@ -17,12 +31,7 @@ def do_query(query):
 
     assert isinstance(res, list)
 
-    if tp == 'title':
-        for r in res:
-            if r.get('page'):
-                r['haspdf'] = 1
-            else:
-                r['haspdf'] = 0
+    res = map(transform, res)
     return {'status': 'ok',
             'type': tp,
             'results': res}
@@ -42,6 +51,8 @@ def content_query():
     query = request.values.get('q')
     res = handle_content_query(query)
     assert isinstance(res, list)
+
+    res = map(transform, res)
 
     return {'status': 'ok',
             'type': 'content',

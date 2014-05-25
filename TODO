@@ -3,3 +3,5 @@ paper metadata: year
 run parser in parrallel
 
 aminer search paper
+
+return cited cnt
