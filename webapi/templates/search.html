@@ -309,16 +309,19 @@
 		<div class="ui right extremly wide sidebar">
 			<div class="ui large inverted menu">
 				<a class="green item">
-				<i class="book icon"></i> <b>SoPaper</b>
+				<b>Content Search</b>
 				</a>
 			</div>
-			<div class="ui fluid input" style="width:500px; margin-left:40px">
+			<div class="ui contentsearch dimmer"><div class="ui large text loader">Loading</div></div>
+			<div class="ui action input" style="width:500px; margin-left:40px">
 				<input type="text"  placeholder="Search papers, authors, conferences..." value="Advances in knowledge discovery and data mining"ng-model="keyword">
-				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
-			</div>
+				<div class="ui icon button" ng-click="Search()">
+					<i class="search icon"></i>
+				</div>
+				</div>
 			<div class="ui page grid">
-				<h4 class="ui header" style="margin-top:10px">
-					About {[{ paper_cnt }]} results (in 0.03s)
+				<h4 class="ui header" style="margin-top:10px" ng-if="finishsearching">
+					About {[{ paper_cnt }]} results (in {[{elapsetime}]} s)
 				</h4>
 				<!--div class="ui secondary pointing menu">
 					<a class="active item">
@@ -332,10 +335,11 @@
 					</a>
 				</div-->
 				<div class="ui divided list">
+					
 					<div class="item" ng-repeat ="p in currentpapers">
 						<i class="bookmark icon"></i>
 						<div class="content">
-							<a class="header"> {[{ p.title }]}</a>
+							<a class="header" ng-click="Selectpaper(p.title)"> {[{ p.title }]}</a>
 							<div class="metadata">
 								UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
 							</div>
@@ -363,27 +367,15 @@
 						</div>
 					</div-->
 				</div>
-				<div class="ui pagination menu" style="margin-left:40px">
-					<a class="icon item">
+				<div class="ui pagination menu" style="margin-left:200px" ng-if="finishsearching">
+					<a class="icon item" ng-click="Nextpage(-1)">
 					<i class="left arrow icon"></i>
 					</a>
 					<a class="active item">
-					1
+						{[{currentpage}]}
 					</a>
-					<a class="item">
-					2
-					</a>
-					<a class="item">
-					3
-					</a>
-					<div class="disabled item">
-						...
-					</div>
-					<a class="item">
-					10
-					</a>
-					<a class="icon item">
-					<i class="right arrow icon"></i>
+					<a class="icon item" ng-click="Nextpage(1)">
+						<i class="right arrow icon"></i>
 					</a>
 				</div>
 			</div>

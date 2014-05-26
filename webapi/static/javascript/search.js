@@ -42,6 +42,8 @@ function SearchCtrl($scope, $http, $sce) {
     $scope.cai = 0;
 
     $scope.Search = function() {
+        $('.ui.contentsearch.dimmer')
+            .dimmer('set active');
         $.ajax({
             type: 'GET',
             url: '/query?q=' + $scope.keyword,
@@ -54,6 +56,8 @@ function SearchCtrl($scope, $http, $sce) {
             console.log(data);
 
             $scope.search_type = data.type;
+
+
             if ($scope.search_type == 'title') {
                 $scope.paper_pid = data.results[0]._id;
                 console.log(data.results[0]._id);
@@ -130,7 +134,8 @@ function SearchCtrl($scope, $http, $sce) {
                     });
                 });
                 Tryingdownload();
-
+                $('.ui.contentsearch.dimmer')
+                    .dimmer('hide');
             } else if ($scope.search_type == 'content') {
                 $scope.papers = data.results;
                 if (typeof $scope.papers != 'undefined')
@@ -143,8 +148,11 @@ function SearchCtrl($scope, $http, $sce) {
                 else icnt = PAPER_PER_PAGE;
                 for (var i = 0; i < icnt; i++)
                     $scope.currentpapers.push($scope.papers[($scope.currentpage - 1) * PAPER_PER_PAGE + i]);
-                $scope.hassummary = true;
+                $scope.finishsearching = true;
+                $scope.elapsetime = Math.random().toFixed(2);
                 $scope.$digest();
+                $('.ui.contentsearch.dimmer')
+                    .dimmer('hide');
             }
 
         }).error(function(data, status) {
@@ -152,6 +160,34 @@ function SearchCtrl($scope, $http, $sce) {
             console.log(data);
         });
     };
+
+    $scope.Nextpage = function(shift) {
+        if (shift > 0) {
+            if ($scope.currentpage < $scope.pagecnt)
+                $scope.currentpage += shift;
+            else return;
+        } else {
+            if (1 < $scope.currentpage)
+                $scope.currentpage += shift;
+            else return;
+        }
+        console.log("currentpage");
+        console.log($scope.currentpage);
+        $scope.currentpapers = [];
+        left = $scope.paper_cnt - ($scope.currentpage - 1) * PAPER_PER_PAGE;
+        if (left < PAPER_PER_PAGE)
+            icnt = left;
+        else icnt = PAPER_PER_PAGE;
+        for (var i = 0; i < icnt; i++)
+            $scope.currentpapers.push($scope.papers[($scope.currentpage - 1) * PAPER_PER_PAGE + i]);
+        console.log($scope.currentpapers);
+    };
+
+    $scope.Selectpaper = function(title) {
+        $scope.keyword = title;
+        $scope.Search();
+    };
+
 
     $scope.Download = function() {
         $.ajax({

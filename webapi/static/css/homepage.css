@@ -30,6 +30,13 @@ body.progress .ui.progress .bar {
   padding-left:10px;
 }
 
+
+
+.ui.inverted.dimmer .ui.loader.large,
+.ui.loader.large {
+  background-image: url(static/images/loader-large.gif);
+}
+
 /*******************************
           UI Overrides
 *******************************/
