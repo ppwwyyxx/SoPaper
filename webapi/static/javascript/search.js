@@ -216,17 +216,16 @@ function SearchCtrl($scope, $http, $sce) {
     function ReadHTML(page) {
         $.ajax({
             type: 'GET',
-            url: '/html?pid=' + $scope.paper_pid + '&page=0',
+            url: '/html?pid=' + $scope.paper_pid + '&page=' + page,
             data: {},
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             console.log('html comes');
             console.log(data);
-            $scope.pdfhtml = $sce.trustAsHtml(data.htmls['0']);
+            $scope.pdfhtml = $sce.trustAsHtml(data.htmls['' + page]);
             $scope.$digest();
-            console.log($scope.pdfhtml);
-            nakedhtml = document.createElement('div');
-            nakedhtml.innerHTML = $scope.pdfhtml;
+            for (var i = 1; i <= $scope.paperpage; i++)
+                Insertpage(i);
         }).error(function(data, status) {
             console.log('status' + status);
             console.log(data);
@@ -245,7 +244,7 @@ function SearchCtrl($scope, $http, $sce) {
             if (data.progress == 'done') {
                 console.log('download_complete');
                 $scope.downloadahref = '/download?pid=' + $scope.paper_pid;
-                ReadHTML();
+                ReadHTML(0);
                 return;
             } else if (data.progress == 'failed') {
                 alert('Due to law, This paper is unable to download');
@@ -259,6 +258,26 @@ function SearchCtrl($scope, $http, $sce) {
             console.log('status' + status);
             console.log(data);
         });
+    }
+
+    function Insertpage(page) {
+        $.ajax({
+            type: 'GET',
+            url: '/html?pid=' + $scope.paper_pid + '&page=' + page,
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('html comes');
+            console.log(data);
+            var thispage = $sce.trustAsHtml(data.htmls['' + page]);
+            pagediv = document.getElementById('pf' + page);
+            pagediv.innerHTML = thispage;
+            $scope.$digest();
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+
     }
 }
 
