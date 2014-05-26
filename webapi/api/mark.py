@@ -9,7 +9,7 @@ from ukdbconn import get_mongo
 
 # api: /getmark?pid=2
 @api_method('/getmark')
-def do_mark():
+def mark():
     """ get marks of the paper with pid """
     try:
         pid = long(request.values.get('pid'))

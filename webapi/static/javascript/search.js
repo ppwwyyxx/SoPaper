@@ -190,13 +190,21 @@ function SearchCtrl($scope, $http, $sce) {
     };
 
     $scope.Submitcomment = function() {
-        alert('/comment?pid=' + $scope.paper_pid + '&uid=' + $scope.commentername + '&cmt=' + $scope.commentcontent);
+        //alert('/comment?pid=' + $scope.paper_pid + '&uid=' + $scope.commentername + '&cmt=' + $scope.commentcontent);
         $.ajax({
             type: 'GET',
             url: '/comment?pid=' + $scope.paper_pid + '&uid=' + $scope.commentername + '&cmt=' + $scope.commentcontent,
             data: {},
             dataType: 'json'
         }).success(function(data, status, headers, config) {
+            var acmt = {
+                uid: $scope.commentername,
+                cmt: $scope.commentcontent
+            };
+            $scope.comments.push(acmt);
+            $scope.commentername = "";
+            $scope.commentcontent = "";
+            $scope.$digest();
             console.log('Comment Added');
             console.log(data);
         }).error(function(data, status) {

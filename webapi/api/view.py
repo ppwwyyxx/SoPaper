@@ -1,12 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: view.py
-# Date: Sat May 24 22:15:35 2014 +0000
+# Date: Mon May 26 14:00:32 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, redirect, url_for, make_response, request, api_method
 
 from flask import render_template
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -18,8 +19,7 @@ def nosearch():
 
 @app.route('/s')
 def search():
-    search_word = ""
-    search_word = request.values.get('keyword')
+    search_word = request.values.get('keyword', None)
     return render_template('search.html', searchkeyword=search_word);
 
     # redirect(url_for('static', filename='search.html'))

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Mon May 26 20:01:38 2014 +0800
+# Date: Mon May 26 13:55:41 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -54,7 +54,7 @@ def main():
 
     args = zip(searchers, [ctx] * len(searchers))
     pool = Pool()
-    as_results = [pool.apply_async(search_run, arg) for arg in args]
+    as_results = [pool.apply_async(searcher_run, arg) for arg in args]
     download_candidates = []
 
     for s in as_results:

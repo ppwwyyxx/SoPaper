@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Mon May 26 19:58:40 2014 +0800
+# Date: Mon May 26 13:57:49 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -115,7 +115,7 @@ class register_parser(object):
         return True
 
     def download(self, sr, progress_updater=None):
-        fetcher_inst = self.fetcher_cls()(sr)
+        fetcher_inst = self.fetcher_cls(sr)
 
         succ = fetcher_inst.download(progress_updater)
         if not succ:

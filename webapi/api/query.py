@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Sun May 25 16:48:24 2014 +0000
+# Date: Mon May 26 14:01:37 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
@@ -48,7 +48,12 @@ def query():
 @api_method('/cquery')
 def content_query():
     """ only use content-search backend """
-    query = request.values.get('q')
+    try:
+        query = request.values.get('q')
+        assert query != "None"
+    except:
+        return {'status': 'error',
+                'reason': 'invalid request'}
     res = handle_content_query(query)
     assert isinstance(res, list)
 

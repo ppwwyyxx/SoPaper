@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Mon May 26 20:07:07 2014 +0800
+# Date: Mon May 26 13:59:46 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -71,7 +71,7 @@ def handle_title_query(query):
 
     args = zip(searchers, [ctx] * len(searchers))
     pool = Pool()
-    async_results = [pool.apply_async(search_run, arg) for arg in args]
+    async_results = [pool.apply_async(searcher_run, arg) for arg in args]
 
     # Search and get all the results item
     all_search_results = []
@@ -157,7 +157,7 @@ def handle_content_query(query):
         doc['content'] = r['content']
         return doc
 
-    ret = map(transform, ret)
+    ret = map(transform, res)
     return ret
 
 if __name__ == '__main__':
