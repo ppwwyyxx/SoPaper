@@ -1,45 +1,27 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Sun May 25 23:22:49 2014 +0800
+# Date: Mon May 26 20:07:07 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
 from threading import Thread
 from multiprocessing import Pool
 
-from ukdbconn import get_mongo, global_counter
+from ukdbconn import get_mongo, global_counter, new_paper
 from uklogger import *
 from ukutil import check_pdf
 from lib.textutil import title_beautify, parse_file_size
-from fetcher import do_fetcher_download
 import searcher
+from searcher import searcher_run
 import fetcher
 from job import JobContext
 from dbsearch import *
 from pdfprocess import postprocess
 from lib.downloader import ProgressPrinter
-
 from contentsearch import SoPaperSearcher
 
-def new_paper(ctx):
-    pid = global_counter('paper')
-    log_info("Add new paper: {0}, pid={1}".format(
-        ctx.title, pid))
-    doc = {
-        '_id': pid,
-        'title': ctx.title.lower(),
-        'view_cnt': 1,
-        'download_cnt': 0
-    }
-    doc.update(ctx.meta)
-    doc['title'] = doc['title'].lower()
-
-    db = get_mongo('paper')
-    db.ensure_index('title')
-    ret = db.insert(doc)
-    return pid
-
+# global. save all ongoing download
 progress_dict = {}
 
 class Updater(ProgressPrinter):
@@ -55,11 +37,7 @@ class Updater(ProgressPrinter):
 def start_download(dl_candidates, ctx, pid):
     updater = Updater(pid)
     for (parser, sr) in dl_candidates:
-        progress_dict[pid] = 0.0
-        name = parser.name
-        fetcher_inst = parser.get_cls()(sr)
-        url = fetcher_inst.url
-        data = do_fetcher_download(fetcher_inst, updater)
+        data = parser.download(sr)
         if data:
             db = get_mongo('paper')
             db.update({'_id': pid},
@@ -71,9 +49,6 @@ def start_download(dl_candidates, ctx, pid):
             postprocess(data, ctx, pid)
             progress_dict.pop(pid, None)
             return
-
-def search_run(searcher, ctx):
-    return searcher.run(ctx)
 
 def handle_title_query(query):
     query = title_beautify(query)
@@ -127,7 +102,7 @@ def handle_title_query(query):
     found = False
     for sr in all_search_results:
         for parser in parsers:
-            if parser.can_run(sr):
+            if parser.can_handle(sr):
                 download_candidates.append((parser, sr))
                 if ctx.need_field(parser.support_meta_field):
                     # Already tried this fetcher
@@ -137,7 +112,7 @@ def handle_title_query(query):
                     else:
                         parser_used.add(parser.name)
 
-                    succ = parser.run(ctx, sr)
+                    succ = parser.fetch_info(ctx, sr)
                     if not succ:
                         continue
                     found = True
@@ -173,15 +148,16 @@ def handle_content_query(query):
     res = sp_searcher.search(query)
     db = get_mongo('paper')
 
-    ret = []
-    for r in res:
+    def transform(r):
         pid = long(r['_id'])
         # XXX should find use '$in' and then do sorting
         doc = db.find_one({'_id': pid}, SEARCH_RETURN_FIELDS)
         if not doc:
             raise Exception("Impossible! Mongo doesn't have this paper in index: {0}".format(pid))
         doc['content'] = r['content']
-        ret.append(doc)
+        return doc
+
+    ret = map(transform, ret)
     return ret
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Sat May 24 21:30:31 2014 +0800
+# Date: Mon May 26 20:06:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 download_method = 'haha'
@@ -26,7 +26,6 @@ except ImportError:
 
 mongo_conn = ('127.0.0.1', 27017)
 mongo_db = 'sopaper'
-
 
 import os
 DB_DIR_NAME = 'xapian-db'

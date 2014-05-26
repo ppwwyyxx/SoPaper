@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Sun May 25 23:23:13 2014 +0800
+# Date: Mon May 26 19:58:40 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -21,19 +21,6 @@ except ImportError:
 from functools import wraps
 import ukconfig
 import re
-
-def do_fetcher_download(fetcher_inst, updater):
-    succ = fetcher_inst.download(updater)
-    if not succ:
-        return None
-
-    ft = check_pdf(fetcher_inst.get_data())
-    if ft == True:
-        data = fetcher_inst.get_data()
-        return data
-    else:
-        log_err("Wrong Format: {0}".format(ft))
-        return None
 
 class register_parser(object):
     parser_dict = {}
@@ -61,10 +48,6 @@ class register_parser(object):
     def get_parser_list():
         return register_parser.parser_dict.values()
 
-    def get_cls(self):
-        """ get instance with specific search result"""
-        return self.fetcher_cls
-
     def __call__(self, fetcher_cls):
         """ fetcher_cls: subclass of FetcherBase to be used
             'url', 'headers' to pass to downloader,
@@ -91,14 +74,14 @@ class register_parser(object):
         self.cb = wrapper
         return wrapper
 
-    def can_run(self, sr):
+    def can_handle(self, sr):
         if (self.type_match is None
             or self.type_match != sr.type) and \
            len(self.url_match.findall(sr.url)) == 0:
             return False
         return True
 
-    def run(self, ctx, sr, progress_updater=None):
+    def fetch_info(self, ctx, sr):
         """ run this parser against the SearchResult given
             return True/False indicate success,
             will update ctx metadata and ctx.success,
@@ -130,6 +113,22 @@ class register_parser(object):
         # if can download
         ctx.add_downloader(fetcher_inst)
         return True
+
+    def download(self, sr, progress_updater=None):
+        fetcher_inst = self.fetcher_cls()(sr)
+
+        succ = fetcher_inst.download(progress_updater)
+        if not succ:
+            return None
+
+        ft = check_pdf(fetcher_inst.get_data())
+        if ft == True:
+            data = fetcher_inst.get_data()
+            return data
+        else:
+            log_err("Wrong Format: {0}".format(ft))
+            return None
+
 
 if __name__ != '__main__':
     import_all_modules(__file__, __name__)

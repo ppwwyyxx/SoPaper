@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukdbconn.py
-# Date: Sat May 24 00:06:26 2014 +0800
+# Date: Mon May 26 20:03:15 2014 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -28,6 +28,23 @@ def get_mongo(coll_name=None):
         return _db
     return _db[coll_name]
 
+def new_paper(ctx):
+    pid = global_counter('paper')
+    log_info("Add new paper: {0}, pid={1}".format(
+        ctx.title, pid))
+    doc = {
+        '_id': pid,
+        'title': ctx.title.lower(),
+        'view_cnt': 1,
+        'download_cnt': 0
+    }
+    doc.update(ctx.meta)
+    doc['title'] = doc['title'].lower()
+
+    db = get_mongo('paper')
+    db.ensure_index('title')
+    ret = db.insert(doc)
+    return pid
 
 def update_meta(pid, meta):
     db = get_mongo('paper')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Fri May 23 20:57:50 2014 +0800
+# Date: Mon May 26 20:01:28 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from ukutil import import_all_modules
@@ -9,6 +9,11 @@ from uklogger import *
 from functools import wraps
 
 from job import JobContext
+
+def searcher_run(searcher, ctx):
+    """ a global function to invoke with multiprocessing,
+        run a searcher against a JobContext"""
+    return searcher.run(ctx)
 
 class register_searcher(object):
     searcher_list = []

@@ -1,30 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: getcmt.py
+# File: mark.py
 # Author: Yichen Wang <wangycthu@gmail.com>
 
 from uklogger import *
 from . import api_method, request
 from ukdbconn import get_mongo
-
-# api: /getcmt?pid=2&page=0,1,2...
-@api_method('/getcmt')
-def get_comment():
-    """ return first 10 comments of the paper with pid """
-    try:
-        pid = long(request.values.get('pid'))
-        page = int(request.values.get('page'))
-    except Exception:
-        return {'status': 'error',
-                'reason': 'invalid request'}
-
-    db = get_mongo('paper')
-    res = db.find_one({'_id': pid}, {'comments': {'$slice': [page*10, 10]}, 'cmt_count': 1})
-    log_info("Return 10 comments of paper {0}".format(pid))
-
-    if res is None:
-        return {}
-    return res
 
 # api: /getmark?pid=2
 @api_method('/getmark')
@@ -43,3 +24,24 @@ def do_mark():
     if res is None:
         return {}
     return res
+
+# api: /mark?pid=2&mark=1,-1
+# 1: good  -1: bad
+@api_method('/mark')
+def do_mark():
+    """ update db with user's mark & uid """
+    try:
+        pid = long(request.values.get('pid'))
+        mark = int(request.values.get('mark'))
+    except Exception:
+        return {'status': 'error',
+                'reason': 'invalid request'}
+
+    db = get_mongo('paper')
+    if mark == 1:
+        db.update({'_id': pid}, {'$inc': {'upvote': 1}})
+    else:
+        db.update({'_id': pid}, {'$inc': {'downvote': 1}})
+    log_info("Add mark to pdf {0}".format(pid))
+
+    return {'status': 'ok'}
