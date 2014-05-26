@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: download.py
-# Date: Sun May 25 17:08:48 2014 +0000
+# Date: Mon May 26 14:34:00 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, make_response, request, api_method
@@ -61,6 +61,8 @@ def available():
         else:
             doc['progress'] = 'failed'
 
-    doc.update({'status': 'ok'})
-    return doc
+        doc.update({'status': 'ok'})
+        return doc
+    return return {'status': 'ok',
+                   'progress': prgs}
 
