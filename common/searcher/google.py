@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: google.py
-# Date: Sat May 24 20:48:09 2014 +0800
+# Date: Mon May 26 17:14:59 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_searcher
@@ -45,11 +45,17 @@ def search(ctx):
             findpdf = rst.findAll(attrs={'class': 'mime'})
             if findpdf and findpdf[0].text == '[PDF]':
                 pdflink = rst.findAll('a')[0].get('href')
-                url = parse_google_link(pdflink)
+                try:
+                    url = parse_google_link(pdflink)
+                except:
+                    continue
                 srs.append(SearchResult('directpdf', url))
             else:
                 url = rst.findAll('a')[0].get('href')
-                url = parse_google_link(url)
+                try:
+                    url = parse_google_link(url)
+                except:
+                    continue
                 srs.append(SearchResult(None, url))
         except Exception as e:
             log_exc("Search Item parse error: {0}".format(str(e)))

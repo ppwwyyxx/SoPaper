@@ -27,7 +27,7 @@
 			<div class="right menu">
 				<div class="ui dropdown item">
 					<i class="green user icon"></i>
-					ppwwyyxx 
+					ppwwyyxx
 					<i class="dropdown icon"></i>
 					<div class="ui inverted menu">
 						<a class="item">
@@ -268,8 +268,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="tosearch item">
-				<i class="inverted circular green awesome circle right icon"></i> <b>Search Summary</b>
+			<div class="ui black huge tosearch button">
+				<i class="inverted circular green awesome circle right icon"></i> <b>More Results</b>
 			</div>
 		</div>
 		<div class="ui black huge launch detail right attached button">
@@ -296,7 +296,7 @@
 			</div>
 			<div class="ui page grid">
 				<h4 class="ui header" style="margin-top:10px" ng-if="finishsearching">
-					About {[{ paper_cnt }]} results (in {[{elapsetime}]} s)
+				About {[{ paper_cnt }]} results (in {[{elapsetime}]} s)
 				</h4>
 				<!--div class="ui secondary pointing menu">
 					<a class="active item">
@@ -308,64 +308,67 @@
 					<a class="item">
 					<i class="sitemap icon"></i> Content
 					</a>
-				</div-->
-				<div class="ui divided list">
-					
-					<div class="item" ng-repeat ="p in currentpapers">
-						<i class="bookmark icon"></i>
-						<div class="content">
-							<a class="header" ng-click="Selectpaper(p.title)"> {[{ p.title }]}</a>
-							<div class="metadata">
-								UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
-							</div>
-							<div class="description" ng-bind-html="p.content"> </div>
+			</div-->
+			<div class="ui divided list">
+				
+				<div class="item" ng-repeat ="p in currentpapers">
+					<i class="bookmark icon"></i>
+					<div class="content">
+						<a class="header" ng-click="Selectpaper(p.title)"> {[{ p.title }]}</a>
+						<div class="metadata">
+							UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
 						</div>
+						<div class="description" ng-bind-html="p.content"> </div>
 					</div>
-					<!--div class="item">
-						<i class="bookmark icon"></i>
-						<div class="content">
+				</div>
+				<!--div class="item">
+					<i class="bookmark icon"></i>
+					<div class="content">
 							<a class="header">Data mining techniques: for marketing, sales, and customer support</a>
 							<div class="metadata">
-								MJ Berry, G Linoff - 1997 - dl.acm.org
+									MJ Berry, G Linoff - 1997 - dl.acm.org
 							</div>
 							<div class="description"> <span class="keyword">Data Mining</span> Techniques thoroughly acquaints you with the new generation of data mining tools and techniques and shows you how to use them to make better business decisions. One of the first practical guides to mining business data, it describes techniques for ...</div>
-						</div>
 					</div>
-					<div class="item">
-						<i class="bookmark icon"></i>
-						<div class="content">
+			</div>
+			<div class="item">
+					<i class="bookmark icon"></i>
+					<div class="content">
 							<a class="header">Advances in knowledge discovery and data mining</a>
 							<div class="metadata">
-								UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
+									UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
 							</div>
 							<div class="description"> Advances in Knowledge Discovery and <span class="keyword">Data Mining</span> brings together the latest research--in statistics, databases, machine learning, and artificial intelligence--that are part of the exciting and rapidly growing field of Knowledge Discovery and <span class="keyword">Data Mining</span>. ...</div>
-						</div>
-					</div-->
-				</div>
-				<div class="ui pagination menu" style="margin-left:200px" ng-if="finishsearching">
-					<a class="icon item" ng-click="Nextpage(-1)">
-					<i class="left arrow icon"></i>
-					</a>
-					<a class="active item">
-						{[{currentpage}]}
-					</a>
-					<a class="icon item" ng-click="Nextpage(1)">
-						<i class="right arrow icon"></i>
-					</a>
-				</div>
-			</div>
-			
+					</div>
+			</div-->
 		</div>
-		<!-- Search Summary End-->
-		
-		<!-- Main Content Start-->
-		<div class="ui page">
-			<div ng-bind-html="pdfhtml"></div>
-			<!-- SideBar Start-->
-			<!-- SideBar End-->
-			
+		<div class="ui pagination menu" style="margin-left:200px" ng-if="finishsearching">
+			<a class="icon item" ng-click="Nextpage(-1)">
+			<i class="left arrow icon"></i>
+			</a>
+			<a class="active item">
+			{[{currentpage}]}
+			</a>
+			<a class="icon item" ng-click="Nextpage(1)">
+			<i class="right arrow icon"></i>
+			</a>
 		</div>
-		<!-- Main Content End-->
-		<input type="hidden" id="pass" value="{{searchkeyword}}">
-	</body>
+		<div class="ui basic large fluid todetail button" style="margin-top:10px">
+			<i class="inverted circular green circle left icon"></i> <b>PAPER DETAIL</b>
+		</div>
+	</div>
+	
+</div>
+<!-- Search Summary End-->
+
+<!-- Main Content Start-->
+<div class="ui page">
+	<div ng-bind-html="pdfhtml"></div>
+	<!-- SideBar Start-->
+	<!-- SideBar End-->
+	
+</div>
+<!-- Main Content End-->
+<input type="hidden" id="pass" value="{{searchkeyword}}">
+</body>
 </html>

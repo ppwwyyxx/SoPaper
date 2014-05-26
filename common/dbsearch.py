@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Sat May 24 21:15:08 2014 +0800
+# Date: Mon May 26 16:21:24 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -61,7 +61,7 @@ def similar_search(query):
     query = query.strip().lower()
     for cand in all_titles:
         dist = levenshtein(query, cand[0])
-        if dist < 5:
+        if dist < 3:
             ret.append((cand, dist))
     if not ret:
         return None

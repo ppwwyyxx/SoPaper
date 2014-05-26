@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Sun May 25 22:45:12 2014 +0800
+# Date: Mon May 26 16:18:29 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -13,6 +13,7 @@ from xpengine.searcher import XapianSearcher
 from lib.singleton import Singleton
 import ukconfig
 from ukdbconn import get_mongo
+from uklogger import *
 from lib.textutil import filter_nonascii
 
 DB_DIR = ukconfig.XP_DB_DIR
@@ -77,7 +78,13 @@ class SoPaperIndexer(object):
         db = get_mongo('paper')
         itr = db.find({}, {'pdf': 1, 'title': 1 })
         for res in itr:
-            text = pdf2text(res['pdf'])
+            try:
+                data = res['pdf']
+            except KeyError:
+                log_err("No pdf in pid={0},title={1}".format(
+                    res['_id'], res['title']))
+                continue
+            text = pdf2text(data)
             doc = {'text': text,
                    'title': res['title'],
                    'id': res['_id']

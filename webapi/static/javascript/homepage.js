@@ -128,13 +128,28 @@ $(document)
         $('.ui.sidebar')
             .sidebar();
         $('.ui.labeled.icon.sidebar').first()
-            .sidebar('attach events', '.detail.attached.launch.button');
-        $('.detail.attached.launch.button')
+            .sidebar('attach events', '.todetail');
+        $('.todetail')
             .removeClass('disabled');
-        $('.ui.extremly.wide.sidebar').first()
-            .sidebar('attach events', '.summary.attached.launch.button');
-        $('.summary.attached.launch.button')
+
+        $('.ui.right.extremly.wide.sidebar').first()
+            .sidebar('attach events', '.tosearch.button');
+        $('.tosearch.button')
             .removeClass('disabled');
+
+
+        $('.ui.labeled.icon.sidebar').first()
+            .sidebar('attach events', '.detail.right.attached.button');
+        $('.detail.right.attached.button')
+            .removeClass('disabled');
+
+        $('.ui.right.extremly.wide.sidebar').first()
+            .sidebar('attach events', '.summary.right.attached.button');
+        $('.summary.right.attached.button')
+            .removeClass('disabled');
+
+
+
         $('.ui.message').hide();
         $('.ui.rate.button').on('click', function() {
             $('.ui.message').show();
@@ -142,6 +157,11 @@ $(document)
         $('.message .close').on('click', function() {
             $(this).closest('.message').fadeOut();
         });
+
+        $('.ui.image')
+            .popup({
+                on: 'hover'
+            });
 
         setInterval(changeSides, 3000);
 

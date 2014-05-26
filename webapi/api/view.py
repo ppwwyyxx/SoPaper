@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: view.py
-# Date: Mon May 26 14:00:32 2014 +0000
+# Date: Mon May 26 17:10:14 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, redirect, url_for, make_response, request, api_method

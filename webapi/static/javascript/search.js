@@ -28,8 +28,13 @@ function SearchCtrl($scope, $http, $sce) {
 
 
     $scope.Search = function() {
+
         $('.ui.contentsearch.dimmer')
             .dimmer('set active');
+        $(".ui.labeled.icon.sidebar")
+            .sidebar("hide");
+        $(".ui.extremly.wide.sidebar")
+            .sidebar("show");
         $.ajax({
             type: 'GET',
             url: '/query?q=' + $scope.keyword,
@@ -268,17 +273,16 @@ function SearchCtrl($scope, $http, $sce) {
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             console.log('html comes');
-            console.log(data);
-            var thispage = $sce.trustAsHtml(data.htmls['' + page]);
-            pagediv = document.getElementById('pf' + page);
-            pagediv.innerHTML = thispage;
-            $scope.$digest();
+            var thispage = data.htmls['' + page];
+            var pid = '#pf' + page.toString(16);
+            var inner = $(pid, $(thispage));
+            $(pid).replaceWith(inner);
         }).error(function(data, status) {
             console.log('status' + status);
             console.log(data);
         });
-
     }
+
 }
 
 

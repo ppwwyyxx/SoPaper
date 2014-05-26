@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Mon May 26 14:01:37 2014 +0000
+# Date: Mon May 26 16:22:38 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
@@ -41,6 +41,9 @@ def do_query(query):
 def query():
     """ first try title-search, then content-search """
     query = request.values.get('q')
+    if query == 'None':
+        return {'status': 'error',
+                'reason': 'invalid request'}
     return do_query(query)
 
 

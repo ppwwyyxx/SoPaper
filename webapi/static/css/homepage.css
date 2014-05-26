@@ -35,17 +35,28 @@ body.progress .ui.progress .bar {
   line-height: 15px;
   font-size: 12px;
   text-align: center;
-  clear: both;
-  position: absolute;
-  bottom: 0;
-  margin-left: 350px;
+  margin-left: auto;
   margin-right: auto;
+  margin-top:50px;
 }
 
 .ui.inverted.dimmer .ui.loader.large,
 .ui.loader.large {
   background-image: url(static/images/loader-large.gif);
 }
+
+.ui.author.images{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:100px;
+  width: 260px;
+}
+
+.ui.author.images .image{
+  margin-right:20px;
+  margin-left:20px;
+}
+
 
 /*******************************
           UI Overrides
