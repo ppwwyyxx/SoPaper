@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Sat May 24 20:48:53 2014 +0800
+# Date: Tue May 27 00:14:19 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -34,11 +34,12 @@ def parse_file_size(size):
 def title_correct(query, title):
     q = ''.join([t for t in query if t in string.letters])
     now = ''.join([t for t in title if t in string.letters]).lower()
-    for k in range(len(query) / 2, len(query)):
-        if levenshtein(q[:k], now) < 7:
+    ed_thres = min(len(query), len(title)) / 4
+    for k in range(int(len(query) * 0.7), len(query)):
+        if levenshtein(q[:k], now) < ed_thres:
             return True
-    for k in range(len(title) / 2, len(title)):
-        if levenshtein(now[:k], q) < 7:
+    for k in range(int(len(title) * 0.7), len(title)):
+        if levenshtein(now[:k], q) < ed_thres:
             return True
     return False
 
