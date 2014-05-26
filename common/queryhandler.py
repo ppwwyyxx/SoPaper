@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Mon May 26 13:59:46 2014 +0000
+# Date: Mon May 26 16:03:00 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -37,14 +37,14 @@ class Updater(ProgressPrinter):
 def start_download(dl_candidates, ctx, pid):
     updater = Updater(pid)
     for (parser, sr) in dl_candidates:
-        data = parser.download(sr)
+        data = parser.download(sr, updater)
         if data:
             db = get_mongo('paper')
             db.update({'_id': pid},
                       {'$set': {
                         'pdf': Binary(data),
-                        'page_url': url,
-                        'source': name
+                        'page_url': sr.url,
+                        'source': parser.name
                       }})
             postprocess(data, ctx, pid)
             progress_dict.pop(pid, None)
@@ -133,6 +133,7 @@ def handle_title_query(query):
                }]
         ret[0].update(ctx.meta)
 
+        progress_dict[pid] = 0.0
         if len(download_candidates) > 0:
             thread = Thread(target=start_download, args=(download_candidates,
                                                          ctx, pid))

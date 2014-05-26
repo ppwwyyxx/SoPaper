@@ -93,6 +93,10 @@ body.progress .ui.progress .bar {
   color:#D95C5C;
   font-weight: bold;
 }
+
+.ui.attached.button{
+  z-index: 999;
+}
 .class-sprite{
   background-image: url(images/allcat.jpg);
   background-repeat: no-repeat;

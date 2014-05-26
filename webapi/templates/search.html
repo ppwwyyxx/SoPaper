@@ -85,16 +85,15 @@
 				</div>
 			</div>
 			<div class="item">
-				
 				<div class="ui buttons">
 					<ng-switch on="hasbibtex">
 					<div ng-switch-when="true" class="ui bib blue button">Bibtex</div>
-					<div ng-switch-when="false" class="ui bib disabled button">Bibtex</div>
+					<div ng-switch-when="false" class="ui disabled button">Bibtex</div>
 					</ng-switch>
 					<div class="or"></div>
 					<ng-switch on="hasreferences">
 					<div ng-switch-when="true" class="ui ref green button">Reflist</div>
-					<div ng-switch-when="false" class="ui ref disabled button">Reflist</div>
+					<div ng-switch-when="false" class="ui disabled button">Reflist</div>
 					</ng-switch>
 				</div>
 				<div class="ui bib modal">
@@ -268,6 +267,9 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="tosearch item">
+				<i class="inverted circular green awesome circle right icon"></i> <b>Search Summary</b>
 			</div>
 		</div>
 		<div class="ui black huge launch detail right attached button">

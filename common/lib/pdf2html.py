@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdf2html.py
-# Date: Sun May 25 19:32:06 2014 +0800
+# Date: Mon May 26 15:43:21 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -27,7 +27,7 @@ class PDF2Html(object):
 
     def convert(self):
         self.outdir = tempfile.mkdtemp(prefix='sop')
-        ret = os.system('pdf2htmlEX "{0}" 0.html --dest-dir={1}'.
+        ret = os.system('pdf2htmlEX "{0}" 0.html --dest-dir={1} --zoom=1.5'.
                   format(self.fname, self.outdir) + \
                   ' --split-pages=1 --page-filename %d.html')
         if ret != 0:
