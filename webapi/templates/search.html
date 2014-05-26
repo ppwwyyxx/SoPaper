@@ -230,51 +230,24 @@
 						</div>
 						<div class="content">
 							<div class="ui comments">
-								<div class="comment">
+								<div class="comment" ng-repeat="acom in comments">
 									<div class="content">
-										<a class="author">Jiakai</a>
+										<a class="author">{[{acom.uid}]}</a>
 										<div class="metadata">
-											<div class="date">2 days ago</div>
-											<div class="stars">
-												<i class="icon star"></i>
-												<i class="icon star"></i>
-												<i class="icon star"></i>
-												<i class="icon star"></i>
-												<i class="icon star"></i>
-											</div>
+											<div class="date">some days ago</div>
 										</div>
 										<div class="text">
-											I think this is a great paper and i am voting on it.
+											{[{acom.cmt}]}
 										</div>
 									</div>
 								</div>
 								
-								<div class="comment">
-									<div class="content">
-										<a class="author">Blahgeek</a>
-										<div class="metadata">
-											<div class="date">3 hours ago</div>
-											<div class="stars">
-												<i class="icon star"></i>
-												<i class="icon empty star"></i>
-												<i class="icon empty star"></i>
-												<i class="icon empty star"></i>
-												<i class="icon empty star"></i>
-											</div>
-										</div>
-										<div class="text">
-											Totally bullshit to me.
-										</div>
-									</div>
-								</div>
 								<form class="ui reply form">
 									<div class="field">
-										<div class="ui fluid input" style="width:500px; margin-left:40px">
-											<input placeholder="Your name"> </input>
-										</div>
+										<textarea ng-model="commentername" placeholder="Your name" style="height:3em; min-height:3em"></textarea>
 									</div>
 									<div class="field">
-										<textarea placeholder="Write down your thoughts..."></textarea>
+										<textarea ng-model="commentcontent"placeholder="Write down your thoughts..."></textarea>
 									</div>
 									Rate this paper:
 									<div class="ui star rating">
@@ -284,7 +257,7 @@
 										<i class="icon"></i>
 										<i class="icon"></i>
 									</div>
-									<div class="ui right floated button teal submit labeled icon">
+									<div class="ui right floated button teal submit labeled icon" ng-click="Submitcomment()">
 										<i class="icon edit"></i> Add Comment
 									</div>
 								</form>

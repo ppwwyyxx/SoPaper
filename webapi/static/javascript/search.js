@@ -81,6 +81,7 @@ function SearchCtrl($scope, $http, $sce) {
                 $scope.downloadahref = '/download?pid=' + $scope.paper_pid;
                 $scope.haspdf = data.results[0].haspdf;
                 $scope.paperpage = data.results[0].page;
+                $scope.comments = data.results[0].comments;
                 $scope.$digest();
                 /* UI Settings */
                 $(".ui.labeled.icon.sidebar")
@@ -197,6 +198,22 @@ function SearchCtrl($scope, $http, $sce) {
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             console.log('Downloading...');
+            console.log(data);
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+    };
+
+    $scope.Submitcomment = function() {
+        alert('/comment?pid=' + $scope.paper_pid + '&uid=' + $scope.commentername + '&cmt=' + $scope.commentcontent);
+        $.ajax({
+            type: 'GET',
+            url: '/comment?pid=' + $scope.paper_pid + '&uid=' + $scope.commentername + '&cmt=' + $scope.commentcontent,
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('Comment Added');
             console.log(data);
         }).error(function(data, status) {
             console.log('status' + status);

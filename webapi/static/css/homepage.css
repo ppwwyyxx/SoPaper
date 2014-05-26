@@ -48,6 +48,10 @@ body.progress .ui.progress .bar {
   margin-left: 32px;
 }
 
+.ui.right.sidebar{
+  background: #FCFCFC url(static/images/bg.jpg) repeat;
+}
+
 .ui.icon.menu > .onleft.item{
   text-align: left;
 }
