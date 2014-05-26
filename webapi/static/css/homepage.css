@@ -74,6 +74,11 @@ body.progress .ui.progress .bar {
   width: 50%;
 }
 
+.ui.logo.image{
+  display: block;
+  margin-left: auto;
+  margin-right: auto 
+}
 .ui.divided.list .description b{
   color:#D95C5C;
   font-weight: bold;

@@ -32,15 +32,20 @@
 		</div>
 		<!-- Navigation End-->
 		<div class="ui page grid">
-			<h1 class="ui header">Sopaper</h1>
+			<img class="ui large logo image" src="static/images/logo.png">
 			<div class="row"></div>		
-			<div class="ui fluid input">
-				<input type="text"  placeholder="Search papers, authors, conferences..." id="Searchword" ng-model="keyword">
-				<input type="submit" name="reg" class="ui icon button" ng-click="Search()" value="Search"/>
+			<div class="ui action input" style="width:700px; margin-left:auto; margin-right:auto">
+				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
+				<div class="ui icon button" ng-click="Search()">
+					<i class="search icon"></i>
+				</div>
 			</div>
+			
 			<div class="footer">
-				This is a project designed for researchers to conveniently getting papers they need.
+				Sopaper is designed for researchers to conveniently getting papers they need. <br/>
+				Final project for Search Engine Introduction, CST, THU, 2014 Spring.No rights reserved.
 			</div>
+
 		</div>
 	</body>
 </html>
