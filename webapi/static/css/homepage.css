@@ -30,7 +30,17 @@ body.progress .ui.progress .bar {
   padding-left:10px;
 }
 
-
+.ui.footer{
+  color: rgba(0, 0, 0, 0.4);
+  line-height: 15px;
+  font-size: 12px;
+  text-align: center;
+  clear: both;
+  position: absolute;
+  bottom: 0;
+  margin-left: 350px;
+  margin-right: auto;
+}
 
 .ui.inverted.dimmer .ui.loader.large,
 .ui.loader.large {

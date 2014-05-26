@@ -21,13 +21,13 @@
 	<body id="home" ng-controller="SearchCtrl">
 		<!-- Navigation Start-->
 		<div class="ui large inverted menu" style="margin-top:0px">
-			<a class="green item">
+			<a href="/" class="green item">
 			<i class="book icon"></i> <b>SoPaper</b>
 			</a>
 			<div class="right menu">
 				<div class="ui dropdown item">
 					<i class="green user icon"></i>
-					ppwwyyxx
+					ppwwyyxx 
 					<i class="dropdown icon"></i>
 					<div class="ui inverted menu">
 						<a class="item">
@@ -291,7 +291,7 @@
 				<div class="ui icon button" ng-click="Search()">
 					<i class="search icon"></i>
 				</div>
-				</div>
+			</div>
 			<div class="ui page grid">
 				<h4 class="ui header" style="margin-top:10px" ng-if="finishsearching">
 					About {[{ paper_cnt }]} results (in {[{elapsetime}]} s)
@@ -364,5 +364,6 @@
 			
 		</div>
 		<!-- Main Content End-->
+		<input type="hidden" id="pass" value="{{searchkeyword}}">
 	</body>
 </html>

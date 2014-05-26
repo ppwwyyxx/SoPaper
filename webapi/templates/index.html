@@ -12,16 +12,17 @@
 		<script src="static/javascript/angular.min.js"></script>
 		<script src="static/javascript/angular-resource.min.js"></script>
 		<script src="static/javascript/angular-route.min.js"></script>
+		<script src="static/javascript/angular-sanitize.min.js"></script>
 		<script src="static/javascript/jquery.js"></script>
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
 		<script src="static/javascript/search.js"></script>
 		
 	</head>
-	<body id="home" class="masthead" ng-controller="SearchCtrl">
+	<body id="home" class="masthead" ng-controller="IndexCtrl">
 		<!-- Navigation Start-->
 		<div class="ui large inverted menu">
-			<a class="green item">
+			<a href="/" class="green item">
 			<i class="book icon"></i> <b>SoPaper</b>
 			</a>
 			<div class="right menu">
@@ -36,12 +37,12 @@
 			<div class="row"></div>		
 			<div class="ui action input" style="width:700px; margin-left:auto; margin-right:auto">
 				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
-				<div class="ui icon button" ng-click="Search()">
+				<div class="ui icon button" ng-click="IndexSearch()">
 					<i class="search icon"></i>
 				</div>
 			</div>
 			
-			<div class="footer">
+			<div class="ui footer">
 				Sopaper is designed for researchers to conveniently getting papers they need. <br/>
 				Final project for Search Engine Introduction, CST, THU, 2014 Spring.No rights reserved.
 			</div>

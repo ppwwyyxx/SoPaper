@@ -6,31 +6,6 @@ SearchApp.config(function($interpolateProvider) {
     $interpolateProvider.endSymbol('}]}');
 });
 
-/*
-$(document).ready(function() {
-
-    query: function(data) {
-        $.ajax({
-            type: 'POST',
-            url: '/query',
-            data: {
-
-            },
-            dataType: 'json'
-        }).success(function(res, status, headers, config) {
-            if (res.success) {
-                console.log(res.data);
-            } else if (res.error) {
-                console.log(res.error);
-                // mai meng
-            }
-        }).error(function(data, status) {
-            console.log('status' + status);
-            console.log(data);
-        });
-    }
-});
-*/
 
 var PAPER_PER_PAGE = 3;
 
@@ -40,6 +15,17 @@ function SearchCtrl($scope, $http, $sce) {
     $scope.hasreferences = false;
     $scope.zan = 0;
     $scope.cai = 0;
+
+
+    $(document).ready(function() {
+
+        var passkeyword = document.getElementById("pass").value;
+        if (passkeyword != "") {
+            $scope.keyword = passkeyword;
+            $scope.Search();
+        }
+    });
+
 
     $scope.Search = function() {
         $('.ui.contentsearch.dimmer')
@@ -70,8 +56,7 @@ function SearchCtrl($scope, $http, $sce) {
                 if (typeof $scope.paper_bibtex != 'undefined')
                     $scope.hasbibtex = true;
                 $scope.paper_citednum = data.results[0].citecnt;
-                if ($scope.paper_citednum != 0)
-                    $scope.hascitedby = true;
+                $scope.hascitedby = true;
                 $scope.paper_references = data.results[0].references;
                 if (typeof $scope.paper_references != 'undefined')
                     $scope.hasreferences = true;
@@ -112,7 +97,6 @@ function SearchCtrl($scope, $http, $sce) {
                         $scope.$digest();
                     }).error(function(data, status) {
                         console.log('status' + status);
-                        has
                         console.log(data);
                     });
                 });
@@ -268,4 +252,11 @@ function SearchCtrl($scope, $http, $sce) {
             console.log(data);
         });
     }
+}
+
+
+function IndexCtrl($scope, $http, $sce) {
+    $scope.IndexSearch = function() {
+        window.location.href = 's?keyword=' + $scope.keyword;
+    };
 }

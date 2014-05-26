@@ -4,7 +4,8 @@
 # Date: Sat May 24 22:15:35 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from . import app, redirect, url_for, make_response
+from . import app, redirect, url_for, make_response, request, api_method
+
 from flask import render_template
 @app.route('/')
 def home():
@@ -15,10 +16,11 @@ def nosearch():
     return render_template('search.html')
 
 
-@app.route('/search/<string:search_word>')
+@app.route('/s')
 def search():
-    res = api.query2(search_word)
-    return render_template('search.html',result=res)
+    search_word = ""
+    search_word = request.values.get('keyword')
+    return render_template('search.html', searchkeyword=search_word);
 
     # redirect(url_for('static', filename='search.html'))
 
