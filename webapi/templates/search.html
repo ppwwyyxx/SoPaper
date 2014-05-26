@@ -10,9 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="static/css/semantic.css">
 		<link rel="stylesheet" type="text/css" href="static/css/homepage.css">
 		<script src="static/javascript/angular.min.js"></script>
+		<script src="static/javascript/angular-sanitize.min.js"></script>
 		<script src="static/javascript/angular-resource.min.js"></script>
 		<script src="static/javascript/angular-route.min.js"></script>
-		<script src="static/javascript/angular-sanitize.min.js"></script>
 		<script src="static/javascript/jquery.js"></script>
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
@@ -318,7 +318,7 @@
 			</div>
 			<div class="ui page grid">
 				<h4 class="ui header" style="margin-top:10px">
-					About {[{ paper_cnt }]} results (in 0.003s)
+					About {[{ paper_cnt }]} results (in 0.03s)
 				</h4>
 				<!--div class="ui secondary pointing menu">
 					<a class="active item">
@@ -339,7 +339,7 @@
 							<div class="metadata">
 								UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
 							</div>
-							<div class="description"> {[{p.content}]}</div>
+							<div class="description" ng-bind-html="p.content"> </div>
 						</div>
 					</div>
 					<!--div class="item">
@@ -393,7 +393,7 @@
 		
 		<!-- Main Content Start-->
 		<div class="ui page">
-			<div ng-bind-html-unsafe="pdfhtml"></div>
+			<div ng-bind-html-unsafe="{[{pdfhtml}]}"></div>
 			<!-- SideBar Start-->
 			<!-- SideBar End-->
 			

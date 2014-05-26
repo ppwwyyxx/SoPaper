@@ -63,7 +63,7 @@ body.progress .ui.progress .bar {
   width: 50%;
 }
 
-.keyword{
+.ui.divided.list .description b{
   color:#D95C5C;
   font-weight: bold;
 }
