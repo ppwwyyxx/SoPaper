@@ -92,7 +92,8 @@ body.progress .ui.progress .bar {
 }
 
 .ui.com.modal{
-  width: 50%;
+  width: 80%;
+  height:500px;
 }
 
 .ui.logo.image{

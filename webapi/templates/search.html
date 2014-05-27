@@ -46,7 +46,7 @@
 		<!-- Navigation End-->
 		<div class="ui large wide vertical inverted labeled icon sidebar menu" id="menu">
 			<a class="item" ng-href = "{[{downloadahref}]}">
-			<i class="inverted circular red awesome download cloud icon"></i> <b>Download Paper</b>
+				<i class="inverted circular red awesome download cloud icon"></i> <b>Download Paper ({[{downloadprogress}]}%)</b>
 			</a>
 			<div class="onleft item">
 				<h2 class="ui header" id="paper_title" ng-bind="paper_title">
@@ -228,7 +228,7 @@
 							Comments on "{[{paper_title}]}""
 						</div>
 						<div class="content">
-							<div class="ui comments">
+							<div class="ui comments" style="height:400px;overflow:scroll">
 								<div class="comment" ng-repeat="acom in comments">
 									<div class="content">
 										<a class="author">{[{acom.uid}]}</a>

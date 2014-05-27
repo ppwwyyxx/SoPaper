@@ -11,11 +11,6 @@ var PAPER_PER_PAGE = 3;
 
 function SearchCtrl($scope, $http, $sce) {
     $scope.paper_title = "So easy";
-    $scope.hasbibtex = false;
-    $scope.hasreferences = false;
-    $scope.zan = 0;
-    $scope.cai = 0;
-
 
     $(document).ready(function() {
 
@@ -28,6 +23,12 @@ function SearchCtrl($scope, $http, $sce) {
 
 
     $scope.Search = function() {
+        $scope.hasauthor = false;
+        $scope.hasbibtex = false;
+        $scope.hasreferences = false;
+        $scope.zan = 0;
+        $scope.cai = 0;
+        $scope.downloadprogress = 100;
 
         $('.ui.contentsearch.dimmer')
             .dimmer('set active');
@@ -72,6 +73,8 @@ function SearchCtrl($scope, $http, $sce) {
                 $scope.haspdf = data.results[0].haspdf;
                 $scope.paperpage = data.results[0].page;
                 $scope.comments = data.results[0].comments;
+                if (typeof $scope.comments == 'undefined')
+                    $scope.comments = [];
                 $scope.$digest();
                 /* UI Settings */
                 $(".ui.labeled.icon.sidebar")
@@ -249,12 +252,15 @@ function SearchCtrl($scope, $http, $sce) {
             if (data.progress == 'done') {
                 console.log('download_complete');
                 $scope.downloadahref = '/download?pid=' + $scope.paper_pid;
+                $scope.paperpage = data.page;
                 ReadHTML(0);
                 return;
             } else if (data.progress == 'failed') {
                 alert('Due to law, This paper is unable to download');
             } else {
                 console.log(data.progress);
+                $scope.downloadprogress = (data.progress * 100).toFixed(2);
+                $scope.$digest();
                 //Tryingdownload();
                 setTimeout(Tryingdownload, 2000);
 
