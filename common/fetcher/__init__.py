@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Mon May 26 13:57:49 2014 +0000
+# Date: 一 6月 09 13:39:08 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -50,8 +50,6 @@ class register_parser(object):
 
     def __call__(self, fetcher_cls):
         """ fetcher_cls: subclass of FetcherBase to be used
-            'url', 'headers' to pass to downloader,
-            'ctx_update': a dict to update the context
         """
         self.fetcher_cls = fetcher_cls
 
@@ -108,7 +106,7 @@ class register_parser(object):
                     ctx.existing = doc[0]
                     ukdbconn.update_meta(doc[0]['_id'], fetcher_inst.get_meta())
                     return True
-        log_info("Update metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
+        log_info("Fetcher Update Metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
         ctx.update_meta_dict(fetcher_inst.get_meta())
         # if can download
         ctx.add_downloader(fetcher_inst)

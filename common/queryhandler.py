@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: 二 5月 27 04:54:30 2014 +0000
+# Date: 一 6月 09 13:37:21 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -98,9 +98,12 @@ def handle_title_query(query):
                     log_info("Found {0} results in db".format(len(res)))
                     return res
         all_search_results.extend(srs)
+
+        meta = s.get('ctx_update')
+        if meta:
+            ctx.update_meta_dict(meta)
     pool.close()
     pool.terminate()
-
 
     # Analyse each result and try to parse info
     download_candidates = []
@@ -175,7 +178,7 @@ if __name__ == '__main__':
     #res = handle_title_query('test test test this is not a paper name')
     #res = handle_title_query('Intriguing properties of neural networks')
     #res = handle_content_query('neural networks')
-    res = handle_title_query("The WE data mining software an update")
+    res = handle_title_query("The WEka data mining software an update")
     #res = handle_title_query("linear")
     #print res
 
