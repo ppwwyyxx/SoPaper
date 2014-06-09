@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: arxiv.py
-# Date: Sat May 24 17:14:40 2014 +0800
+# Date: 一 6月 09 14:54:03 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -14,9 +14,12 @@ import requests
 ARXIV_PAT = re.compile('arxiv\.org/[^/]*/(?P<id>.*)')
 
 @register_parser(name='arxiv.org', urlmatch='arxiv.org',
-                meta_field=['author', 'bibtex', 'abstract'])
+                meta_field=['author', 'bibtex', 'abstract'],
+                priority=7)
 class Arxiv(FetcherBase):
     def _do_pre_parse(self):
+        if 'pdf' in self.url:   # change /pdf/xxx.xxx to /abs/xxx.xxx
+            self.url = self.url.replace('pdf', 'abs')
         text = requests.get(self.url).text.encode('utf-8')
         self.soup = BeautifulSoup(text)
 

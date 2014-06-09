@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: 一 6月 09 13:38:35 2014 +0000
+# Date: 一 6月 09 14:28:58 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -46,7 +46,9 @@ def download(url, updater):
     return data
 
 @register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
-                 meta_field=['author', 'bibtex', 'citedby', 'references', 'abstract'])
+                 meta_field=['author', 'bibtex', 'citedby', 'references',
+                             'abstract'],
+                 priority=2)
 class DLAcm(FetcherBase):
     def _do_pre_parse(self):
         self.text = requests.get(self.url).text.encode('utf-8')

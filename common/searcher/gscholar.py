@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Sat May 24 20:48:24 2014 +0800
+# Date: 一 6月 09 16:23:26 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -9,6 +9,7 @@ from . import register_searcher
 from job import SearchResult
 from uklogger import *
 from lib.textutil import title_correct, filter_title_fileformat, title_beautify
+from ukutil import ensure_unicode, ensure_bin_str
 
 import re
 import requests
@@ -27,8 +28,21 @@ def search(ctx):
     ret['ctx_update'] = {}
     srs = []
 
-    r = requests.get(GOOGLE_SCHOLAR_URL.format(query))
-    text = r.text.encode('utf-8')
+    #r = requests.get(GOOGLE_SCHOLAR_URL.format(query))
+    #text = r.text.encode('utf-8')
+    with open('/tmp/b.html', 'r') as f:
+        text = f.read()
+
+    def find_citecnt(dom):
+        try:
+            find = dom.findAll(attrs={'class': 'gs_ri'})[0]
+            find = find.findAll(attrs={'class': 'gs_fl'})[0]
+            find = find.findAll('a')[0].text
+            cnt = re.search('[0-9]+', find).group()
+            return int(cnt)
+        except:
+            return None
+
 
     soup = BeautifulSoup(text)
     results = soup.findAll(attrs={'class': 'gs_r'})
@@ -38,14 +52,29 @@ def search(ctx):
             h3 = rst.findAll('h3')[0]
             real_title = h3.get_text()
             real_title = filter_title_fileformat(real_title)
-            if not title_correct(query, real_title):
+            tc = title_correct(query, real_title)
+            if not tc[0]:
                 continue
-            if not title_updated:
-                title_updated = title_beautify(real_title)
-                log_info("Title updated: {0}".format(title_updated))
+            if not title_updated and tc[1]:
+                title_updated = ensure_unicode(title_beautify(real_title))
+                while True:     # fix things like '[citation][c] Title'
+                    new_title = re.sub('^\[[^\]]*\]', '', title_updated).strip()
+                    if new_title == title_updated:
+                        title_updated = new_title
+                        break
+                    title_updated = new_title
+                log_info(u"Title updated: {0}".format(title_updated))
                 ret['ctx_update']['title'] = title_updated
-            url = str(h3.find('a').get('href'))
-            srs.append(SearchResult(None, url))
+
+            cnt = find_citecnt(rst)
+            if cnt is not None:
+                ret['ctx_update']['citecnt'] = cnt
+
+            try:
+                url = str(h3.find('a').get('href'))
+                srs.append(SearchResult(None, url))
+            except:
+                pass
 
             findpdf = rst.findAll(attrs={'class': 'gs_ggs'})
             if findpdf:

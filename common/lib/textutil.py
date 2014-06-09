@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Tue May 27 00:14:19 2014 +0800
+# Date: 一 6月 09 16:12:40 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -32,16 +32,17 @@ def parse_file_size(size):
     return "{0}B".format(size)
 
 def title_correct(query, title):
+    """ return (match, update) """
     q = ''.join([t for t in query if t in string.letters])
     now = ''.join([t for t in title if t in string.letters]).lower()
-    ed_thres = min(len(query), len(title)) / 4
-    for k in range(int(len(query) * 0.7), len(query)):
+    ed_thres = min(len(query), len(title)) / 3
+    for k in range(min([int(len(query) * 0.7), 30]), len(query)):
         if levenshtein(q[:k], now) < ed_thres:
-            return True
+            return (True, False)
     for k in range(int(len(title) * 0.7), len(title)):
         if levenshtein(now[:k], q) < ed_thres:
-            return True
-    return False
+            return (True, True)
+    return (False, False)
 
 def filter_title_fileformat(title):
     title = title.replace('[pdf]', '')

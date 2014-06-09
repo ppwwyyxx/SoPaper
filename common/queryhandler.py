@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: 一 6月 09 13:37:21 2014 +0000
+# Date: 一 6月 09 16:25:01 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -35,6 +35,8 @@ class Updater(ProgressPrinter):
         super(Updater, self).update(done)
 
 def start_download(dl_candidates, ctx, pid):
+    dl_candidates = sorted(dl_candidates, key=lambda x: x[0].priority,
+                           reverse=True)
     updater = Updater(pid)
     for (parser, sr) in dl_candidates:
         data = parser.download(sr, updater)
@@ -57,15 +59,17 @@ def start_download(dl_candidates, ctx, pid):
 def handle_title_query(query):
     query = title_beautify(query)
     log_info("Get title query: {0}".format(query))
+
     # starts search
     res = search_startswith(query)
     if res:
-        log_info("Found {0} results in db".format(len(res)))
+        log_info("Found {0} results in db: {1}".format(
+            len(res), str([x['_id'] for x in res])))
         return res
     # similar search
     res = similar_search(query)
     if res:
-        log_info("Found similar results in db: {0}".format(res['title']))
+        log_info(u"Found similar results in db: {0}".format(res['title']))
         return [res]
 
     # search on web
@@ -95,12 +99,14 @@ def handle_title_query(query):
                 query = updated_title
                 res = search_exact(query)
                 if res:
-                    log_info("Found {0} results in db".format(len(res)))
+                    log_info("Found {0} results in db: {1}".format(
+                        len(res), str([x['_id'] for x in res])))
                     return res
         all_search_results.extend(srs)
 
         meta = s.get('ctx_update')
         if meta:
+            log_info('Meat update from searcher: {0}'.format(str(meta.keys())))
             ctx.update_meta_dict(meta)
     pool.close()
     pool.terminate()

@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: 一 6月 09 13:39:08 2014 +0000
+# Date: 一 6月 09 14:48:54 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
@@ -30,6 +30,9 @@ class register_parser(object):
         self.name = kwargs.pop('name')
         self.url_match = re.compile(kwargs.pop('urlmatch'))
 
+        """ priority of this parser, higher for those unlikely to be blocked"""
+        self.priority = kwargs.pop('priority', 5)
+
         self.type_match = kwargs.pop('typematch', None)
         self.legal = kwargs.pop('legal', True)
 
@@ -46,7 +49,8 @@ class register_parser(object):
 
     @staticmethod
     def get_parser_list():
-        return register_parser.parser_dict.values()
+        lst = register_parser.parser_dict.values()
+        return sorted(lst, key=lambda x: x.priority, reverse=True)
 
     def __call__(self, fetcher_cls):
         """ fetcher_cls: subclass of FetcherBase to be used

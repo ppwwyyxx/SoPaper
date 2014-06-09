@@ -1,13 +1,12 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: Mon May 26 20:03:23 2014 +0800
+# Date: 一 6月 09 14:37:23 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
 from job import JobContext
 import ukconfig
-from queryhandler import do_fetcher_download
 from ukdbconn import new_paper
 
 import sys

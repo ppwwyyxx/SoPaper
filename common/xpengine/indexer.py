@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: 二 5月 27 04:28:56 2014 +0000
+# Date: 一 6月 09 15:39:46 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 __all__ = ['xapian_indexer']

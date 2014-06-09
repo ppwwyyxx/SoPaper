@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: 二 5月 27 04:32:55 2014 +0000
+# Date: 一 6月 09 15:39:05 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -27,6 +27,7 @@ class XapianSearcher(object):
         words = query.split()
         words = [x for x in words if x not in STOPWORDS]
         query = ' OR '.join(words)
+        #query = ' '.join(words)
         q = self.conn.query_field('text', query)
 
         res = self.conn.search(q, offset * page_size, page_size)
