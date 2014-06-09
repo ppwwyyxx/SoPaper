@@ -55,7 +55,7 @@
 			<div class="onleft item" ng-if="hasauthor">
 				<h4 class="ui header">
 				<i class="users icon"></i>
-				Author(s): <a href="#" ng-repeat="author in paper_author" style="word-wrap:break-word;overflow:hidden;"> {[{author}]} <span>&nbsp; &nbsp;</span></a>
+				Author(s): <a href="#" ng-repeat="author in paper_author" style="word-wrap:break-word;overflow:hidden;" ng-click="Searchauthor(author)" > {[{author}]} <span>&nbsp; &nbsp;</span></a>
 				</h4>
 			</div>
 			<div class="onleft item" ng-if="hascitedby">
@@ -316,7 +316,7 @@
 					<div class="content">
 						<a class="header" ng-click="Selectpaper(p.title)"> {[{ p.title }]}</a>
 						<div class="metadata">
-							UM Fayyad, G Piatetsky-Shapiro, P Smyth… - 1996 - citeulike.org
+							{[{p.meta}]}
 						</div>
 						<div class="description" ng-bind-html="p.content"> </div>
 					</div>

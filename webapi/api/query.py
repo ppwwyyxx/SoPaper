@@ -1,12 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: Mon May 26 16:22:38 2014 +0000
+# Date: 二 5月 27 04:51:18 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import api_method, request
 from lib.textutil import title_beautify
 from queryhandler import handle_title_query, handle_content_query
+from ukdbconn import get_mongo
+from dbsearch import SEARCH_RETURN_FIELDS
 
 
 def transform(r):
@@ -67,3 +69,21 @@ def content_query():
             'results': res
            }
 
+# api: /author?name=xxx
+@api_method('/author')
+def search_author():
+    """ search db by author name
+        return a list of paper info """
+    try:
+        name = request.values.get('name')
+    except Exception:
+        return {'status': 'error',
+                'reason': 'invalid request'}
+
+    db = get_mongo('paper')
+    res = list(db.find({'author': name}, SEARCH_RETURN_FIELDS))
+    res = map(transform, res)
+
+    return {'status': 'ok',
+            'type': 'author',
+            'results': res}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: Mon May 26 13:55:41 2014 +0000
+# Date: 二 5月 27 04:47:56 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -77,6 +77,7 @@ def main():
             for parser in parsers:
                 if parser.can_handle(sr):
                     download_candidates.append((parser, sr))
+    pool.terminate()
 
     for (parser, sr) in download_candidates:
         data = parser.download(sr)

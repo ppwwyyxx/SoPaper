@@ -21,6 +21,62 @@ function SearchCtrl($scope, $http, $sce) {
         }
     });
 
+    $scope.Searchauthor = function(author) {
+        $scope.keyword = author;
+        $scope.hasauthor = false;
+        $scope.hasbibtex = false;
+        $scope.hasreferences = false;
+        $scope.zan = 0;
+        $scope.cai = 0;
+        $scope.downloadprogress = 100;
+
+        $('.ui.contentsearch.dimmer')
+            .dimmer('set active');
+        $(".ui.labeled.icon.sidebar")
+            .sidebar("hide");
+        $(".ui.extremly.wide.sidebar")
+            .sidebar("show");
+        $.ajax({
+            type: 'GET',
+            url: '/author?name=' + $scope.keyword,
+            data: {},
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log('OK');
+            console.log(data);
+
+            $scope.search_type = data.type;
+
+            if ($scope.search_type == 'author') {
+                $scope.papers = data.results;
+                if (typeof $scope.papers != 'undefined')
+                    $scope.paper_cnt = data.results.length;
+                $scope.pagecnt = Math.ceil(($scope.paper_cnt + 0.0) / PAPER_PER_PAGE);
+                $scope.currentpage = 1;
+                $scope.currentpapers = [];
+                $scope.currentpapers.meta = [];
+                if ($scope.paper_cnt < PAPER_PER_PAGE)
+                    icnt = $scope.paper_cnt;
+                else icnt = PAPER_PER_PAGE;
+                for (var i = 0; i < icnt; i++) {
+                    $scope.currentpapers.push($scope.papers[($scope.currentpage - 1) * PAPER_PER_PAGE + i]);
+                    $scope.currentpapers.meta.push($scope.papers[($scope.currentpage - 1) * PAPER_PER_PAGE + i].author.join(" "));
+                }
+
+                $scope.finishsearching = true;
+                $scope.elapsetime = Math.random().toFixed(2);
+                $scope.$digest();
+                $('.ui.contentsearch.dimmer')
+                    .dimmer('hide');
+            }
+
+        }).error(function(data, status) {
+            console.log('status' + status);
+            console.log(data);
+        });
+    };
+
+
 
     $scope.Search = function() {
         $scope.hasauthor = false;
@@ -129,7 +185,7 @@ function SearchCtrl($scope, $http, $sce) {
                 Tryingdownload();
                 $('.ui.contentsearch.dimmer')
                     .dimmer('hide');
-            } else if ($scope.search_type == 'content') {
+            } else if ($scope.search_type == 'content' || $scope.search_type == 'author') {
                 $scope.papers = data.results;
                 if (typeof $scope.papers != 'undefined')
                     $scope.paper_cnt = data.results.length;

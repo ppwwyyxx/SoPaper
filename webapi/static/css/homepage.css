@@ -88,18 +88,22 @@ body.progress .ui.progress .bar {
   top: 50%;
   left: 50%;
   text-align: left;
-  width: 70%;
+  /*
+   *width: 70%;
+   */
 }
 
 .ui.com.modal{
-  width: 80%;
+  /*
+   *width: 80%;
+   */
   height:500px;
 }
 
 .ui.logo.image{
   display: block;
   margin-left: auto;
-  margin-right: auto 
+  margin-right: auto
 }
 .ui.divided.list .description b{
   color:#D95C5C;
@@ -301,7 +305,7 @@ p a {
 
 .ui.items > .row > .item,
 .ui.items > .item {
-  min-height: 100px;  
+  min-height: 100px;
 }
 
 .ui.items > .item .avatar {
@@ -458,7 +462,7 @@ vertical-align: top;
   .selection.list .right.floated {
     display: none;
   }
-  
+
   .sti-menu { padding-left:16px; width:452px;}
   .sti-menu li {width: 226px; height:300px;}
   .sti-bg{height: 676px;}

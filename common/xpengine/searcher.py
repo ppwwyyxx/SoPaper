@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: Sat May 24 10:46:59 2014 +0000
+# Date: 二 5月 27 04:32:55 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -10,7 +10,7 @@ import re
 import xappy
 from xappy import SearchConnection
 
-from xpcommon import FIELD_NUM
+from xpcommon import FIELD_NUM,STOPWORDS
 
 class XapianSearcher(object):
 
@@ -24,7 +24,9 @@ class XapianSearcher(object):
 
     def search(self, query, offset=0, page_size=10, summary_len=300):
         query = self.conn.spell_correct(query)
-        query = ' OR '.join(query.split())
+        words = query.split()
+        words = [x for x in words if x not in STOPWORDS]
+        query = ' OR '.join(words)
         q = self.conn.query_field('text', query)
 
         res = self.conn.search(q, offset * page_size, page_size)

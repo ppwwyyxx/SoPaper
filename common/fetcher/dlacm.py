@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sun May 25 19:37:54 2014 +0800
+# Date: 二 5月 27 04:55:29 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -38,6 +38,8 @@ def download(url, updater):
 
     log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
+        with open('~/dump.html', 'w') as f:
+            f.write(resp.content)
         raise RecoverableErr("File too small: " + parse_file_size(total_length))
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:
         raise RecoverableErr("File too large: " + parse_file_size(total_length))

@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: Tue May 27 00:15:33 2014 +0800
+# Date: 二 5月 27 04:54:30 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -40,15 +40,19 @@ def start_download(dl_candidates, ctx, pid):
         data = parser.download(sr, updater)
         if data:
             db = get_mongo('paper')
-            db.update({'_id': pid},
-                      {'$set': {
-                        'pdf': Binary(data),
-                        'page_url': sr.url,
-                        'source': parser.name
-                      }})
+            try:
+                db.update({'_id': pid},
+                          {'$set': {
+                            'pdf': Binary(data),
+                            'page_url': sr.url,
+                            'source': parser.name
+                          }})
+            except:
+                log_exc("Save pdf data error")
             postprocess(data, ctx, pid)
             progress_dict.pop(pid, None)
             return
+    progress_dict.pop(pid, None)
 
 def handle_title_query(query):
     query = title_beautify(query)
@@ -94,6 +98,8 @@ def handle_title_query(query):
                     log_info("Found {0} results in db".format(len(res)))
                     return res
         all_search_results.extend(srs)
+    pool.close()
+    pool.terminate()
 
 
     # Analyse each result and try to parse info
@@ -162,6 +168,10 @@ def handle_content_query(query):
     return ret
 
 if __name__ == '__main__':
+    import sys
+    if len(sys.argv) > 1:
+        res = handle_title_query(sys.argv[1])
+        sys.exit(0)
     #res = handle_title_query('test test test this is not a paper name')
     #res = handle_title_query('Intriguing properties of neural networks')
     #res = handle_content_query('neural networks')

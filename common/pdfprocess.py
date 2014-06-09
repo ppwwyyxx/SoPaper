@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Sun May 25 23:21:20 2014 +0800
+# Date: 二 5月 27 03:51:03 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -46,6 +46,15 @@ def do_buildindex(ctx, data, pid):
            'title': ctx.title,
            'id': pid
           }
+
+    citedby = ctx.meta.get('citedby')
+    if citedby:
+        citecnt = len(citedby)
+        doc['citecnt'] = citecnt
+    if ctx.meta.get('citecnt'):
+        citecnt = ctx.meta.get('citecnt')
+        doc['citecnt'] = citecnt
+
     author = ctx.meta.get('author')
     if author:
         doc['author'] = author
