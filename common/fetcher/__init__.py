@@ -1,12 +1,12 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: 二 6月 10 02:55:19 2014 +0000
+# Date: Tue Jun 10 22:44:13 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
 from lib.textutil import title_beautify
-from ukutil import check_pdf, import_all_modules, ensure_unicode
+from lib.ukutil import check_pdf, import_all_modules, ensure_unicode
 from uklogger import *
 from job import SearchResult
 from lib.exc import RecoverableErr

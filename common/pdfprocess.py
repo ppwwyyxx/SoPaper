@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: 二 6月 10 03:25:40 2014 +0000
+# Date: Tue Jun 10 22:44:22 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -10,7 +10,7 @@ from bson.binary import Binary
 
 from uklogger import *
 from ukdbconn import get_mongo
-from ukutil import check_pdf, pdf_compress
+from lib.ukutil import check_pdf, pdf_compress
 from lib.pdf2html import PDF2Html
 from lib.textutil import parse_file_size
 import contentsearch

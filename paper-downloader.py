@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: paper-downloader.py
-# Date: 二 5月 27 04:47:56 2014 +0000
+# Date: Tue Jun 10 22:44:54 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -21,7 +21,7 @@ from searcher import searcher_run
 from job import JobContext
 import fetcher
 from fetcher import do_fetcher_download
-from ukutil import pdf_compress
+from lib.ukutil import pdf_compress
 from uklogger import *
 import ukconfig
 ukconfig.download_method = 'wget'

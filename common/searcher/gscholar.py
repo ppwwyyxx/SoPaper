@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: 一 6月 09 16:40:44 2014 +0000
+# Date: Tue Jun 10 22:44:29 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -9,7 +9,7 @@ from . import register_searcher
 from job import SearchResult
 from uklogger import *
 from lib.textutil import title_correct, filter_title_fileformat, title_beautify
-from ukutil import ensure_unicode, ensure_bin_str
+from lib.ukutil import ensure_unicode, ensure_bin_str
 
 import re
 import requests

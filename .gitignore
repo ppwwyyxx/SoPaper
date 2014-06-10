@@ -1,5 +1,6 @@
 common/person-profile.txt*
 old-result
+report/output
 
 *.py[cod]
 

@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 # $File: __init__.py
-# $Date: Sat May 24 11:18:11 2014 +0000
-# $Author: jiakai <jia.kai66@gmail.com>
-
-"""uknow informatin hub API website"""
+# $Date: Tue Jun 10 22:45:11 2014 +0800
 
 import os
 from flask import Flask
 
 from flask_login import LoginManager
 
-from ukutil import import_all_modules
+from lib.ukutil import import_all_modules
 
 
 class DefaultConfig(object):

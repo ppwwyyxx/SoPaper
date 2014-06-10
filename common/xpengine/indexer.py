@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: 一 6月 09 16:47:56 2014 +0000
+# Date: Tue Jun 10 22:44:06 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 __all__ = ['xapian_indexer']
@@ -12,7 +12,7 @@ import shutil
 import xappy
 from xappy import IndexerConnection, FieldActions, UnprocessedDocument, Field
 from xappy import errors
-from ukutil import ensure_unicode_anytype as ensure_unicode
+from lib.ukutil import ensure_unicode_anytype as ensure_unicode
 
 from xpcommon import FIELD_NUM, STOPWORDS
 

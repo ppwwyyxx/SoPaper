@@ -1,10 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: Mon May 26 20:01:28 2014 +0800
+# Date: Tue Jun 10 22:44:33 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from ukutil import import_all_modules
+from lib.ukutil import import_all_modules
 from uklogger import *
 from functools import wraps
 

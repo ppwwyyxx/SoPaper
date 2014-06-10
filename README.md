@@ -37,7 +37,7 @@ To run the command line tool, you'll need the following installed:
 
 Usage:
 ```bash
-./paper-downloadr.py -t "Distinctive image features from scale-invariant keypoints" -d /tmp
+./paper-downloader.py -t "Distinctive image features from scale-invariant keypoints" -d /tmp
 ```
 
 To deploy the server, you'll need:
