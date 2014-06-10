@@ -1,83 +1,45 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: dlacm.py
-# Date: 一 6月 09 17:29:50 2014 +0000
+# File: sciencedirect.py
+# Date: 一 6月 09 17:06:26 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
 from . import register_parser, RecoverableErr
-from .base import FetcherBase
-from lib.downloader import wget_download
+from .base import FetcherBase, direct_download
 from uklogger import *
 import ukconfig
 from lib.textutil import parse_file_size
 
 from urlparse import urlparse
 import requests
-import human_curl
-#from human_curl.exceptions import CurlError
 from bs4 import BeautifulSoup
 
-HOSTNAME = 'dl.acm.org'
-DEFAULT_TIMEOUT = '300'   # 5 minutes
+HOSTNAME = 'www.sciencedirect.com'
 
-# Bug in requests:
-# To download paper from dl.acm.org, human_curl must be used instead of requests
-# Seem unable to support streaming download with human_curl
-def download(url, updater):
-    log_info("Custom Directly Download with URL {0} ...".format(url))
-    headers = {'Host': urlparse(url).netloc,
-               'User-Agent': ukconfig.USER_AGENT,
-               'Connection': 'Keep-Alive'
-              }
-    resp = human_curl.get(url, headers=headers, timeout=DEFAULT_TIMEOUT)
-    try:
-        total_length = int(resp.headers.get('content-length'))
-    except:
-        pdfurl = resp.headers.get('location')
-        return download(pdfurl, updater)
-
-    if ukconfig.download_method == 'wget':
-        return wget_download(url, updater, headers)
-
-    log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
-    if total_length < ukconfig.FILE_SIZE_MINIMUM:
-        raise RecoverableErr("File too small: " + parse_file_size(total_length))
-    if total_length > ukconfig.FILE_SIZE_MAXIMUM:
-        raise RecoverableErr("File too large: " + parse_file_size(total_length))
-    data = resp.content
-    updater.finish(data)
-    return data
-
-@register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
-                 meta_field=['author', 'bibtex', 'citedby', 'references',
-                             'abstract'],
-                 priority=2)
-class DLAcm(FetcherBase):
+#@register_parser(name='sciencedirect.com', urlmatch='sciencedirect.com',
+                 #meta_field=['author', 'bibtex', 'abstract'],
+                 #priority=8)
+class ScienceDirect(FetcherBase):
     def _do_pre_parse(self):
         self.text = requests.get(self.url).text.encode('utf-8')
-        #with open("/tmp/b.html", 'w') as f:
-            #f.write(self.text)
+        with open("/tmp/b.html", 'w') as f:
+            f.write(self.text)
         #text = open("/tmp/b.html").read()
         self.soup = BeautifulSoup(self.text)
 
     def _do_download(self, updater):
-        pdf = self.soup.findAll(attrs={'name': 'FullTextPDF'})
-        if not pdf:
-            pdf = self.soup.findAll(attrs={'name': 'FullTextPdf'})
+        pdf = self.soup.findAll(attrs={'id': 'pdfLink'})
         if pdf:
             try:
-                url = pdf[0].get('href')
-                url = 'http://{0}/'.format(HOSTNAME) + url
-                log_info("dl.acm origin url: {0}".format(url))
-                r = requests.get(url, allow_redirects=False)
-                pdfurl = r.headers.get('location')
+                url = pdf[0]['pdfurl']
+                print url
             except:
                 # probably something need to be fixed
                 log_exc('')
         else:
-            raise RecoverableErr("dl.acm has no available download at {0}".format(self.url))
-        return download(pdfurl, updater)
+            raise RecoverableErr("No available download at {0}".format(self.url))
+        return direct_download(url, updater)
 
     def _do_get_title(self):
         titles = self.soup.findAll(attrs={'name': 'citation_title'})

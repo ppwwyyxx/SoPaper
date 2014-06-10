@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: 二 5月 27 03:51:03 2014 +0000
+# Date: 二 6月 10 03:25:40 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -42,6 +42,9 @@ def do_compress(data, pid):
 
 def do_buildindex(ctx, data, pid):
     text = contentsearch.pdf2text(data)
+    db = get_mongo('paper')
+    db.update({'_id': pid}, {'$set': {'text': text}})
+
     doc = {'text': text,
            'title': ctx.title,
            'id': pid

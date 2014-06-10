@@ -1,14 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Mon May 26 20:06:13 2014 +0800
+# Date: 一 6月 09 17:25:46 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-download_method = 'haha'
+download_method = 'wget'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
 
 FILE_SIZE_MINIMUM = 10000        # at least 10kb
 FILE_SIZE_MAXIMUM = 100000000    # at most 100mb
+LOG_DIR = '/home/sopaper/soalog'
 
 # this lib is not required for command line script
 USE_MAGIC_LIB = False

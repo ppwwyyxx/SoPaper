@@ -1,12 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: 二 5月 27 04:51:18 2014 +0000
+# Date: 二 6月 10 04:33:20 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
+import math
 from . import api_method, request
 from lib.textutil import title_beautify
-from queryhandler import handle_title_query, handle_content_query
+from queryhandler import handle_title_query, handle_content_query, handl_author_query
 from ukdbconn import get_mongo
 from dbsearch import SEARCH_RETURN_FIELDS
 
@@ -22,18 +23,39 @@ def transform(r):
         del r['citedby']
     except:
         r['citecnt'] = 0
+    if 'author' in r:
+        r['author'] = [title_beautify(x) for x in r['author']]
     return r
+
+def sort_content(res):
+    def score(r):
+        w = r['weight']
+        c = r['citecnt']
+        c = max([c, 10])
+        return (w ** 2) * c
+
+    print [r['weight']  for r in res]
+    print [r['citecnt'] for r in res]
+    print [score(r) for r in res]
+    res = sorted(res, key=score)
+    return res
 
 def do_query(query):
     tp = 'title'
     res = handle_title_query(query)
     if not res:
+        res = do_search_author(query)
+        if res:
+            return res
         res = handle_content_query(query)
         tp = 'content'
 
     assert isinstance(res, list)
 
     res = map(transform, res)
+
+    if tp == 'content':
+        res = sort_content(res)
     return {'status': 'ok',
             'type': tp,
             'results': res}
@@ -59,15 +81,32 @@ def content_query():
     except:
         return {'status': 'error',
                 'reason': 'invalid request'}
+
     res = handle_content_query(query)
     assert isinstance(res, list)
-
     res = map(transform, res)
+
+    return {'status': 'ok',
+            'type': 'author',
+            'results': res}
+    res = sort_content(res)
 
     return {'status': 'ok',
             'type': 'content',
             'results': res
            }
+
+def do_search_author(name):
+    res = handl_author_query(name)
+    if not res:
+        return None
+
+    res = map(transform, res)
+    res = sorted(res, key=lambda x: x.get('citecnt', 0))
+    return {'status': 'ok',
+            'type': 'author',
+            'results': res}
+
 
 # api: /author?name=xxx
 @api_method('/author')
@@ -75,15 +114,15 @@ def search_author():
     """ search db by author name
         return a list of paper info """
     try:
-        name = request.values.get('name')
+        name = request.values.get('name').lower()
     except Exception:
         return {'status': 'error',
                 'reason': 'invalid request'}
 
-    db = get_mongo('paper')
-    res = list(db.find({'author': name}, SEARCH_RETURN_FIELDS))
-    res = map(transform, res)
-
-    return {'status': 'ok',
-            'type': 'author',
-            'results': res}
+    ret = do_search_author(name)
+    if ret:
+        return ret
+    else:
+        return {'status': 'ok',
+                'type': 'author',
+                'results': []}

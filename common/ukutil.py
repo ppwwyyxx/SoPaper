@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukutil.py
-# Date: Sun May 25 23:20:45 2014 +0800
+# Date: 一 6月 09 16:47:48 2014 +0000
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -21,6 +21,11 @@ try:
     import magic
 except:
     pass
+
+def ensure_unicode_anytype(s):
+    if isinstance(s, basestring):
+        return ensure_unicode(s)
+    return s
 
 def ensure_unicode(s):
     """assert type of s is basestring and convert s to unicode"""

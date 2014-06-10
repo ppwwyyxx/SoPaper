@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: 一 6月 09 16:25:01 2014 +0000
+# Date: 二 6月 10 04:30:36 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -61,15 +61,15 @@ def handle_title_query(query):
     log_info("Get title query: {0}".format(query))
 
     # starts search
-    res = search_startswith(query)
-    if res:
-        log_info("Found {0} results in db: {1}".format(
-            len(res), str([x['_id'] for x in res])))
-        return res
+    #res = search_startswith(query) # and the idf is large
+    #if res:
+        #log_info("Found {0} results in db: {1}".format(
+            #len(res), str([x['_id'] for x in res])))
+        #return res
     # similar search
     res = similar_search(query)
     if res:
-        log_info(u"Found similar results in db: {0}".format(res['title']))
+        log_info(u"Found similar results in db: {0}".format(res['_id']))
         return [res]
 
     # search on web
@@ -159,6 +159,11 @@ def handle_title_query(query):
 
 sp_searcher = SoPaperSearcher()
 
+def handl_author_query(q):
+    db = get_mongo('paper')
+    res = list(db.find({'author': q}, SEARCH_RETURN_FIELDS))
+    return res
+
 def handle_content_query(query):
     log_info("Get content query: {0}".format(query))
     res = sp_searcher.search(query)
@@ -171,6 +176,7 @@ def handle_content_query(query):
         if not doc:
             raise Exception("Impossible! Mongo doesn't have this paper in index: {0}".format(pid))
         doc['content'] = r['content']
+        doc['weight'] = r['weight']
         return doc
 
     ret = map(transform, res)
@@ -183,8 +189,8 @@ if __name__ == '__main__':
         sys.exit(0)
     #res = handle_title_query('test test test this is not a paper name')
     #res = handle_title_query('Intriguing properties of neural networks')
-    #res = handle_content_query('neural networks')
-    res = handle_title_query("The WEka data mining software an update")
+    res = handle_content_query('neural networks')
+    #res = handle_title_query("The WEka data mining software an update")
     #res = handle_title_query("linear")
     #print res
 

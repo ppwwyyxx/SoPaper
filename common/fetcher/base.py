@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: base.py
-# Date: Sat May 24 21:32:32 2014 +0800
+# Date: 二 6月 10 03:10:35 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -20,7 +20,10 @@ class FetcherBase(object):
         self.data = None
 
         self.headers = None
-        self._do_pre_parse()
+        try:
+            self._do_pre_parse()
+        except Exception as e:
+            log_exc("Exception in pre-parse")
 
     def _do_pre_parse(self):
         """ parse right after getting the url"""

@@ -1,7 +1,11 @@
-search by author
 paper metadata: year
 run parser in parrallel
 
-aminer search paper
+citecnt problem
+
+use aminer search paper
 
 return cited cnt
+
+parser for:
+http://www.sciencedirect.com/science/article/pii/S1570870513000073

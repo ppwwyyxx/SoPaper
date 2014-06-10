@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: indexer.py
-# Date: 一 6月 09 15:39:46 2014 +0000
+# Date: 一 6月 09 16:47:56 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 __all__ = ['xapian_indexer']
@@ -12,6 +12,7 @@ import shutil
 import xappy
 from xappy import IndexerConnection, FieldActions, UnprocessedDocument, Field
 from xappy import errors
+from ukutil import ensure_unicode_anytype as ensure_unicode
 
 from xpcommon import FIELD_NUM, STOPWORDS
 
@@ -45,9 +46,9 @@ class XapianIndexer(object):
                 continue
             if type(v) == list:
                 for item in v:
-                    document.fields.append(Field(k, str(item)))
+                    document.fields.append(Field(k, ensure_unicode(item)))
             else:
-                document.fields.append(Field(k, str(v)))
+                document.fields.append(Field(k, ensure_unicode(v)))
         document.id = str(doc['id'])
         try:
             self.lock.acquire()

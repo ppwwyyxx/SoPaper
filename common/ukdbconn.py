@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukdbconn.py
-# Date: Mon May 26 20:03:15 2014 +0800
+# Date: 二 6月 10 04:01:51 2014 +0000
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -38,6 +38,9 @@ def new_paper(ctx):
         'view_cnt': 1,
         'download_cnt': 0
     }
+    meta = ctx.meta
+    if 'author' in meta:
+        meta['author'] = [x.lower() for x in meta['author']]
     doc.update(ctx.meta)
     doc['title'] = doc['title'].lower()
 

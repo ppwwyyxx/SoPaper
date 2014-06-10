@@ -1,12 +1,13 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: Mon May 26 16:18:29 2014 +0000
+# Date: 二 6月 10 03:46:45 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
 import os
 from threading import Lock, Condition
+from lib.timeout import timeout, timeout_command
 
 from xpengine.indexer import XapianIndexer
 from xpengine.searcher import XapianSearcher
@@ -23,9 +24,13 @@ def pdf2text(data):
     f.write(data)
     f.close()
 
+    #with timeout(seconds=30):
     ret = os.system('pdftotext "{0}"'.format(f.name))
+        #ret = timeout_command('pdftotext "{0}"'.format(os.path.realpath(f.name)),
+                             #3)
     if ret != 0:
-        return Exception("pdftotext return error! original file: {0}".format(f.name))
+        #raise Exception("Timeout in pdf2text")
+        raise Exception("pdftotext return error! original file: {0}".format(f.name))
     fout = f.name.replace('.pdf', '.txt')
     text = open(fout).read()
 
@@ -62,7 +67,11 @@ class SoPaperIndexer(object):
         self.indexer = XapianIndexer(DB_DIR)
 
     def _do_add_paper(self, doc):
-        self.indexer.add_doc(doc)
+        try:
+            self.indexer.add_doc(doc)
+        except:
+            log_exc("Exception in add_paper")
+            log_info("Error with this doc: {0}".format(doc['id']))
 
     def add_paper(self, doc):
         assert doc.get('text')
@@ -76,15 +85,22 @@ class SoPaperIndexer(object):
         self.indexer.clear()
 
         db = get_mongo('paper')
-        itr = db.find({}, {'pdf': 1, 'title': 1 })
+        itr = db.find({}, {'pdf': 1, 'title': 1, 'text': 1})
         for res in itr:
-            try:
-                data = res['pdf']
-            except KeyError:
-                log_err("No pdf in pid={0},title={1}".format(
-                    res['_id'], res['title']))
-                continue
-            text = pdf2text(data)
+            text = res.get('text')
+            if not text:
+                log_info("About to add text for paper {0}".format(res['_id']))
+                try:
+                    data = res['pdf']
+                    text = pdf2text(data)
+                except KeyError:
+                    log_err("No pdf in pid={0},title={1}".format(
+                        res['_id'], res['title']))
+                    continue
+                except Exception:
+                    log_exc("Exception in pdf2text")
+
+                db.update({'_id': res['_id']}, {'$set': {'text': text}})
             doc = {'text': text,
                    'title': res['title'],
                    'id': res['_id']

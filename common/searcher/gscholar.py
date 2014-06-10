@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: 一 6月 09 16:23:26 2014 +0000
+# Date: 一 6月 09 16:40:44 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -28,10 +28,10 @@ def search(ctx):
     ret['ctx_update'] = {}
     srs = []
 
-    #r = requests.get(GOOGLE_SCHOLAR_URL.format(query))
-    #text = r.text.encode('utf-8')
-    with open('/tmp/b.html', 'r') as f:
-        text = f.read()
+    r = requests.get(GOOGLE_SCHOLAR_URL.format(query))
+    text = r.text.encode('utf-8')
+    #with open('/tmp/b.html', 'r') as f:
+        #text = f.read()
 
     def find_citecnt(dom):
         try:

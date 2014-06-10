@@ -1,12 +1,12 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: __init__.py
-# Date: 一 6月 09 14:48:54 2014 +0000
+# Date: 二 6月 10 02:55:19 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.downloader import direct_download, ProgressPrinter
 from lib.textutil import title_beautify
-from ukutil import check_pdf, import_all_modules
+from ukutil import check_pdf, import_all_modules, ensure_unicode
 from uklogger import *
 from job import SearchResult
 from lib.exc import RecoverableErr
@@ -101,7 +101,7 @@ class register_parser(object):
         newt = fetcher_inst.get_title()
         if newt and newt != ctx.title:
             ctx.title = newt
-            log_info("Using new title: {0}".format(ctx.title))
+            log_info(u"Using new title: {0}".format(ensure_unicode(ctx.title)))
 
             # check updated title against db before download
             if ukconfig.USE_DB:

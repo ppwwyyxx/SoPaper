@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Sun May 25 23:25:18 2014 +0800
+# Date: 一 6月 09 17:28:41 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -43,6 +43,18 @@ class ProgressPrinter(object):
         log_info("File size is {0}".format(parse_file_size(size)))
         self.total = size
 
+def wget_download(url, progress_updater, headers=None):
+    log_info("Download with wget on {0} ...".format(url))
+
+    headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
+                        in headers.iteritems()])
+    tf = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
+    tf.close()
+    os.system('wget "{0}" -O "{1}" {2}'.format(url, tf.name, headers))
+    data = open(tf.name).read()
+    progress_updater.finish(data)
+    os.remove(tf.name)
+    return data
 
 def direct_download(url, progress_updater, headers=None):
     """ direct download according to ctx
@@ -58,15 +70,7 @@ def direct_download(url, progress_updater, headers=None):
 
     # for test and cmd tools only
     if ukconfig.download_method == 'wget':
-        headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
-                            in headers.iteritems()])
-        tf = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
-        tf.close()
-        os.system('wget "{0}" -O "{1}" {2}'.format(url, tf.name, headers))
-        data = open(tf.name).read()
-        progress_updater.finish(data)
-        os.remove(tf.name)
-        return data
+        return wget_download(url, progress_updater, headers)
 
     resp = requests.get(url, stream=True, headers=headers)
     total_length = resp.headers.get('content-length')

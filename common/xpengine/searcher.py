@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: searcher.py
-# Date: 一 6月 09 15:39:05 2014 +0000
+# Date: 二 6月 10 04:20:24 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import os
@@ -35,7 +35,8 @@ class XapianSearcher(object):
         def transform(r):
             doc = {'_id': r.id,
                     'title': r.data['title'][0],
-                    'content': r.summarise('text', maxlen=summary_len)
+                    'content': r.summarise('text', maxlen=summary_len),
+                    'weight': r.weight
                    }
             return doc
 
