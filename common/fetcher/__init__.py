@@ -5,7 +5,8 @@
 
 from lib.downloader import direct_download, ProgressPrinter
 from lib.textutil import title_beautify
-from lib.ukutil import check_pdf, import_all_modules, ensure_unicode
+from lib.ukutil import import_all_modules, ensure_unicode
+from lib.pdfutil import check_pdf
 from uklogger import *
 from job import SearchResult
 from lib.exc import RecoverableErr

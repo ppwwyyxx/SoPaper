@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: download.py
-# Date: Mon May 26 16:07:41 2014 +0000
+# Date: 五 6月 13 17:50:39 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, make_response, request, api_method
@@ -9,6 +9,7 @@ from ukdbconn import get_mongo
 from uklogger import *
 from lib.textutil import title_beautify
 from queryhandler import progress_dict
+from authorfetch import process_fetch_author
 
 # api: /download?pid=1
 @app.route('/download')
@@ -66,3 +67,12 @@ def available():
     return {'status': 'ok',
             'progress': prgs}
 
+# api: /fetchauthor?name=xxx&email=xxx
+@api_method('/fetchauthor')
+def fetchauthor():
+    """ fetch all papers of the author"""
+    name = request.values.get('name').lower()
+    email = request.values.get('email')
+
+    process_fetch_author(name, email)
+    return {'status': 'ok'}

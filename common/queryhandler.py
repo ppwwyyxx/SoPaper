@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: 五 6月 13 16:50:31 2014 +0000
+# Date: 五 6月 13 17:43:42 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -10,7 +10,7 @@ from multiprocessing import Pool
 
 from ukdbconn import get_mongo, global_counter, new_paper
 from uklogger import *
-from lib.ukutil import check_pdf
+from lib.pdfutil import check_pdf
 from lib.textutil import title_beautify, parse_file_size
 import searcher
 from searcher import searcher_run

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: 五 6月 13 16:48:54 2014 +0000
+# Date: 五 6月 13 18:04:52 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 download_method = 'wget'
@@ -25,7 +25,7 @@ try:
 except ImportError:
     USE_DB = False
 
-mongo_conn = ('127.0.0.1', 27017)
+mongo_conn = ('127.0.0.1', 27018)
 mongo_db = 'sopaper'
 
 import os
