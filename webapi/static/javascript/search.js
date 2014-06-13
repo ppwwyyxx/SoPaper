@@ -7,7 +7,7 @@ SearchApp.config(function($interpolateProvider) {
 });
 
 
-var PAPER_PER_PAGE = 3;
+var PAPER_PER_PAGE = 10;
 
 function SearchCtrl($scope, $http, $sce) {
     $scope.paper_title = "So easy";

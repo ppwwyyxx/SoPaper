@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: 一 6月 09 17:25:46 2014 +0000
+# Date: 五 6月 13 16:48:54 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 download_method = 'wget'
@@ -35,3 +35,6 @@ XP_DB_DIR = os.path.join(os.path.dirname(__file__),
 
 SEARCH_PAGE_SIZE = 10
 SEARCH_SUMMARY_LEN = 300
+
+MAILSERVER_HOST = 'server4.net9.org'
+MAILSERVER_PORT = 5184

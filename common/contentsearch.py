@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: contentsearch.py
-# Date: 二 6月 10 03:46:45 2014 +0000
+# Date: 五 6月 13 16:55:19 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -16,30 +16,10 @@ import ukconfig
 from ukdbconn import get_mongo
 from uklogger import *
 from lib.textutil import filter_nonascii
+from lib.pdfutil import pdf2text
 
 DB_DIR = ukconfig.XP_DB_DIR
 
-def pdf2text(data):
-    f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-    f.write(data)
-    f.close()
-
-    #with timeout(seconds=30):
-    ret = os.system('pdftotext "{0}"'.format(f.name))
-        #ret = timeout_command('pdftotext "{0}"'.format(os.path.realpath(f.name)),
-                             #3)
-    if ret != 0:
-        #raise Exception("Timeout in pdf2text")
-        raise Exception("pdftotext return error! original file: {0}".format(f.name))
-    fout = f.name.replace('.pdf', '.txt')
-    text = open(fout).read()
-
-    os.remove(f.name)
-    os.remove(fout)
-
-    text = filter_nonascii(text)
-    # TODO filter formulas..
-    return text
 
 class SoPaperSearcher(object):
     """ Search by content of paper

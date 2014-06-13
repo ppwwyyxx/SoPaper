@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: gscholar.py
-# Date: Tue Jun 10 22:44:29 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 

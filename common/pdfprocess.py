@@ -1,7 +1,6 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: pdfprocess.py
-# Date: Tue Jun 10 22:44:22 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import tempfile
@@ -10,9 +9,9 @@ from bson.binary import Binary
 
 from uklogger import *
 from ukdbconn import get_mongo
-from lib.ukutil import check_pdf, pdf_compress
 from lib.pdf2html import PDF2Html
 from lib.textutil import parse_file_size
+from lib.pdfutil import *
 import contentsearch
 
 def do_addhtml(data, pid):
@@ -41,7 +40,7 @@ def do_compress(data, pid):
     return data
 
 def do_buildindex(ctx, data, pid):
-    text = contentsearch.pdf2text(data)
+    text = pdf2text(data)
     db = get_mongo('paper')
     db.update({'_id': pid}, {'$set': {'text': text}})
 
