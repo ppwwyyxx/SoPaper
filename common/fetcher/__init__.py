@@ -8,18 +8,16 @@ from lib.textutil import title_beautify
 from lib.ukutil import import_all_modules, ensure_unicode
 from lib.pdfutil import check_pdf
 from uklogger import *
+import ukconfig
 from job import SearchResult
 from lib.exc import RecoverableErr
 
-try:
+if ukconfig.USE_DB:
+    print 'h'
     import ukdbconn
     from dbsearch import search_exact
-except ImportError:
-    # for cmd tools to use
-    pass
 
 from functools import wraps
-import ukconfig
 import re
 
 class register_parser(object):

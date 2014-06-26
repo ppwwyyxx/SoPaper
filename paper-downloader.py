@@ -15,15 +15,18 @@ from multiprocessing import Pool
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                             'common'))
 
+# Config must be set at the beginning
+import ukconfig
+ukconfig.download_method = 'wget'
+ukconfig.USE_DB = False
+ukconfig.LOG_DIR = None
+
 import searcher
 from searcher import searcher_run
 from job import JobContext
 import fetcher
-from fetcher import do_fetcher_download
 from lib.pdfutil import pdf_compress
 from uklogger import *
-import ukconfig
-ukconfig.download_method = 'wget'
 
 def get_args():
     desc = 'SoPaper command line tool -- ' \
