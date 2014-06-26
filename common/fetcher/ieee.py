@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ieee.py
-# Date: Sat May 24 16:16:48 2014 +0800
+# Date: 五 6月 13 18:22:19 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser

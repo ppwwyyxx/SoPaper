@@ -17,7 +17,7 @@
 		<script src="static/javascript/semantic.js"></script>
 		<script src="static/javascript/homepage.js"></script>
 		<script src="static/javascript/search.js"></script>
-		
+
 	</head>
 	<body id="home" class="masthead" ng-controller="IndexCtrl">
 		<!-- Navigation Start-->
@@ -34,17 +34,18 @@
 		<!-- Navigation End-->
 		<div class="ui page grid">
 			<img class="ui large logo image" src="static/images/logo.png">
-			<div class="row"></div>		
+			<div class="row"></div>
 			<div class="ui action input" style="width:700px; margin-left:auto; margin-right:auto">
 				<input type="text"  placeholder="Search papers, authors, conferences..." ng-model="keyword">
 				<div class="ui icon button" ng-click="IndexSearch()">
 					<i class="search icon"></i>
 				</div>
 			</div>
-			<div class="ui circular small author images">
-				<img class="ui image" src="static/images/wyx.jpg" data-content="Yuxin Wu, the back-end architect">
-				<img class="ui image" src="static/images/ltz.jpg" data-content="Tiezheng Li, the front-end designer">
-			</div>
+		<div class="ui circular small author images">
+			<img class="ui image" src="static/images/wyx.jpg" data-content="Yuxin Wu, the back-end architect">
+			<img class="ui image" src="static/images/ltz.jpg" data-content="Tiezheng Li, the front-end designer">
+			<img class="ui image" src="static/images/wyc.jpg" data-content="Yichen Wang, the goddess">
+		</div>
 
 			<div class="ui footer">
 				Sopaper is designed for researchers to conveniently get papers they need. <br/>

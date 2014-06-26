@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-fetcher.py
-# Date: 一 6月 09 16:56:14 2014 +0000
+# Date: 五 6月 13 18:19:41 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from fetcher import register_parser, SearchResult
@@ -30,19 +30,19 @@ if __name__ == '__main__':
     #url = "http://dl.acm.org/citation.cfm?id=1656278"  # Weka
     #sr = SearchResult(None, url)
 
-    #parser = register_parser.parser_dict['ieeexplore.ieee.org']
+    parser = register_parser.parser_dict['ieeexplore.ieee.org']
     ##sr = SearchResult(None, "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=00726791")
-    #sr = SearchResult(None, "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4244529")
+    sr = SearchResult(None, "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4244529")
 
 
-    parser = register_parser.parser_dict['sciencedirect.com']
-    url = "http://www.sciencedirect.com/science/article/pii/S1570870513000073"
-    sr = SearchResult(None, url)
+    #parser = register_parser.parser_dict['sciencedirect.com']
+    #url = "http://www.sciencedirect.com/science/article/pii/S1570870513000073"
+    #sr = SearchResult(None, url)
 
 
-    #params = parser.fetch_info(ctx, sr)
-    #print params
-    data = parser.download(sr)
+    params = parser.fetch_info(ctx, sr)
+    print params
+    #data = parser.download(sr)
 
     print ctx.title
     if ukconfig.USE_DB and ctx.success:

@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: queryhandler.py
-# Date: 五 6月 13 17:43:42 2014 +0000
+# Date: 六 6月 14 03:17:42 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from bson.binary import Binary
@@ -60,12 +60,12 @@ def handle_title_query(query):
     query = title_beautify(query)
     log_info("Get title query: {0}".format(query))
 
-    # starts search
-    #res = search_startswith(query) # and the idf is large
-    #if res:
-        #log_info("Found {0} results in db: {1}".format(
-            #len(res), str([x['_id'] for x in res])))
-        #return res
+     #starts search
+    res = search_startswith(query) # and the idf is large
+    if res:
+        log_info("Found {0} results in db: {1}".format(
+            len(res), str([x['_id'] for x in res])))
+        return res
     # similar search
     res = similar_search(query)
     if res:

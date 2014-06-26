@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dbsearch.py
-# Date: Mon May 26 16:21:24 2014 +0000
+# Date: 六 6月 14 03:18:57 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import operator
@@ -40,6 +40,8 @@ def search_startswith(query):
     res = list(db.find({'title':
                         {'$regex': '^{0}'.format(query) } },
                        SEARCH_RETURN_FIELDS))
+    res = [k for k in res if levenshtein(k['title'], query) < 10]
+    print res
     return res
 
 @beautify_results()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: query.py
-# Date: 二 6月 10 04:33:20 2014 +0000
+# Date: 六 6月 14 03:17:06 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import math
@@ -25,6 +25,7 @@ def transform(r):
         r['citecnt'] = 0
     if 'author' in r:
         r['author'] = [title_beautify(x) for x in r['author']]
+    r['title'] = title_beautify(r['title'])
     return r
 
 def sort_content(res):

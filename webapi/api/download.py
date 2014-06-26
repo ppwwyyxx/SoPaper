@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: download.py
-# Date: 五 6月 13 17:50:39 2014 +0000
+# Date: 六 6月 14 03:23:41 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import app, make_response, request, api_method
@@ -37,7 +37,7 @@ def download():
 
     # TODO deal with unicode name!
     resp.headers['Content-Disposition'] = \
-            'attachment; filename="{0}".pdf'.format(title)
+            'attachment; filename="{0}.pdf"'.format(title)
     return resp
 
 # api: /download_available?pid=1

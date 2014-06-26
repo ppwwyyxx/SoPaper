@@ -1,10 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: 五 6月 13 18:04:52 2014 +0000
+# Date: 六 6月 14 03:46:32 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-download_method = 'wget'
+download_method = 'hahahah'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
 
 FILE_SIZE_MINIMUM = 10000        # at least 10kb
