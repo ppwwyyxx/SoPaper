@@ -13,7 +13,6 @@ from job import SearchResult
 from lib.exc import RecoverableErr
 
 if ukconfig.USE_DB:
-    print 'h'
     import ukdbconn
     from dbsearch import search_exact
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: 一 6月 09 17:29:50 2014 +0000
+# Date: Sat Jun 28 09:24:21 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -13,13 +13,12 @@ import ukconfig
 from lib.textutil import parse_file_size
 
 from urlparse import urlparse
-import requests
 import human_curl
-#from human_curl.exceptions import CurlError
+import requests
 from bs4 import BeautifulSoup
 
 HOSTNAME = 'dl.acm.org'
-DEFAULT_TIMEOUT = '300'   # 5 minutes
+DEFAULT_TIMEOUT = '300.0'   # 5 minutes
 
 # Bug in requests:
 # To download paper from dl.acm.org, human_curl must be used instead of requests
@@ -30,23 +29,24 @@ def download(url, updater):
                'User-Agent': ukconfig.USER_AGENT,
                'Connection': 'Keep-Alive'
               }
-    resp = human_curl.get(url, headers=headers, timeout=DEFAULT_TIMEOUT)
+
+    resp = human_curl.get(url, headers=headers)
     try:
         total_length = int(resp.headers.get('content-length'))
     except:
         pdfurl = resp.headers.get('location')
         return download(pdfurl, updater)
 
-    if ukconfig.download_method == 'wget':
-        return wget_download(url, updater, headers)
-
     log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
     if total_length < ukconfig.FILE_SIZE_MINIMUM:
         raise RecoverableErr("File too small: " + parse_file_size(total_length))
     if total_length > ukconfig.FILE_SIZE_MAXIMUM:
         raise RecoverableErr("File too large: " + parse_file_size(total_length))
-    data = resp.content
-    updater.finish(data)
+
+    if ukconfig.download_method == 'wget':
+        data = wget_download(url, updater, headers)
+    else:
+        data = resp.content
     return data
 
 @register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
