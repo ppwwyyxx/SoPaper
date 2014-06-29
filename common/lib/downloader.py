@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: 一 6月 09 17:28:41 2014 +0000
+# Date: Sun Jun 29 09:59:43 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -50,7 +50,9 @@ def wget_download(url, progress_updater, headers=None):
                         in headers.iteritems()])
     tf = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
     tf.close()
-    os.system('wget "{0}" -O "{1}" {2}'.format(url, tf.name, headers))
+    cmd = 'wget "{0}" -O "{1}" {2}'.format(url, tf.name, headers)
+    print cmd
+    os.system(cmd)
     data = open(tf.name).read()
     progress_updater.finish(data)
     os.remove(tf.name)

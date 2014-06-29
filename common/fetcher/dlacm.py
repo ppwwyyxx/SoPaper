@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sat Jun 28 09:24:21 2014 +0800
+# Date: Sun Jun 29 10:03:50 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -13,7 +13,6 @@ import ukconfig
 from lib.textutil import parse_file_size
 
 from urlparse import urlparse
-import human_curl
 import requests
 from bs4 import BeautifulSoup
 
@@ -21,8 +20,7 @@ HOSTNAME = 'dl.acm.org'
 DEFAULT_TIMEOUT = '300.0'   # 5 minutes
 
 # Bug in requests:
-# To download paper from dl.acm.org, human_curl must be used instead of requests
-# Seem unable to support streaming download with human_curl
+# requests failed to download paper from dl.acm.org. use wget instead
 def download(url, updater):
     log_info("Custom Directly Download with URL {0} ...".format(url))
     headers = {'Host': urlparse(url).netloc,
@@ -30,24 +28,13 @@ def download(url, updater):
                'Connection': 'Keep-Alive'
               }
 
-    resp = human_curl.get(url, headers=headers)
-    try:
-        total_length = int(resp.headers.get('content-length'))
-    except:
-        pdfurl = resp.headers.get('location')
-        return download(pdfurl, updater)
-
-    log_info("dl.acm.org: filesize={0}".format(parse_file_size(total_length)))
-    if total_length < ukconfig.FILE_SIZE_MINIMUM:
-        raise RecoverableErr("File too small: " + parse_file_size(total_length))
-    if total_length > ukconfig.FILE_SIZE_MAXIMUM:
-        raise RecoverableErr("File too large: " + parse_file_size(total_length))
-
-    if ukconfig.download_method == 'wget':
-        data = wget_download(url, updater, headers)
+    resp = requests.get(url, headers=headers, allow_redirects=False)
+    pdfurl = resp.headers.get('location')
+    if pdfurl:
+        headers['Host'] = urlparse(pdfurl).netloc
+        return wget_download(pdfurl, updater, headers)
     else:
-        data = resp.content
-    return data
+        return wget_download(url)
 
 @register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
                  meta_field=['author', 'bibtex', 'citedby', 'references',
