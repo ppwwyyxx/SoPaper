@@ -40,7 +40,7 @@ Usage:
 ./paper-downloader.py -t "Distinctive image features from scale-invariant keypoints" -d /tmp
 ```
 
-To deploy the server, you'll need:
+Command line tool is sufficient to use. If you'd like to deploy the server, you'll need:
 * Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
 * libcurl (libcurl4-{openssl,nss,gnutls}-dev on debian/ubuntu)
@@ -50,8 +50,9 @@ To deploy the server, you'll need:
 
 Note: on debian/ubuntu, make sure you do *not* have 'python2-bson' package installed.
 
-Run the following command to install all the python packages needed, and setup virtualenv
+Run the following command to install all the python packages needed, setup virtualenv, and run the server.
 
 	cd manage
 	./quickinstall
+	./standalone_server.py
 

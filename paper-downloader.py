@@ -26,6 +26,7 @@ from searcher import searcher_run
 from job import JobContext
 import fetcher
 from lib.pdfutil import pdf_compress
+from lib.textutil import norm_filename
 from uklogger import *
 
 def get_args():
@@ -88,6 +89,7 @@ def main():
                 data = pdf_compress(data)
             except:
                 log_err("PDF compress failed, you may need to install poppler-utils")
+            ctx.title = norm_filename(ctx.title)
             filename = os.path.join(directory, ctx.title + ".pdf")
             log_info("Writing data to {0}".format(filename))
             try:

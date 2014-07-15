@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: mailserver.py
-# Date: Sat Jun 14 00:46:42 2014 +0800
+# Date: Sun Jun 29 10:05:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 
@@ -12,7 +12,7 @@ import traceback
 import smtplib
 from email.mime.text import MIMEText
 
-@app.route('/mail', methods=['POST' ])
+@app.route('/mail', methods=['POST'])
 def mail():
     js = request.get_json(force=True)
     print js

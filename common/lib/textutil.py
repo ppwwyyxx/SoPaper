@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: 一 6月 09 16:12:40 2014 +0000
+# Date: Wed Jul 16 00:07:10 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -74,3 +74,6 @@ def name_clean(name):
 
 def filter_nonascii(string):
     return filter(lambda x: ord(x) < 128, string)
+
+def norm_filename(s):
+    return s.replace('/', ' ')
