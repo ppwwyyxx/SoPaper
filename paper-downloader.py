@@ -66,6 +66,8 @@ def main():
             continue
         srs = s['results']
 
+        ctx.update_meta_dict(s['ctx_update'])
+        print s['ctx_update']
         try:
             updated_title = s['ctx_update']['title']
         except KeyError:
@@ -99,6 +101,8 @@ def main():
     log_info("Done with {0}".format(ctx.title))
     if ctx.meta.get('author'):
         log_info("Author: {0}".format(ctx.meta['author']))
+    if ctx.meta.get('citecnt'):
+        log_info("Cite count: {0}".format(ctx.meta['citecnt']))
 
 
 if __name__ == '__main__':

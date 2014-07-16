@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Wed Jul 16 13:49:04 2014 -0700
+# Date: Wed Jul 16 14:02:35 2014 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -20,6 +20,8 @@ class JobContext(object):
     def update_meta_dict(self, meta):
         if 'title' in meta:
             del meta['title']
+        if 'citecnt' not in self.meta and 'citedby' in meta:
+            self.meta['citecnt'] = len(meta['citedby'])
         self.meta.update(meta)
 
     def need_field(self, fields):
