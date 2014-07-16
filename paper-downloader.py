@@ -66,19 +66,17 @@ def main():
             continue
         srs = s['results']
 
-        # try search database with updated title
         try:
             updated_title = s['ctx_update']['title']
         except KeyError:
             pass
         else:
-            if updated_title != ctx.title:
-                log_info("Using new title: {0}".format(updated_title))
-                ctx.title = updated_title
+            ctx.update_new_title(updated_title)
 
         for sr in srs:
             for parser in parsers:
                 if parser.can_handle(sr):
+                    parser.fetch_info(ctx, sr)      # will update title
                     download_candidates.append((parser, sr))
     pool.terminate()
 
@@ -97,7 +95,10 @@ def main():
                     f.write(data)
             except IOError:
                 log_exc("Failed to write to file")
-            return
+            break
+    log_info("Done with {0}".format(ctx.title))
+    if ctx.meta.get('author'):
+        log_info("Author: {0}".format(ctx.meta['author']))
 
 
 if __name__ == '__main__':

@@ -96,10 +96,7 @@ class register_parser(object):
             return False
 
         newt = fetcher_inst.get_title()
-        if newt and newt != ctx.title:
-            ctx.title = newt
-            log_info(u"Using new title: {0}".format(ensure_unicode(ctx.title)))
-
+        if newt and ctx.update_new_title(newt):
             # check updated title against db before download
             if ukconfig.USE_DB:
                 doc = search_exact(newt)
@@ -109,8 +106,6 @@ class register_parser(object):
                     return True
         log_info("Fetcher Update Metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
         ctx.update_meta_dict(fetcher_inst.get_meta())
-        # if can download
-        ctx.add_downloader(fetcher_inst)
         return True
 
     def download(self, sr, progress_updater=None):

@@ -1,10 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: 一 6月 09 16:29:06 2014 +0000
+# Date: Wed Jul 16 13:49:04 2014 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
+from lib.ukutil import ensure_unicode
 from uklogger import *
 from multiprocessing import Pool
 
@@ -14,7 +15,6 @@ class JobContext(object):
         self.success = False
         self.title = query
         self.existing = None
-        self.downloader = []
         self.meta = {}
 
     def update_meta_dict(self, meta):
@@ -28,8 +28,12 @@ class JobContext(object):
                 return True
         return False
 
-    def add_downloader(self, fetcher_inst):
-        self.downloader.append(fetcher_inst)
+    def update_new_title(self, title):
+        if title != self.title:
+            log_info("Using new title: {0}".format(ensure_unicode(title)))
+            self.title = title
+            return True
+        return False
 
     def __str__(self):
         d = {'title': self.title,

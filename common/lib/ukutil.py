@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukutil.py
-# Date: 五 6月 13 16:55:11 2014 +0000
+# Date: Wed Jul 16 13:50:06 2014 -0700
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -13,7 +13,6 @@ from importlib import import_module
 from pkgutil import walk_packages
 from datetime import datetime
 from subprocess import Popen, PIPE
-from lib.textutil import parse_file_size
 import tempfile
 import os
 
@@ -29,7 +28,7 @@ def ensure_unicode_anytype(s):
 
 def ensure_unicode(s):
     """assert type of s is basestring and convert s to unicode"""
-    assert isinstance(s, basestring), 's should be string'
+    assert isinstance(s, basestring), 's should be string' + str(s)
     if isinstance(s, str):
         s = s.decode('utf-8')
     return s

@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Wed Jul 16 00:07:10 2014 +0800
+# Date: Wed Jul 16 13:49:15 2014 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
 import re
+from lib.ukutil import ensure_unicode
 
 stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
                  'onto', 'with', 'about', 'the', 'for', 'and', 'or', 'by',
