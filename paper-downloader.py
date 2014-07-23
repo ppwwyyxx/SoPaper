@@ -97,13 +97,14 @@ def main():
                     f.write(data)
             except IOError:
                 log_exc("Failed to write to file")
+            log_info("Successfully download {0}".format(ctx.title))
             break
-    log_info("Done with {0}".format(ctx.title))
+    else:
+        log_err("Failed to download {0}".format(ctx.title))
     if ctx.meta.get('author'):
         log_info("Author: {0}".format(ctx.meta['author']))
     if ctx.meta.get('citecnt'):
         log_info("Cite count: {0}".format(ctx.meta['citecnt']))
-
 
 if __name__ == '__main__':
     main()
