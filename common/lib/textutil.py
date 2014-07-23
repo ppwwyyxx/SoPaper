@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Wed Jul 16 13:49:15 2014 -0700
+# Date: Tue Jul 22 21:50:14 2014 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -32,19 +32,6 @@ def parse_file_size(size):
         return "{0:.2f}KB".format(float(size) / 1000)
     return "{0}B".format(size)
 
-def title_correct(query, title):
-    """ return (match, update) """
-    q = ''.join([t for t in query if t in string.letters])
-    now = ''.join([t for t in title if t in string.letters]).lower()
-    ed_thres = min(len(query), len(title)) / 3
-    for k in range(min([int(len(query) * 0.7), 30]), len(query)):
-        if levenshtein(q[:k], now) < ed_thres:
-            return (True, False)
-    for k in range(int(len(title) * 0.7), len(title)):
-        if levenshtein(now[:k], q) < ed_thres:
-            return (True, True)
-    return (False, False)
-
 def filter_title_fileformat(title):
     title = title.replace('[pdf]', '')
     title = title.replace('[PDF]', '')
@@ -67,6 +54,19 @@ def levenshtein(s1, s2):
             current_row.append(min(insertions, deletions, substitutions))
         previous_row = current_row
     return previous_row[-1]
+
+def title_correct(query, title):
+    """ return (match, update) """
+    q = ''.join([t for t in query if t in string.letters]).lower()
+    now = ''.join([t for t in title if t in string.letters]).lower()
+    ed_thres = min(len(query), len(title)) / 5
+    for k in range(min([int(len(query) * 0.7), 30]), len(query)):
+        if levenshtein(q[:k], now) < ed_thres:
+            return (True, False)
+    for k in range(int(len(title) * 0.7), len(title)):
+        if levenshtein(now[:k], q) < ed_thres:
+            return (True, True)
+    return (False, False)
 
 def name_clean(name):
     p = re.compile('\(.*?\)', re.DOTALL)
