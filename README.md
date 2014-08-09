@@ -10,20 +10,25 @@ and *Search Engine Technology(2014Spring)*, developed by:
 * Tiezheng Li
 * Yichen Wang
 
-This project is still in development stage. Ideas / issues are welcomed.
+<!--
+   -This project is still in development stage. Ideas / issues are welcomed.
+   -->
 
 ## Features
 The ``searcher`` package will search and analyse results in
 * Google Scholar
 * Google
 
-and the ``fetcher`` package is able to further analyse the result and download the paper from:
+and the ``fetcher`` package will further analyse the results and download papers from the following sources:
 * direct pdf link
 * [dl.acm.org](http://dl.acm.org/)
 * [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
 * [arxiv.org](http://arxiv.org)
 
+``Searcher`` and ``Fetcher`` are __extensible__ to support more resources.
+
 The command line tool will directly download the paper with a __clean filename__.
+All the downloaded paper will be __compressed__ using `ps2pdf` from poppler-utils, if available.
 
 The server provide:
 * RESTful APIs on papers
@@ -34,10 +39,12 @@ To run the command line tool, you'll need the following installed:
 * [requests](http://docs.python-requests.org/en/latest/)
 * [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 * [termcolor](https://pypi.python.org/pypi/termcolor)
+* poppler-utils (optional)
 
 Usage:
 ```bash
-./paper-downloader.py -t "Distinctive image features from scale-invariant keypoints" -d /tmp
+./paper-downloader.py --help
+./paper-downloader.py -t "Distinctive image features from scale-invariant keypoints"
 ```
 
 Command line tool is sufficient to use. If you'd like to deploy the server, you'll need:
