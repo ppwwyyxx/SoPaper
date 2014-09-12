@@ -4,15 +4,14 @@ This is a project designed for researchers to conveniently getting papers they n
 It includes a command line tool ``paper-downloader.py``, to automatically search and download paper,
 as well as a server to provide integrated search/read/download experience.
 
-This project served as a course project for *Service Oriented Software Engineering(2014Spring)*
+This project initially served as a course project for *Service Oriented Software Engineering(2014Spring)*
 and *Search Engine Technology(2014Spring)*, developed by:
 * [Yuxin Wu (ppwwyyxx)](mailto:ppwwyyxxc@gmail.com)
 * Tiezheng Li
 * Yichen Wang
 
-<!--
-   -This project is still in development stage. Ideas / issues are welcomed.
-   -->
+The tool is really useful so the project is still in development & maintainance.
+Ideas / issues are welcomed.
 
 ## Features
 The ``searcher`` package will search and analyse results in
