@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Sun Jun 29 10:03:50 2014 +0800
+# Date: Fri Dec 26 17:55:34 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -34,7 +34,7 @@ def download(url, updater):
         headers['Host'] = urlparse(pdfurl).netloc
         return wget_download(pdfurl, updater, headers)
     else:
-        return wget_download(url)
+        return wget_download(url, updater)
 
 @register_parser(name='dl.acm.org', urlmatch='dl.acm.org',
                  meta_field=['author', 'bibtex', 'citedby', 'references',

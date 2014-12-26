@@ -82,6 +82,10 @@ def main():
                     download_candidates.append((parser, sr))
     pool.terminate()
 
+    download_candidates = sorted(
+        download_candidates,
+        key=lambda x: x[0].priority,
+        reverse=True)
     for (parser, sr) in download_candidates:
         data = parser.download(sr)
         if data:
