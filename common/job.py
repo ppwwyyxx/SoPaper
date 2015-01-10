@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Wed Jul 16 14:02:35 2014 -0700
+# Date: Sat Jan 10 23:44:02 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -11,7 +11,8 @@ from multiprocessing import Pool
 
 class JobContext(object):
     def __init__(self, query):
-        self.query = title_beautify(query)
+        query = title_beautify(query)
+        self.query = query
         self.success = False
         self.title = query
         self.existing = None
