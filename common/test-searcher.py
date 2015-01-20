@@ -1,7 +1,7 @@
 #!../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: test-searcher.py
-# Date: 一 6月 09 16:29:40 2014 +0000
+# Date: Tue Jan 20 14:22:43 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from multiprocessing import Pool
@@ -14,6 +14,8 @@ from searcher import searcher_run
 if __name__ == '__main__':
     query = sys.argv[1]
     searchers = searcher.register_searcher.get_searcher_list()
+    searchers = searchers[1:]
+    print [k.name for k in searchers]
     ctx = JobContext(query)
 
     args = zip(searchers, [ctx] * len(searchers))

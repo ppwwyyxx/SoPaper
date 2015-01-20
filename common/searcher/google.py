@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: google.py
-# Date: Tue Jul 22 21:42:50 2014 -0700
+# Date: Tue Jan 20 14:25:48 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_searcher
@@ -38,6 +38,7 @@ def search(ctx):
     r = requests.get(GOOGLE_URL.format(query), headers=headers, verify=False)
     text = r.text.encode('utf-8')
     #with open('/tmp/a.html', 'r') as f:
+        ##f.write(text)
         #text = f.read()
 
     def find_citecnt(dom):
@@ -53,8 +54,10 @@ def search(ctx):
     results = soup.findAll(attrs={'class': 'g'})
     for rst in results:
         try:
-            h3 = rst.findAll('h3')[0]
-            real_title = h3.get_text()
+            h3 = rst.findAll('h3')
+            if not h3:  # frame search, e.g. picture/video/kg
+                continue
+            real_title = h3[0].get_text()
             tc = title_correct(query, real_title)
             if not tc[0]:
                 continue
