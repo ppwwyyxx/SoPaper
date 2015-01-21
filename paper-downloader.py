@@ -35,8 +35,7 @@ def get_args():
         '\nSoPaper, So Easy'
     parser = argparse.ArgumentParser(description = desc)
 
-    parser.add_argument('-t', '--title',
-                        help='Title of the paper', required=True)
+    parser.add_argument('title', help='Title of the paper')
     parser.add_argument('-d', '--directory',
                         help='Output Directory (default: current directory)',
                         required=False, default='.')
