@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: google.py
-# Date: Tue Jan 20 14:25:48 2015 +0800
+# Date: Wed Mar 11 09:21:06 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_searcher

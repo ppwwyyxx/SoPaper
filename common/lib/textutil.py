@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Tue Jul 22 21:50:14 2014 -0700
+# Date: Wed Mar 11 09:21:01 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -57,15 +57,19 @@ def levenshtein(s1, s2):
 
 def title_correct(query, title):
     """ return (match, update) """
+    title = title.replace('[PDF]', '')
     q = ''.join([t for t in query if t in string.letters]).lower()
     now = ''.join([t for t in title if t in string.letters]).lower()
     ed_thres = min(len(query), len(title)) / 5
-    for k in range(min([int(len(query) * 0.7), 30]), len(query)):
+    ERROR_RATIO = 0.6
+    if levenshtein(q, now) < ed_thres:
+        return (True, True)
+    for k in range(min([int(len(query) * ERROR_RATIO), 30]), len(query)):
         if levenshtein(q[:k], now) < ed_thres:
             return (True, False)
-    for k in range(int(len(title) * 0.7), len(title)):
+    for k in range(int(len(title) * ERROR_RATIO), len(title)):
         if levenshtein(now[:k], q) < ed_thres:
-            return (True, True)
+            return (True, False)
     return (False, False)
 
 def name_clean(name):
@@ -78,3 +82,7 @@ def filter_nonascii(string):
 
 def norm_filename(s):
     return s.replace('/', ' ')
+
+if __name__ == '__main__':
+    print title_correct("Gated Softmax Classification",
+                        "[PDF]Gated Softmax Classification - NIPS Proceedings")
