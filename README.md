@@ -62,3 +62,7 @@ Run the following command to install all the python packages needed, setup virtu
 	./quickinstall
 	./standalone_server.py
 
+
+## TODO
+* Fix bug: only download newest version of pdf on arxiv.com
+* fetcher for other sites
