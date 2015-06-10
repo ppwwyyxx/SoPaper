@@ -1,24 +1,20 @@
 ## SoPaper, So Easy
 This is a project designed for researchers to conveniently access papers they need.
 
-It includes a command line tool ``paper-downloader.py``, to automatically search and download paper,
-as well as a server to provide integrated search/read/download experience.
+A command line tool ``paper-downloader.py`` is included, to __automatically search and download__ paper
+from Internet, with the name of the paper given.
+The downloaded paper will thus have a readable file name.
+It mainly supports searching papers in computer science.
 
-This project initially served as a course project for *Service Oriented Software Engineering(2014Spring)*
-and *Search Engine Technology(2014Spring)* in Tsinghua University, developed by:
-* [Yuxin Wu (ppwwyyxx)](mailto:ppwwyyxxc@gmail.com)
-* Tiezheng Li
-* Yichen Wang
+This project also comes with a naive server to provide integrated search/read/download experience.
 
-This tool is really useful, therefore the project is still in development & maintainance.
-Ideas / issues are welcomed.
 
 ## Features
-The ``searcher`` package will search and analyse results in
+The ``searcher`` module will fuzzy search and analyse results in
 * Google Scholar
 * Google
 
-and the ``fetcher`` package will further analyse the results and download papers from the following sources:
+and the ``fetcher`` module will further analyse the results and download papers from the following sources:
 * direct pdf link
 * [dl.acm.org](http://dl.acm.org/)
 * [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
@@ -44,9 +40,10 @@ Usage:
 ```bash
 ./paper-downloader.py --help
 ./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
+# will find and download this famous SIFT paper with a correct file name.
 ```
 
-Command line tool is sufficient to use. If you'd like to deploy the server, you'll need:
+Command line tool is sufficient to use. If you'd like to play with the server, you'll need:
 * Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
 * libcurl (libcurl4-{openssl,nss,gnutls}-dev on debian/ubuntu)
@@ -65,4 +62,5 @@ Run the following command to install all the python packages needed, setup virtu
 
 ## TODO
 * Fix bug: only download newest version of pdf on arxiv.com
-* fetcher for other sites
+* Accept a url as cmd argument
+* Fetcher for other sites

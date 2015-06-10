@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Wed Mar 11 09:21:01 2015 +0800
+# Date: Wed Jun 10 21:13:45 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -26,10 +26,10 @@ def title_beautify(title):
     return " ".join(tk)
 
 def parse_file_size(size):
-    if size > 1000000:
-        return "{0:.2f}MB".format(float(size) / 1000000)
-    if size > 1000:
-        return "{0:.2f}KB".format(float(size) / 1000)
+    if size > 1048576:
+        return "{0:.2f}MB".format(float(size) / 1024 / 1024)
+    if size > 1024:
+        return "{0:.2f}KB".format(float(size) / 1024)
     return "{0}B".format(size)
 
 def filter_title_fileformat(title):
