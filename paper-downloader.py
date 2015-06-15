@@ -108,6 +108,9 @@ def main():
         log_info("Author: {0}".format(ctx.meta['author']))
     if ctx.meta.get('citecnt'):
         log_info("Cite count: {0}".format(ctx.meta['citecnt']))
+    if ctx.meta.get('bibtex'):
+        log_info("Bibtex:\n{}".format(ctx.meta['bibtex']))
+
 
 if __name__ == '__main__':
     main()
