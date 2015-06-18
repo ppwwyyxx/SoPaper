@@ -40,7 +40,7 @@ Usage:
 ```bash
 ./paper-downloader.py --help
 ./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
-# will find and download this famous SIFT paper with a correct file name.
+./paper-downloader.py "http://arxiv.org/abs/1506.03184"
 ```
 
 Command line tool is sufficient to use. If you'd like to play with the server, you'll need:
@@ -62,5 +62,4 @@ Run the following command to install all the python packages needed, setup virtu
 
 ## TODO
 * Fix bug: only download newest version of pdf on arxiv.com
-* Accept a url as cmd argument
 * Fetcher for other sites
