@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: arxiv.py
-# Date: 一 6月 09 14:54:03 2014 +0000
+# Date: Thu Jun 18 23:32:54 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from . import register_parser
@@ -24,10 +24,15 @@ class Arxiv(FetcherBase):
         self.soup = BeautifulSoup(text)
 
     def _do_download(self, updater):
-        match = ARXIV_PAT.search(self.url).groupdict()
-        pid = match['id']
-        pdflink = "http://arxiv.org/pdf/{0}.pdf".format(pid)
-        return direct_download(pdflink, updater)
+        full_text_div = self.soup.findAll('div', attrs={'class': 'full-text'})[0]
+        link = full_text_div.findAll('li')[0]
+        partial_link = link.children.next().get('href')
+        return direct_download('http://arxiv.org' + partial_link, updater)
+
+        #match = ARXIV_PAT.search(self.url).groupdict()
+        #pid = match['id']
+        #pdflink = "http://arxiv.org/pdf/{0}.pdf".format(pid)
+        #return direct_download(pdflink, updater)
 
     def _do_get_title(self):
         title = self.soup.findAll(attrs={'name': 'citation_title'})[0]
