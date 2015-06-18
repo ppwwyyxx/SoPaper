@@ -1,18 +1,18 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfutil.py
-# Date: 五 6月 13 16:55:08 2014 +0000
+# Date: Thu Jun 18 23:14:50 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import filter_nonascii, parse_file_size
-from lib.ukutil import check_filetype
+from lib.ukutil import check_file_type, check_buf_filetype
 from uklogger import *
 
 import tempfile
 import os
 
-def check_pdf(buf):
-    return check_filetype(buf, 'PDF document')
+def check_buf_pdf(buf):
+    return check_buf_filetype(buf, 'PDF document')
 
 def pdf2text(data):
     f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
@@ -48,12 +48,19 @@ def pdf_compress(data):
     f2.close()
     ret = os.system('ps2pdf14 "{0}" "{1}"'.format(f.name, f2.name))
     if ret != 0:
-        raise Exception("ps2pdf14 return error! original data in {0}".format(f.name))
-
-    newdata = open(f2.name).read()
-    os.remove(f2.name)
-    os.remove(f.name)
-    if len(newdata) < len(data) and check_pdf(newdata):
+        log_err("Compress: ps2pdf14 failed!")
+        newdata = None
+    else:
+        newdata = open(f2.name).read()
+    file_succ = newdata is not None and \
+            check_file_type(f2.name, 'PDF document')
+    try:
+        os.remove(f2.name)
+        os.remove(f.name)
+    except OSError:
+        pass
+    if file_succ and \
+       len(newdata) < len(data):
         log_info("Compress succeed: {0}->{1}".format(
             parse_file_size(len(data)), parse_file_size(len(newdata))))
         return newdata

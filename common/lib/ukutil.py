@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukutil.py
-# Date: Wed Jul 16 13:50:06 2014 -0700
+# Date: Thu Jun 18 22:50:33 2015 +0800
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -49,7 +49,7 @@ def import_all_modules(file_path, pkg_name):
             [os.path.dirname(file_path)], pkg_name + '.'):
         import_module(module_name)
 
-def check_filetype(buf, need_type):
+def check_buf_filetype(buf, need_type):
     if ukconfig.USE_MAGIC_LIB:
         s = magic.from_buffer(buf)
     else:
@@ -61,7 +61,13 @@ def check_filetype(buf, need_type):
     if s.find(need_type) != -1:
         return True
     else:
-        return s
+        return False
+
+def check_file_type(fname, need_type):
+    s = Popen('file "{0}"'.format(fname), stdout=PIPE, shell=True).stdout.read()
+    if s.find(need_type) != -1:
+        return True
+    return False
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@
 from lib.downloader import direct_download, ProgressPrinter
 from lib.textutil import title_beautify
 from lib.ukutil import import_all_modules, ensure_unicode
-from lib.pdfutil import check_pdf
+from lib.pdfutil import check_buf_pdf
 from uklogger import *
 import ukconfig
 from job import SearchResult
@@ -109,13 +109,14 @@ class register_parser(object):
         return True
 
     def download(self, sr, progress_updater=None):
+        """ return binary data or None"""
         fetcher_inst = self.fetcher_cls(sr)
 
         succ = fetcher_inst.download(progress_updater)
         if not succ:
             return None
 
-        ft = check_pdf(fetcher_inst.get_data())
+        ft = check_buf_pdf(fetcher_inst.get_data())
         if ft == True:
             data = fetcher_inst.get_data()
             return data

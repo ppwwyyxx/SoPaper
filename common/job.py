@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: job.py
-# Date: Sat Jan 10 23:44:02 2015 +0800
+# Date: Thu Jun 18 23:11:07 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import title_beautify
@@ -37,6 +37,14 @@ class JobContext(object):
             self.title = title
             return True
         return False
+
+    def try_update_title_from_search_result(self, s):
+        try:
+            updated_title = s['ctx_update']['title']
+        except KeyError:
+            pass
+        else:
+            self.update_new_title(updated_title)
 
     def __str__(self):
         d = {'title': self.title,

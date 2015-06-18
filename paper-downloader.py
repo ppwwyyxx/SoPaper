@@ -9,6 +9,7 @@
 
 import sys
 import os
+import re
 import os.path
 import argparse
 from multiprocessing import Pool
@@ -23,7 +24,7 @@ ukconfig.LOG_DIR = None
 
 import searcher
 from searcher import searcher_run
-from job import JobContext
+from job import JobContext, SearchResult
 import fetcher
 from lib.pdfutil import pdf_compress
 from lib.textutil import norm_filename
@@ -35,7 +36,7 @@ def get_args():
         '\nSoPaper, So Easy'
     parser = argparse.ArgumentParser(description = desc)
 
-    parser.add_argument('title', help='Title of the paper')
+    parser.add_argument('title', help='Title of the paper or URL of an arxiv/ieee/dlacm page')
     parser.add_argument('-d', '--directory',
                         help='Output Directory (default: current directory)',
                         required=False, default='.')
@@ -45,62 +46,58 @@ def get_args():
 def main():
     global args
     args = get_args()
-
     query = args.title
     directory = args.directory
-    #query = "Distinctive image features from scale-invariant keypoint"
-    ctx = JobContext(query)
+
 
     searchers = searcher.register_searcher.get_searcher_list()
     parsers = fetcher.register_parser.get_parser_list()
-
-    args = zip(searchers, [ctx] * len(searchers))
-    pool = Pool()
-    as_results = [pool.apply_async(searcher_run, arg) for arg in args]
     download_candidates = []
+    if re.match('^http[s]?://', query):
+        # skip search
+        ctx = JobContext("")
+        sr = SearchResult(None, query)
+        for parser in parsers:
+            if parser.can_handle(sr):
+                parser.fetch_info(ctx, sr)      # will update title
+                download_candidates.append((parser, sr))
+    else:
+        #query = "Distinctive image features from scale-invariant keypoint"
+        ctx = JobContext(query)
 
-    for s in as_results:
-        s = s.get()
-        if s is None:
-            continue
-        srs = s['results']
+        args = zip(searchers, [ctx] * len(searchers))
+        pool = Pool()
+        as_results = [pool.apply_async(searcher_run, arg) for arg in args]
 
-        ctx.update_meta_dict(s['ctx_update'])
-        print s['ctx_update']
-        try:
-            updated_title = s['ctx_update']['title']
-        except KeyError:
-            pass
-        else:
-            ctx.update_new_title(updated_title)
+        for s in as_results:
+            s = s.get()
+            if s is None:
+                continue
+            ctx.update_meta_dict(s['ctx_update'])
+            print s['ctx_update']
+            ctx.try_update_title_from_search_result(s)
 
-        for sr in srs:
-            for parser in parsers:
-                if parser.can_handle(sr):
-                    parser.fetch_info(ctx, sr)      # will update title
-                    download_candidates.append((parser, sr))
-    pool.terminate()
+            for sr in s['results']:
+                for parser in parsers:
+                    if parser.can_handle(sr):
+                        parser.fetch_info(ctx, sr)      # will update title
+                        download_candidates.append((parser, sr))
+        pool.terminate()
 
     download_candidates = sorted(
         download_candidates,
         key=lambda x: x[0].priority,
         reverse=True)
+
     for (parser, sr) in download_candidates:
         data = parser.download(sr)
         if data:
-            try:
-                data = pdf_compress(data)
-            except:
-                log_err("PDF compress failed, you may need to install poppler-utils")
+            data = pdf_compress(data)
             ctx.title = norm_filename(ctx.title)
             filename = os.path.join(directory, ctx.title + ".pdf")
-            log_info("Writing data to {0}".format(filename))
-            try:
-                with open(filename, 'wb') as f:
-                    f.write(data)
-            except IOError:
-                log_exc("Failed to write to file")
-            log_info("Successfully download {0}".format(ctx.title))
+            with open(filename, 'wb') as f:
+                f.write(data)
+            log_info("Successfully downloaded to {0}".format(filename))
             break
     else:
         log_err("Failed to download {0}".format(ctx.title))
