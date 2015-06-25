@@ -61,5 +61,5 @@ Run the following command to install all the python packages needed, setup virtu
 
 
 ## TODO
-* Fix bug: only download newest version of pdf on arxiv.com
+* Fetcher dedup: when arxiv abs/pdf apperas both in search results, page would be downloaded twice
 * Fetcher for other sites
