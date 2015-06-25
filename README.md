@@ -43,6 +43,9 @@ Usage:
 ./paper-downloader.py "http://arxiv.org/abs/1506.03184"
 ```
 
+NOTE: You may need proper proxy setup by environment variable `http_proxy` and `https_proxy`,
+to be able to download from certain sites.
+
 Command line tool is sufficient to use. If you'd like to play with the server, you'll need:
 * Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
@@ -53,13 +56,7 @@ Command line tool is sufficient to use. If you'd like to play with the server, y
 
 Note: on debian/ubuntu, make sure you do *not* have 'python2-bson' package installed.
 
-Run the following command to install all the python packages needed, setup virtualenv, and run the server.
-
-	cd manage
-	./quickinstall
-	./standalone_server.py
-
 
 ## TODO
-* Fetcher dedup: when arxiv abs/pdf apperas both in search results, page would be downloaded twice
+* Fetcher dedup: when arxiv abs/pdf apperas both in search results, page would be downloaded twice (maybe add a cache for requests)
 * Fetcher for other sites

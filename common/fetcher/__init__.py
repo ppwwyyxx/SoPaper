@@ -104,8 +104,11 @@ class register_parser(object):
                     ctx.existing = doc[0]
                     ukdbconn.update_meta(doc[0]['_id'], fetcher_inst.get_meta())
                     return True
-        log_info("Fetcher Update Metadata: {0}".format(str(fetcher_inst.get_meta().keys())))
-        ctx.update_meta_dict(fetcher_inst.get_meta())
+        meta = fetcher_inst.get_meta()
+        if len(meta):
+            log_info("Fetcher {} Update Metadata: {}".format(
+                fetcher_inst.name, str(meta.keys())))
+        ctx.update_meta_dict(meta)
         return True
 
     def download(self, sr, progress_updater=None):

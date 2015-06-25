@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: dlacm.py
-# Date: Fri Dec 26 17:55:34 2014 +0800
+# Date: Thu Jun 25 16:33:15 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import re
@@ -20,7 +20,7 @@ HOSTNAME = 'dl.acm.org'
 DEFAULT_TIMEOUT = '300.0'   # 5 minutes
 
 # Bug in requests:
-# requests failed to download paper from dl.acm.org. use wget instead
+# requests would fail to download paper from dl.acm.org. use wget instead
 def download(url, updater):
     log_info("Custom Directly Download with URL {0} ...".format(url))
     headers = {'Host': urlparse(url).netloc,

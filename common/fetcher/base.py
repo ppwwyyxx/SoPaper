@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: base.py
-# Date: 二 6月 10 03:10:35 2014 +0000
+# Date: Thu Jun 25 16:29:22 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from uklogger import *
@@ -68,7 +68,7 @@ class FetcherBase(object):
         except KeyboardInterrupt:
             raise
         except RecoverableErr as e:
-            log_info(str(e))
+            log_err(str(e))
             return False
         except Exception:
             log_exc("Error while downloading with" \
