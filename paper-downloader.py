@@ -27,7 +27,7 @@ from searcher import searcher_run
 from job import JobContext, SearchResult
 import fetcher
 from lib.pdfutil import pdf_compress
-from lib.textutil import norm_filename
+from lib.textutil import norm_filename, md5
 from uklogger import *
 
 def get_args():
@@ -93,21 +93,28 @@ def main():
         data = parser.download(sr)
         if data:
             data = pdf_compress(data)
-            ctx.title = norm_filename(ctx.title)
+            if ctx.title:
+                ctx.title = norm_filename(ctx.title)
+            else:
+                log_info("No known paper title!")
+                ctx.title = "Unnamed Paper {}".format(md5(data))
+
             filename = os.path.join(directory, ctx.title + ".pdf")
+            if os.path.exists(filename):
+                log_err("File {} exists! exit".format(basename(filename)))
+                break
             with open(filename, 'wb') as f:
                 f.write(data)
             log_info("Successfully downloaded to {0}".format(filename))
             break
     else:
         log_err("Failed to download {0}".format(ctx.title))
+    if ctx.meta.get('bibtex'):
+        log_info("Bibtex:\n{}".format(ctx.meta['bibtex']))
     if ctx.meta.get('author'):
         log_info("Author: {0}".format(ctx.meta['author']))
     if ctx.meta.get('citecnt'):
         log_info("Cite count: {0}".format(ctx.meta['citecnt']))
-    if ctx.meta.get('bibtex'):
-        log_info("Bibtex:\n{}".format(ctx.meta['bibtex']))
-
 
 if __name__ == '__main__':
     main()

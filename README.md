@@ -59,4 +59,7 @@ Note: on debian/ubuntu, make sure you do *not* have 'python2-bson' package insta
 
 ## TODO
 * Fetcher dedup: when arxiv abs/pdf apperas both in search results, page would be downloaded twice (maybe add a cache for requests)
+* Don't trush arxiv link from google scholar
+* Is title correctly updated for dlacm?
+* Extract title from bibtex -- more accurate?
 * Fetcher for other sites

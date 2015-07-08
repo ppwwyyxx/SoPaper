@@ -1,7 +1,7 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Wed Jun 10 21:13:45 2015 +0800
+# Date: Wed Jul 08 22:33:24 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
@@ -82,6 +82,11 @@ def filter_nonascii(string):
 
 def norm_filename(s):
     return s.replace('/', ' ')
+
+def md5(s):
+    m = hashlib.md5()
+    m.update(s)
+    return m.hexdigest()
 
 if __name__ == '__main__':
     print title_correct("Gated Softmax Classification",
