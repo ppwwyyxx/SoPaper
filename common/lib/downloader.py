@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Thu Jun 25 16:36:52 2015 +0800
+# Date: Wed Jul 08 22:54:28 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -9,7 +9,7 @@ if __name__ == '__main__':
     sys.path.append('../')
 from uklogger import *
 from lib.textutil import parse_file_size
-from lib.exc import RecoverableErr
+from lib.exc import FileCorrupted
 import ukconfig
 
 import urllib
@@ -52,10 +52,15 @@ def wget_download(url, progress_updater, headers=None):
     tf.close()
     # set timeout and retry number
     cmd = 'wget "{0}" -O "{1}" {2} --timeout=5 -t 3'.format(url, tf.name, headers)
-    os.system(cmd)
-    data = open(tf.name).read()
-    progress_updater.finish(data)
-    os.remove(tf.name)
+    ret = os.system(cmd)
+    if ret:
+        if os.path.exists(tf.name):
+            os.remove(tf.name)
+        raise FileCorrupted("wget failed with return code {}".format(ret))
+    else:
+        data = open(tf.name).read()
+        progress_updater.finish(data)
+        os.remove(tf.name)
     return data
 
 def requests_download(url, progress_updater, headers=None):
@@ -68,9 +73,9 @@ def requests_download(url, progress_updater, headers=None):
     else:
         total_length = int(total_length)
         if total_length < ukconfig.FILE_SIZE_MINIMUM:
-            raise RecoverableErr("File too small: " + parse_file_size(total_length))
+            raise FileCorrupted("File too small: " + parse_file_size(total_length))
         if total_length > ukconfig.FILE_SIZE_MAXIMUM:
-            raise RecoverableErr("File too large: " + parse_file_size(total_length))
+            raise FileCorrupted("File too large: " + parse_file_size(total_length))
         progress_updater.set_total(total_length)
         dl = 0
         ret = ""
@@ -95,9 +100,12 @@ def direct_download(url, progress_updater, headers=None):
 
     # for test and cmd tools only
     if ukconfig.download_method == 'wget':
-        return wget_download(url, progress_updater, headers)
+        data = wget_download(url, progress_updater, headers)
     else:
-        return requests_download(url, progress_updater, headers)
+        data = requests_download(url, progress_updater, headers)
+    if len(data) < ukconfig.FILE_SIZE_MINIMUM:
+        raise FileCorrupted("File too small: " + parse_file_size(len(data)))
+    return data
 
 if __name__ == '__main__':
     data = direct_download('http://delivery.acm.org/10.1145/330000/322274/p615-yao.pdf?ip=59.66.132.22&id=322274&acc=ACTIVE%20SERVICE&key=BF85BBA5741FDC6E%2E587F3204F5B62A59%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=456185443&CFTOKEN=45860210&__acm__=1399725544_eebbed2ce2719c67c7a3642f2b21d80a')

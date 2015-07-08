@@ -101,7 +101,7 @@ def main():
 
             filename = os.path.join(directory, ctx.title + ".pdf")
             if os.path.exists(filename):
-                log_err("File {} exists! exit".format(basename(filename)))
+                log_err("File {} exists! exit".format(os.path.basename(filename)))
                 break
             with open(filename, 'wb') as f:
                 f.write(data)

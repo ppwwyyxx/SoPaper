@@ -3,7 +3,7 @@
 # File: __init__.py
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from lib.downloader import direct_download, ProgressPrinter
+from lib.downloader import ProgressPrinter
 from lib.textutil import title_beautify
 from lib.ukutil import import_all_modules, ensure_unicode
 from lib.pdfutil import check_buf_pdf

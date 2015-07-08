@@ -1,12 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfutil.py
-# Date: Thu Jun 18 23:14:50 2015 +0800
+# Date: Wed Jul 08 22:54:42 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from lib.textutil import filter_nonascii, parse_file_size
 from lib.ukutil import check_file_type, check_buf_filetype
 from uklogger import *
+import ukconfig
 
 import tempfile
 import os
@@ -53,7 +54,8 @@ def pdf_compress(data):
     else:
         newdata = open(f2.name).read()
     file_succ = newdata is not None and \
-            check_file_type(f2.name, 'PDF document')
+            check_file_type(f2.name, 'PDF document') and \
+            len(newdata) >= ukconfig.FILE_SIZE_MINIMUM
     try:
         os.remove(f2.name)
         os.remove(f.name)
