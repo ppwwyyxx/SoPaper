@@ -40,6 +40,8 @@ def get_args():
     parser.add_argument('-d', '--directory',
                         help='Output Directory (default: current directory)',
                         required=False, default='.')
+    parser.add_argument('-o', '--output',
+                        help='Manually specify a output file, rather than automatically identify the correct name.')
     ret = parser.parse_args()
     return ret
 
@@ -91,22 +93,25 @@ def main():
 
     for (parser, sr) in download_candidates:
         data = parser.download(sr)
-        if data:
-            data = pdf_compress(data)
-            if ctx.title:
-                ctx.title = norm_filename(ctx.title)
-            else:
-                log_info("No known paper title!")
-                ctx.title = "Unnamed Paper {}".format(md5(data))
+        if not data:
+            continue
+        data = pdf_compress(data)
+        if ctx.title:
+            ctx.title = norm_filename(ctx.title)
+        else:
+            log_info("No known paper title!")
+            ctx.title = "Unnamed Paper {}".format(md5(data))
 
-            filename = os.path.join(directory, ctx.title + ".pdf")
-            if os.path.exists(filename):
-                log_err("File {} exists! exit".format(os.path.basename(filename)))
-                break
-            with open(filename, 'wb') as f:
-                f.write(data)
-            log_info("Successfully downloaded to {0}".format(filename))
+        filename = os.path.join(directory, ctx.title + ".pdf")
+        if os.path.exists(filename):
+            log_err("File {} exists! exit".format(os.path.basename(filename)))
             break
+        with open(filename, 'wb') as f:
+            f.write(data)
+        if args.output:
+            os.rename(filename, args.output)
+        log_info("Successfully downloaded to {0}".format(filename))
+        break
     else:
         log_err("Failed to download {0}".format(ctx.title))
     if ctx.meta.get('bibtex'):

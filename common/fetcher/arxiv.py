@@ -11,7 +11,7 @@ import re
 from bs4 import BeautifulSoup
 import requests
 
-ARXIV_PAT = re.compile('arxiv\.org/[^/]*/(?P<id>.*)')
+#ARXIV_PAT = re.compile('arxiv\.org/[^/]*/(?P<id>.*)')
 
 @register_parser(name='arxiv.org', urlmatch='arxiv.org',
                 meta_field=['author', 'bibtex', 'abstract'],
