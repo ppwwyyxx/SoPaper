@@ -67,9 +67,9 @@ def main():
         #query = "Distinctive image features from scale-invariant keypoint"
         ctx = JobContext(query)
 
-        args = zip(searchers, [ctx] * len(searchers))
+        search_args = zip(searchers, [ctx] * len(searchers))
         pool = Pool()
-        as_results = [pool.apply_async(searcher_run, arg) for arg in args]
+        as_results = [pool.apply_async(searcher_run, arg) for arg in search_args]
 
         for s in as_results:
             s = s.get()
