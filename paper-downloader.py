@@ -70,6 +70,7 @@ def main():
         search_args = zip(searchers, [ctx] * len(searchers))
         pool = Pool()
         as_results = [pool.apply_async(searcher_run, arg) for arg in search_args]
+        #results = [searcher_run(*arg) for arg in search_args]
 
         for s in as_results:
             s = s.get()

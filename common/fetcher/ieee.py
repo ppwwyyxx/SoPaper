@@ -7,6 +7,7 @@
 from . import register_parser
 from .base import FetcherBase, direct_download
 from uklogger import *
+from ukconfig import BS_PARSER
 
 import re
 from bs4 import BeautifulSoup
@@ -23,7 +24,7 @@ CITATION_URL = "http://ieeexplore.ieee.org/xpl/abstractCitations.jsp?tp=&arnumbe
 class IEEE(FetcherBase):
     def _do_pre_parse(self):
         text = requests.get(self.url).text.encode('utf-8')
-        self.soup = BeautifulSoup(text)
+        self.soup = BeautifulSoup(text, BS_PARSER)
 
         number = re.findall('arnumber=[0-9]*', self.url)[0]
         self.number = re.findall('[0-9]+', number)[0]
@@ -31,7 +32,7 @@ class IEEE(FetcherBase):
     def _do_download(self, updater):
         url2 = STAMP_URL.format(self.number)
         text = requests.get(url2).text.encode('utf-8')
-        soup = BeautifulSoup(text)
+        soup = BeautifulSoup(text, BS_PARSER)
         fr = soup.findAll('frame')[-1]
         pdflink = fr.get('src')
         return direct_download(pdflink, updater)
@@ -64,7 +65,7 @@ class IEEE(FetcherBase):
         try:
             ref_url = REFERENCE_URL.format(self.number)
             ref_text = requests.get(ref_url).text
-            ref_soup = BeautifulSoup(ref_text)
+            ref_soup = BeautifulSoup(ref_text, BS_PARSER)
             ol = ref_soup.findAll('ol')[0]
             lis = ol.findAll('li')
             reference = []
@@ -95,7 +96,7 @@ class IEEE(FetcherBase):
         try:
             cite_url = CITATION_URL.format(self.number)
             cite_text = requests.get(cite_url).text.encode('utf-8')
-            cite_soup = BeautifulSoup(cite_text)
+            cite_soup = BeautifulSoup(cite_text, BS_PARSER)
             html = cite_soup.findAll('ol')[0]
             lis = html.findAll('li')
             citing = []

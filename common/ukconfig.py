@@ -35,6 +35,8 @@ except ImportError:
 mongo_conn = ('127.0.0.1', 27018)
 mongo_db = 'sopaper'
 
+BS_PARSER = 'html.parser' # parser for beautifulsoup
+
 DB_DIR_NAME = 'xapian-db'
 XP_DB_DIR = os.path.join(os.path.dirname(__file__),
                          '../{0}'.format(DB_DIR_NAME))

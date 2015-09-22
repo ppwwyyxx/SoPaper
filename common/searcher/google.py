@@ -9,6 +9,7 @@ from job import SearchResult
 from uklogger import *
 from lib.textutil import title_correct, filter_title_fileformat
 import ukconfig
+from ukconfig import BS_PARSER
 
 import re
 import urllib
@@ -17,7 +18,7 @@ from urlparse import urlparse
 import traceback
 import requests
 
-GOOGLE_URL = "http://www.google.com.hk/search?q={0}"
+GOOGLE_URL = "https://www.google.com/search?q={0}"
 
 def parse_google_link(url):
     return url      # now it seems to be ok
@@ -34,8 +35,10 @@ def search(ctx):
     srs = []
 
     headers = { 'Hostname': 'www.google.com',
-                'User-Agent': ukconfig.USER_AGENT}
-    r = requests.get(GOOGLE_URL.format(query), headers=headers, verify=False)
+                'User-Agent': ukconfig.USER_AGENT,
+                'Accept-Encoding': 'gzip'
+              }
+    r = requests.get(GOOGLE_URL.format(query), headers=headers, verify=True)
     text = r.text.encode('utf-8')
     #with open('/tmp/a.html', 'r') as f:
         ##f.write(text)
@@ -50,7 +53,7 @@ def search(ctx):
         except:
             return None
 
-    soup = BeautifulSoup(text)
+    soup = BeautifulSoup(text, BS_PARSER)
     results = soup.findAll(attrs={'class': 'g'})
     for rst in results:
         try:

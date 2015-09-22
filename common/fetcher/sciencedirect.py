@@ -17,6 +17,7 @@ from bs4 import BeautifulSoup
 
 HOSTNAME = 'www.sciencedirect.com'
 
+# not working right now
 #@register_parser(name='sciencedirect.com', urlmatch='sciencedirect.com',
                  #meta_field=['author', 'bibtex', 'abstract'],
                  #priority=8)

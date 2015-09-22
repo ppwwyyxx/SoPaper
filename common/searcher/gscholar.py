@@ -9,6 +9,7 @@ from job import SearchResult
 from uklogger import *
 from lib.textutil import title_correct, filter_title_fileformat, title_beautify
 from lib.ukutil import ensure_unicode, ensure_bin_str
+from ukconfig import BS_PARSER
 
 import re
 import requests
@@ -17,7 +18,7 @@ import urllib
 from urlparse import urlparse
 import traceback
 
-GOOGLE_SCHOLAR_URL = "http://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt=1%2C5&as_sdtp="
+GOOGLE_SCHOLAR_URL = "https://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt=1%2C5&as_sdtp="
 
 @register_searcher(name='Google Scholar', priority=10)
 def search(ctx):
@@ -43,7 +44,7 @@ def search(ctx):
             return None
 
 
-    soup = BeautifulSoup(text)
+    soup = BeautifulSoup(text, BS_PARSER)
     results = soup.findAll(attrs={'class': 'gs_r'})
     title_updated = None
     for rst in results:

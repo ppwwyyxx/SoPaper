@@ -10,6 +10,7 @@ from .base import FetcherBase
 from lib.downloader import wget_download
 from uklogger import *
 import ukconfig
+from ukconfig import BS_PARSER
 from lib.textutil import parse_file_size
 
 from urlparse import urlparse
@@ -46,7 +47,7 @@ class DLAcm(FetcherBase):
         #with open("/tmp/b.html", 'w') as f:
             #f.write(self.text)
         #text = open("/tmp/b.html").read()
-        self.soup = BeautifulSoup(self.text)
+        self.soup = BeautifulSoup(self.text, BS_PARSER)
 
     def _do_download(self, updater):
         pdf = self.soup.findAll(attrs={'name': 'FullTextPDF'})
@@ -87,7 +88,7 @@ class DLAcm(FetcherBase):
             log_info("Getting abstract...")
             abstract_url = re.findall(r'\'tab_abstract.+\d+\'', self.text)[0][1:-1]
             abstract_text = requests.get('http://{0}/'.format(HOSTNAME) + abstract_url).text.encode('utf-8')
-            abstract_soup = BeautifulSoup(abstract_text)
+            abstract_soup = BeautifulSoup(abstract_text, BS_PARSER)
             abstract = abstract_soup.findAll('p')[0].text
             meta['abstract'] = abstract
         except KeyboardInterrupt:
@@ -99,7 +100,7 @@ class DLAcm(FetcherBase):
             log_info("Getting refs ...")
             ref_url = re.findall(r'\'tab_references.+\d+\'', self.text)[0][1:-1]
             ref_text = requests.get('http://{0}/'.format(HOSTNAME) + ref_url).text.encode('utf-8')
-            ref_soup = BeautifulSoup(ref_text)
+            ref_soup = BeautifulSoup(ref_text, BS_PARSER)
             trs = ref_soup.findAll('tr')
             reference = []
             for tr in trs:
@@ -120,7 +121,7 @@ class DLAcm(FetcherBase):
             cite_text = requests.get('http://{0}/'.format(HOSTNAME) +
                                      cite_url, timeout=5
                                     ).text.encode('utf-8')
-            cite_soup = BeautifulSoup(cite_text)
+            cite_soup = BeautifulSoup(cite_text, BS_PARSER)
             trs = cite_soup.findAll('tr')
             citing = []
             for tr in trs:
@@ -141,7 +142,7 @@ class DLAcm(FetcherBase):
             log_info("Getting bibtex...")
             bibtex_url = re.findall(r'exportformats.+bibtex', self.text)[0]
             bibtex_text = requests.get('http://{0}/'.format(HOSTNAME) + bibtex_url).text.encode('utf-8')
-            bibtex_soup = BeautifulSoup(bibtex_text)
+            bibtex_soup = BeautifulSoup(bibtex_text, BS_PARSER)
             pre = bibtex_soup.find('pre')
             bibtex = pre.text.strip()
             meta['bibtex'] = bibtex

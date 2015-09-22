@@ -7,6 +7,7 @@
 from . import register_parser
 from .base import FetcherBase, direct_download
 from uklogger import *
+from ukconfig import BS_PARSER
 import re
 from bs4 import BeautifulSoup
 import requests
@@ -21,7 +22,7 @@ class Arxiv(FetcherBase):
         if 'pdf' in self.url:   # change /pdf/xxx.xxx to /abs/xxx.xxx
             self.url = self.url.replace('pdf', 'abs')
         text = requests.get(self.url).text.encode('utf-8')
-        self.soup = BeautifulSoup(text)
+        self.soup = BeautifulSoup(text, BS_PARSER)
 
     def _do_download(self, updater):
         full_text_div = self.soup.findAll('div', attrs={'class': 'full-text'})[0]
@@ -61,7 +62,7 @@ class Arxiv(FetcherBase):
             bibtex_url = self.soup.findAll(attrs={'title': 'DBLP bibtex record'})
             bibtex_url = bibtex_url[0].get('href')
             bibtex_text = requests.get(bibtex_url).text.encode('utf-8')
-            bibtex_soup = BeautifulSoup(bibtex_text)
+            bibtex_soup = BeautifulSoup(bibtex_text, BS_PARSER)
             pre = bibtex_soup.findAll('pre')[0]
             bibtex = pre.text
             meta['bibtex'] = bibtex
