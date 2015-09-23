@@ -21,7 +21,11 @@ class Arxiv(FetcherBase):
     def _do_pre_parse(self):
         if 'pdf' in self.url:   # change /pdf/xxx.xxx to /abs/xxx.xxx
             self.url = self.url.replace('pdf', 'abs')
+            if self.url.endswith('.abs'):
+                self.url = self.url[:-4]
+        print self.url
         text = requests.get(self.url).text.encode('utf-8')
+        print text
         self.soup = BeautifulSoup(text, BS_PARSER)
 
     def _do_download(self, updater):

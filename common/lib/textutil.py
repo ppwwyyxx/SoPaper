@@ -6,6 +6,7 @@
 
 import string
 import re
+import hashlib
 from lib.ukutil import ensure_unicode
 
 stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
