@@ -8,6 +8,21 @@ It mainly supports searching papers in computer science.
 
 This project also comes with a naive server to provide integrated search/read/download experience.
 
+## How to Use
+To run the command line tool, you'll need the following installed:
+* [requests](http://docs.python-requests.org/en/latest/)
+* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+* [termcolor](https://pypi.python.org/pypi/termcolor)
+* poppler-utils (optional)
+
+Usage:
+```bash
+./paper-downloader.py --help
+./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
+./paper-downloader.py "http://arxiv.org/abs/1506.03184"
+```
+NOTE: If you are not in school, you may need proxy by environment variable `http_proxy` and `https_proxy`,
+to be able to download from certain sites (such as 'dl.acm.org').
 
 ## Features
 The ``searcher`` module will fuzzy search and analyse results in
@@ -29,23 +44,6 @@ The server provide:
 * RESTful APIs on papers
 * Interactive paper reading UI supported by [pdf2htmlEX](https://github.com/coolwanglu/pdf2htmlEX)
 
-## How to Use
-To run the command line tool, you'll need the following installed:
-* [requests](http://docs.python-requests.org/en/latest/)
-* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-* [termcolor](https://pypi.python.org/pypi/termcolor)
-* poppler-utils (optional)
-
-Usage:
-```bash
-./paper-downloader.py --help
-./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
-./paper-downloader.py "http://arxiv.org/abs/1506.03184"
-```
-
-NOTE: You may need proper proxy setup by environment variable `http_proxy` and `https_proxy`,
-to be able to download from certain sites.
-
 Command line tool is sufficient to use. If you'd like to play with the server, you'll need:
 * Python2 with virtualenv. Python headers are needed (python-dev on debian/ubuntu).
 * ghostscript
@@ -54,12 +52,11 @@ Command line tool is sufficient to use. If you'd like to play with the server, y
 * pdf2htmlEx installed. See its [download guide](https://github.com/coolwanglu/pdf2htmlEX/wiki/Download)
 * poppler-utils which provide the 'pdftotext' command line util
 
-Note: on debian/ubuntu, make sure you do *not* have 'python2-bson' package installed.
-
+Note: if you need to run server on debian/ubuntu, make sure you do *not* have 'python2-bson' package installed.
 
 ## TODO
 * Fetcher dedup: when arxiv abs/pdf apperas both in search results, page would be downloaded twice (maybe add a cache for requests)
-* Don't trush arxiv link from google scholar
+* Don't trust arxiv link from google scholar
 * Is title correctly updated for dlacm?
 * Extract title from bibtex -- more accurate?
 * Fetcher for other sites
