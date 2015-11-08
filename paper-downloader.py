@@ -27,7 +27,7 @@ from searcher import searcher_run
 from job import JobContext, SearchResult
 import fetcher
 from lib.pdfutil import pdf_compress
-from lib.textutil import norm_filename, md5
+from lib.textutil import finalize_filename, md5
 from uklogger import *
 
 def get_args():
@@ -70,7 +70,7 @@ def main():
         search_args = zip(searchers, [ctx] * len(searchers))
         pool = Pool()
         as_results = [pool.apply_async(searcher_run, arg) for arg in search_args]
-        #results = [searcher_run(*arg) for arg in search_args]
+        #results = [searcher_run(*arg) for arg in search_args]  # for debug
 
         for s in as_results:
             s = s.get()
@@ -98,7 +98,7 @@ def main():
             continue
         data = pdf_compress(data)
         if ctx.title:
-            ctx.title = norm_filename(ctx.title)
+            ctx.title = finalize_filename(ctx.title)
         else:
             log_info("No known paper title!")
             ctx.title = "Unnamed Paper {}".format(md5(data))

@@ -6,21 +6,26 @@
 
 import string
 import re
+import os
 import hashlib
 from lib.ukutil import ensure_unicode
 
-stopwords = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
+STOPWORDS = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
                  'onto', 'with', 'about', 'the', 'for', 'and', 'or', 'by',
                  'without', 'instead', 'is', 'are', 'since', 'between',
                  'after', 'befoer', 'then', 'than', 'via'])
 
+ABBR_DICT = [(k, v) for k, v in
+            [l.strip().split('\t') for l in open(os.path.join(
+                os.path.dirname(__file__), 'abbr.dic')).readlines()]]
+print ABBR_DICT
 
 def title_beautify(title):
     title = title.strip().lower()
     title = " ".join(title.split())
     tk = title.title().split()
     for (idx, w) in enumerate(tk):
-        if w.lower() in stopwords and not idx == 0:
+        if w.lower() in STOPWORDS and not idx == 0:
             tk[idx] = w.lower()
         else:
             tk[idx] = w.capitalize()
@@ -81,8 +86,15 @@ def name_clean(name):
 def filter_nonascii(string):
     return filter(lambda x: ord(x) < 128, string)
 
-def norm_filename(s):
-    return s.replace('/', ' ')
+def abbr_subst(s):
+    for k, v in ABBR_DICT:
+        s = re.sub(k, v, s, flags=re.IGNORECASE)
+    return s
+
+def finalize_filename(s):
+    s = s.replace('/', ' ')
+    s = abbr_subst(s)
+    return s
 
 def md5(s):
     m = hashlib.md5()
