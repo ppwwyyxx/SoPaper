@@ -18,7 +18,6 @@ STOPWORDS = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
 ABBR_DICT = [(k, v) for k, v in
             [l.strip().split('\t') for l in open(os.path.join(
                 os.path.dirname(__file__), 'abbr.dic')).readlines()]]
-print ABBR_DICT
 
 def title_beautify(title):
     title = title.strip().lower()
