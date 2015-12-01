@@ -100,13 +100,16 @@ def main():
         if ctx.title:
             ctx.title = finalize_filename(ctx.title)
         else:
-            log_info("No known paper title!")
+            log_info("Failed to guess paper title!")
             ctx.title = "Unnamed Paper {}".format(md5(data))
 
         filename = os.path.join(directory, ctx.title + ".pdf")
         if os.path.exists(filename):
-            log_err("File {} exists! exit".format(os.path.basename(filename)))
-            break
+            log_err("File \"{}\" exists! overwrite? (y/n)".format(os.path.basename(filename)))
+            resp = raw_input()
+            if resp not in ['y', 'Y']:
+                log_info("No file written. Exiting...")
+                break
         with open(filename, 'wb') as f:
             f.write(data)
         if args.output:

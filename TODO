@@ -1,9 +1,9 @@
+get title from pdf file
+
 paper metadata: year
 run parser in parrallel
 
 citecnt problem
-
-use aminer search paper
 
 return cited cnt
 
