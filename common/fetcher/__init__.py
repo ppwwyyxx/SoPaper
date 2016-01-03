@@ -6,7 +6,7 @@
 from lib.downloader import ProgressPrinter
 from lib.textutil import title_beautify
 from lib.ukutil import import_all_modules, ensure_unicode
-from lib.pdfutil import check_buf_pdf
+from lib.pdfutil import check_buf_pdf, check_legal_pdf
 from uklogger import *
 import ukconfig
 from job import SearchResult
@@ -119,13 +119,16 @@ class register_parser(object):
         if not succ:
             return None
 
-        ft = check_buf_pdf(fetcher_inst.get_data())
+        data = fetcher_inst.get_data()
+        ft = check_buf_pdf(data)
         if ft == True:
-            data = fetcher_inst.get_data()
-            return data
+            ft = check_legal_pdf(data)
+            if ft == True:
+                return data
+            else:
+                log_err("Found a broken pdf")
         else:
-            log_err("Wrong Format: {0}".format(ft))
-            return None
+            log_err("Wrong Format.")
 
 
 if __name__ != '__main__':

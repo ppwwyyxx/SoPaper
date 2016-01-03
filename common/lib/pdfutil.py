@@ -15,6 +15,23 @@ import os
 def check_buf_pdf(buf):
     return check_buf_filetype(buf, 'PDF document')
 
+def check_legal_pdf(buf):
+    def is_exe(path):
+        return os.path.isfile(path) and os.access(path, os.X_OK)
+    for d in os.environ["PATH"].split(os.pathsep):
+        d = d.strip('"')
+        exe = os.path.join(d, 'pdftk')
+        if is_exe(exe):
+            break
+    else:
+        log_info('pdftk not installed. I don\'t know if pdf file is valid!')
+    f = tempfile.NamedTemporaryFile(delete=False)
+    f.write(buf)
+    f.close()
+    ret = os.system('pdftk "{}" output /dev/null'.format(f.name))
+    os.unlink(f.name)
+    return ret == 0
+
 def pdf2text(data):
     f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     f.write(data)

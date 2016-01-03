@@ -3,23 +3,25 @@ This is a project designed for researchers to conveniently access papers they ne
 
 A command line tool ``paper-downloader.py`` is included, to __automatically search and download__ paper
 from Internet, with the name of the paper given.
-The downloaded paper will thus have a readable file name.
+The downloaded paper will thus have a readable file name
+(I wrote it at the beginning because I'm tired of seeing the file name being random strings).
 It mainly supports searching papers in computer science.
 
-This project also comes with a naive server to provide integrated search/read/download experience.
+<!-- -This project also comes with a naive server to provide integrated search/read/download experience.  -->
 
 ## How to Use
 To run the command line tool, you'll need the following installed:
-* [requests](http://docs.python-requests.org/en/latest/)
-* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-* [termcolor](https://pypi.python.org/pypi/termcolor)
+* [requests](http://docs.python-requests.org/en/latest/) (`pip install --user requests`)
+* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/) (`pip install --user beautifulsoup4`)
+* [termcolor](https://pypi.python.org/pypi/termcolor) (`pip install --user termcolor`)
+* [pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) command line executable.
 * poppler-utils (optional)
 
 Usage:
 ```bash
-./paper-downloader.py --help
-./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
-./paper-downloader.py "http://arxiv.org/abs/1506.03184"
+$ ./paper-downloader.py --help
+$ ./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
+$ ./paper-downloader.py "http://arxiv.org/abs/1506.03184"
 ```
 NOTE: If you are not in school, you may need proxy by environment variable `http_proxy` and `https_proxy`,
 to be able to download from certain sites (such as 'dl.acm.org').

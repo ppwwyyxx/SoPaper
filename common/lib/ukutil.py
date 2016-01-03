@@ -56,8 +56,9 @@ def check_buf_filetype(buf, need_type):
         f = tempfile.NamedTemporaryFile(delete=False)
         f.write(buf)
         f.close()
-        s = Popen('file "{0}"'.format(f.name), stdout=PIPE, shell=True).stdout.read()
-        os.remove(f.name)
+        s = Popen('file "{0}"'.format(f.name),
+                  stdout=PIPE, shell=True).stdout.read()
+        os.unlink(f.name)
     if s.find(need_type) != -1:
         return True
     else:
