@@ -7,10 +7,10 @@
 import sys
 if __name__ == '__main__':
     sys.path.append('../')
-from uklogger import *
-from lib.textutil import parse_file_size
-from lib.exc import FileCorrupted
-import ukconfig
+from ..uklogger import *
+from ..lib.textutil import parse_file_size
+from ..lib.exc import FileCorrupted
+from .. import ukconfig
 
 import urllib
 import os

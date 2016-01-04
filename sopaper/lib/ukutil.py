@@ -6,15 +6,16 @@
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
 """common utility functions"""
-
-import ukconfig
-from uklogger import *
 from importlib import import_module
 from pkgutil import walk_packages
 from datetime import datetime
 from subprocess import Popen, PIPE
 import tempfile
 import os
+
+from .. import ukconfig
+from ..uklogger import *
+
 
 try:
     import magic

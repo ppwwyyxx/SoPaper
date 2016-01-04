@@ -4,10 +4,10 @@
 # Date: Thu Jun 25 16:29:22 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from uklogger import *
-from lib.downloader import direct_download, ProgressPrinter
-from lib.exc import RecoverableErr
-from lib.textutil import title_beautify
+from ..uklogger import *
+from ..lib.downloader import direct_download, ProgressPrinter
+from ..lib.exc import RecoverableErr
+from ..lib.textutil import title_beautify
 
 class FetcherBase(object):
 

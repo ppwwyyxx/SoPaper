@@ -13,22 +13,20 @@ import re
 import os.path
 import argparse
 from multiprocessing import Pool
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                            'common'))
 
 # Config must be set at the beginning
-import ukconfig
+from sopaper import ukconfig
 ukconfig.download_method = 'wget'
 ukconfig.USE_DB = False
 ukconfig.LOG_DIR = None
 
-import searcher
-from searcher import searcher_run
-from job import JobContext, SearchResult
-import fetcher
-from lib.pdfutil import pdf_compress
-from lib.textutil import finalize_filename, md5
-from uklogger import *
+from sopaper import searcher
+from sopaper.searcher import searcher_run
+from sopaper.job import JobContext, SearchResult
+from sopaper import fetcher
+from sopaper.lib.pdfutil import pdf_compress
+from sopaper.lib.textutil import finalize_filename, md5
+from sopaper.uklogger import *
 
 def get_args():
     desc = 'SoPaper command line tool -- ' \

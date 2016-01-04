@@ -8,7 +8,7 @@ import string
 import re
 import os
 import hashlib
-from lib.ukutil import ensure_unicode
+from .ukutil import ensure_unicode
 
 STOPWORDS = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
                  'onto', 'with', 'about', 'the', 'for', 'and', 'or', 'by',

@@ -3,11 +3,11 @@
 # File: __init__.py
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from lib.ukutil import import_all_modules
-from uklogger import *
 from functools import wraps
 
-from job import JobContext
+from ..lib.ukutil import import_all_modules
+from ..uklogger import *
+from ..job import JobContext
 
 def searcher_run(searcher, ctx):
     """ a global function to invoke with multiprocessing,

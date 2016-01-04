@@ -7,11 +7,10 @@
 import re
 from . import register_parser, RecoverableErr
 from .base import FetcherBase
-from lib.downloader import wget_download
-from uklogger import *
-import ukconfig
-from ukconfig import BS_PARSER
-from lib.textutil import parse_file_size
+from ..lib.downloader import wget_download
+from ..uklogger import *
+from .. import ukconfig
+from ..ukconfig import BS_PARSER
 
 from urlparse import urlparse
 import requests

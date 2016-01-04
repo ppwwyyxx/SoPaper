@@ -5,11 +5,11 @@
 
 
 from . import register_searcher
-from job import SearchResult
-from uklogger import *
-from lib.textutil import title_correct, filter_title_fileformat, title_beautify
-from lib.ukutil import ensure_unicode, ensure_bin_str
-from ukconfig import BS_PARSER
+from ..job import SearchResult
+from ..uklogger import *
+from ..lib.textutil import title_correct, filter_title_fileformat, title_beautify
+from ..lib.ukutil import ensure_unicode, ensure_bin_str
+from ..ukconfig import BS_PARSER
 
 import re
 import requests

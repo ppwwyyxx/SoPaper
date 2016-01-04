@@ -6,8 +6,8 @@
 
 from . import register_parser
 from .base import FetcherBase, direct_download
-from uklogger import *
-from ukconfig import BS_PARSER
+from ..uklogger import *
+from ..ukconfig import BS_PARSER
 
 import re
 from bs4 import BeautifulSoup

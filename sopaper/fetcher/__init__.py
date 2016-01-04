@@ -3,14 +3,14 @@
 # File: __init__.py
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from lib.downloader import ProgressPrinter
-from lib.textutil import title_beautify
-from lib.ukutil import import_all_modules, ensure_unicode
-from lib.pdfutil import check_buf_pdf, check_legal_pdf
-from uklogger import *
-import ukconfig
-from job import SearchResult
-from lib.exc import RecoverableErr
+from ..lib.downloader import ProgressPrinter
+from ..lib.textutil import title_beautify
+from ..lib.ukutil import import_all_modules, ensure_unicode
+from ..lib.pdfutil import check_buf_pdf, check_legal_pdf
+from ..uklogger import *
+from .. import ukconfig
+from ..job import SearchResult
+from ..lib.exc import RecoverableErr
 
 if ukconfig.USE_DB:
     import ukdbconn

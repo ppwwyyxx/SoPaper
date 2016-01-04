@@ -7,9 +7,8 @@
 import re
 from . import register_parser, RecoverableErr
 from .base import FetcherBase, direct_download
-from uklogger import *
-import ukconfig
-from lib.textutil import parse_file_size
+from ..uklogger import *
+from .. import ukconfig
 
 from urlparse import urlparse
 import requests
