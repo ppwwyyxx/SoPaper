@@ -1,13 +1,20 @@
-from distutils.core import setup
-setup(
+#from distutils.core import setup
+from setuptools import setup
+kwargs = dict(
   name = 'sopaper',
-  packages = ['sopaper'], # this must be the same as the name above
   version = '0.1',
   description = 'Automatically search and download paper',
   author = 'Yuxin Wu',
   author_email = 'ppwwyyxxc@gmail.com',
-  url = 'https://github.com/ppwwyyxx/sopaper', # use the URL to the github repo
-  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball', # I'll explain this in a second
-  keywords = ['paper', 'academic', 'crawler'], # arbitrary keywords
-  classifiers = [],
+  url = 'https://github.com/ppwwyyxx/sopaper',
+  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball/0.1',
+  keywords = ['Utility'],
+  packages = ['sopaper', 'sopaper.fetcher',
+              'sopaper.lib', 'sopaper.searcher'],
+  entry_points={
+      'console_scripts': ['sopaper = sopaper.__main__:main']
+  },
+  include_package_data=True,
+  install_requires=['termcolor', 'requests', 'beautifulsoup4']
 )
+setup(**kwargs)

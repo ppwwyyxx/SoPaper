@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: ukconfig.py
-# Date: Wed Jul 08 22:51:48 2015 +0800
+# Date: Mon Jan 04 02:33:47 2016 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 download_method = 'wget'
@@ -11,12 +11,8 @@ FILE_SIZE_MINIMUM = 10000        # at least 10kb
 FILE_SIZE_MAXIMUM = 100000000    # at most 100mb
 
 import os
-LOG_DIR = os.path.join(os.path.dirname(__file__),
-                      '../soalog/')
-try:
-    os.mkdir(LOG_DIR)
-except:
-    pass
+
+LOG_DIR = None
 
 # this lib is not required for command line script
 USE_MAGIC_LIB = False

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfutil.py
-# Date: Wed Jul 08 22:54:42 2015 +0800
+# Date: Mon Jan 04 02:39:11 2016 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from ..lib.textutil import filter_nonascii, parse_file_size
@@ -24,7 +24,8 @@ def check_legal_pdf(buf):
         if is_exe(exe):
             break
     else:
-        log_info('pdftk not installed. I don\'t know if pdf file is valid!')
+        log_info('pdftk not installed. Not sure if pdf file is valid!')
+        return True
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(buf)
     f.close()

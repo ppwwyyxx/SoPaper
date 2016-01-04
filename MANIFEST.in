@@ -1,0 +1,3 @@
+recursive-include sopaper *.py
+recursive-include sopaper *.dic
+recursive-exclude webapi *
