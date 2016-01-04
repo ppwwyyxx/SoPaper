@@ -8,10 +8,8 @@ import sys
 import os
 import os.path
 import argparse
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                            'common'))
 
-from lib.pdfutil import pdf_compress
+from sopaper.lib.pdfutil import pdf_compress
 
 def get_args():
     desc = 'Compress Pdf By ps2pdf'
