@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: paper-downloader.py
+# File: __main__.py
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # Command line script to use paper-downloader
@@ -71,7 +71,7 @@ def main():
         #results = [searcher_run(*arg) for arg in search_args]  # for debug
 
         for s in as_results:
-            s = s.get()
+            s = s.get(ukconfig.PYTHON_POOL_TIMEOUT)
             if s is None:
                 continue
             ctx.update_meta_dict(s['ctx_update'])

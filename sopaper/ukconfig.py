@@ -10,6 +10,8 @@ USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 FILE_SIZE_MINIMUM = 10000        # at least 10kb
 FILE_SIZE_MAXIMUM = 100000000    # at most 100mb
 
+PYTHON_POOL_TIMEOUT = 9999  # bug in python: see http://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-pool
+
 import os
 
 LOG_DIR = None

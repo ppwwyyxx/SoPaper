@@ -7,7 +7,6 @@
 from lib.textutil import title_beautify
 from lib.ukutil import ensure_unicode
 from uklogger import *
-from multiprocessing import Pool
 
 class JobContext(object):
     def __init__(self, query):

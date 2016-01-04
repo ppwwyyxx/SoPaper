@@ -19,6 +19,7 @@ from dbsearch import *
 from pdfprocess import postprocess
 from lib.downloader import ProgressPrinter
 from contentsearch import SoPaperSearcher
+import ukconfig
 
 # global. save all ongoing download
 progress_dict = {}
@@ -83,7 +84,7 @@ def handle_title_query(query):
     # Search and get all the results item
     all_search_results = []
     for s in async_results:
-        s = s.get()
+        s = s.get(ukconfig.PYTHON_POOL_TIMEOUT)
         if s is None:
             continue
         srs = s['results']
