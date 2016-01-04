@@ -2,12 +2,12 @@
 from setuptools import setup
 kwargs = dict(
   name = 'sopaper',
-  version = '0.2',
+  version = '0.3',
   description = 'Automatically search and download paper',
   author = 'Yuxin Wu',
   author_email = 'ppwwyyxxc@gmail.com',
   url = 'https://github.com/ppwwyyxx/sopaper',
-  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball/0.2',
+  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball/0.3',
   keywords = ['Utility'],
   packages = ['sopaper', 'sopaper.fetcher',
               'sopaper.lib', 'sopaper.searcher'],
