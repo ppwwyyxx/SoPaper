@@ -7,7 +7,7 @@ kwargs = dict(
   author = 'Yuxin Wu',
   author_email = 'ppwwyyxxc@gmail.com',
   url = 'https://github.com/ppwwyyxx/sopaper',
-  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball/0.1',
+  download_url = 'https://github.com/ppwwyyxx/sopaper/tarball/0.2',
   keywords = ['Utility'],
   packages = ['sopaper', 'sopaper.fetcher',
               'sopaper.lib', 'sopaper.searcher'],
