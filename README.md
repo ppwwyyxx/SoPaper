@@ -1,8 +1,8 @@
 ## SoPaper, So Easy
 This is a project designed for researchers to conveniently access papers they need.
 
-A command line tool ``paper-downloader.py`` is included, to __automatically search and download__ paper
-from Internet, with the name of the paper given.
+The command line tool ``sopaper`` can __automatically search and download__ paper
+from Internet, given the title.
 The downloaded paper will thus have a readable file name
 (I wrote it at the beginning because I'm tired of seeing the file name being random strings).
 It mainly supports searching papers in computer science.
@@ -10,18 +10,18 @@ It mainly supports searching papers in computer science.
 <!-- -This project also comes with a naive server to provide integrated search/read/download experience.  -->
 
 ## How to Use
-To run the command line tool, you'll need the following installed:
-* [requests](http://docs.python-requests.org/en/latest/) (`pip install --user requests`)
-* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/) (`pip install --user beautifulsoup4`)
-* [termcolor](https://pypi.python.org/pypi/termcolor) (`pip install --user termcolor`)
+Install command line dependencies:
 * [pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) command line executable.
 * poppler-utils (optional)
 
+Install python package:
+``pip install --user sopaper``
+
 Usage:
 ```bash
-$ ./paper-downloader.py --help
-$ ./paper-downloader.py "Distinctive image features from scale-invariant keypoints"
-$ ./paper-downloader.py "http://arxiv.org/abs/1506.03184"
+$ sopaper --help
+$ sopaper "Distinctive image features from scale-invariant keypoints"
+$ sopaper "http://arxiv.org/abs/1506.03184"
 ```
 NOTE: If you are not in school, you may need proxy by environment variable `http_proxy` and `https_proxy`,
 to be able to download from certain sites (such as 'dl.acm.org').
@@ -31,16 +31,16 @@ The ``searcher`` module will fuzzy search and analyse results in
 * Google Scholar
 * Google
 
-and the ``fetcher`` module will further analyse the results and download papers from the following sources:
+and the ``fetcher`` module will further analyse the results and download papers from the following possible sources:
 * direct pdf link
 * [dl.acm.org](http://dl.acm.org/)
 * [ieeexplore.ieee.org](http://ieeexplore.ieee.org)
 * [arxiv.org](http://arxiv.org)
 
-``Searcher`` and ``Fetcher`` are __extensible__ to support more resources.
+``Searcher`` and ``Fetcher`` are __extensible__ to support more websites.
 
 The command line tool will directly download the paper with a __clean filename__.
-All the downloaded paper will be __compressed__ using `ps2pdf` from poppler-utils, if available.
+All downloaded paper will be __compressed__ using `ps2pdf` from poppler-utils, if available.
 
 <!--
    -The server provide:
