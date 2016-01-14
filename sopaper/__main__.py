@@ -34,13 +34,15 @@ def get_args():
         '\nSoPaper, So Easy'
     parser = argparse.ArgumentParser(description = desc)
 
-    parser.add_argument('title', help='Title of the paper or URL of an arxiv/ieee/dlacm page')
+    parser.add_argument('title', nargs='+', help='Title of the paper or URL of an arxiv/ieee/dlacm page')
+    parser.add_argument('-u', '--url', action='store_true', help='do not download, print URL only')
     parser.add_argument('-d', '--directory',
                         help='Output Directory (default: current directory)',
                         required=False, default='.')
     parser.add_argument('-o', '--output',
-                        help='Manually specify a output file, rather than automatically identify the correct name.')
+                        help='Manually specify a output file, rather than automatically determine the correct name.')
     ret = parser.parse_args()
+    ret.title = ' '.join(ret.title)
     return ret
 
 def main():
@@ -70,15 +72,18 @@ def main():
         as_results = [pool.apply_async(searcher_run, arg) for arg in search_args]
         #results = [searcher_run(*arg) for arg in search_args]  # for debug
 
+        url_seen = set()    # avoid repeated url
         for s in as_results:
             s = s.get(ukconfig.PYTHON_POOL_TIMEOUT)
             if s is None:
                 continue
             ctx.update_meta_dict(s['ctx_update'])
-            print s['ctx_update']
             ctx.try_update_title_from_search_result(s)
 
             for sr in s['results']:
+                if sr.url in url_seen:
+                    continue
+                url_seen.add(sr.url)
                 for parser in parsers:
                     if parser.can_handle(sr):
                         parser.fetch_info(ctx, sr)      # will update title
@@ -90,16 +95,23 @@ def main():
         key=lambda x: x[0].priority,
         reverse=True)
 
+    if ctx.title:
+        ctx.title = finalize_filename(ctx.title)
+    else:
+        log_info("Failed to guess paper title!")
+        ctx.title = "Unnamed Paper {}".format(md5(data))
+    if args.url:
+        # url mode
+        print("Results for {}:".format(ctx.title))
+        for (_, sr) in download_candidates:
+            print(sr.url)
+        return
+
     for (parser, sr) in download_candidates:
         data = parser.download(sr)
         if not data:
             continue
         data = pdf_compress(data)
-        if ctx.title:
-            ctx.title = finalize_filename(ctx.title)
-        else:
-            log_info("Failed to guess paper title!")
-            ctx.title = "Unnamed Paper {}".format(md5(data))
 
         filename = os.path.join(directory, ctx.title + ".pdf")
         if os.path.exists(filename):
