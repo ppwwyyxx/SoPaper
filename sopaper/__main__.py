@@ -124,16 +124,17 @@ def main():
             f.write(data)
         if args.output:
             os.rename(filename, args.output)
-        log_info("Successfully downloaded to {0}".format(filename))
         break
     else:
         log_err("Failed to download {0}".format(ctx.title))
+        return
     if ctx.meta.get('bibtex'):
         log_info("Bibtex:\n{}".format(ctx.meta['bibtex']))
     if ctx.meta.get('author'):
         log_info("Author: {0}".format(ctx.meta['author']))
     if ctx.meta.get('citecnt'):
         log_info("Cite count: {0}".format(ctx.meta['citecnt']))
+    log_info("Successfully downloaded to {0}".format(filename))
 
 if __name__ == '__main__':
     main()
