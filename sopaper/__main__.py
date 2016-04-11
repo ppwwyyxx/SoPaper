@@ -48,7 +48,7 @@ def get_args():
 def main():
     global args
     args = get_args()
-    query = args.title
+    query = args.title.strip()
     directory = args.directory
 
 
