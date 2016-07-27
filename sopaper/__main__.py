@@ -99,7 +99,7 @@ def main():
         ctx.title = finalize_filename(ctx.title)
     else:
         log_info("Failed to guess paper title!")
-        ctx.title = "Unnamed Paper {}".format(md5(data))
+        ctx.title = "Unnamed Paper"
     if args.url:
         # url mode
         print("Results for {}:".format(ctx.title))

@@ -2,7 +2,7 @@
 from setuptools import setup
 kwargs = dict(
   name = 'sopaper',
-  version = '0.5',
+  version = '0.6',
   description = 'Automatically search and download paper',
   author = 'Yuxin Wu',
   author_email = 'ppwwyyxxc@gmail.com',
