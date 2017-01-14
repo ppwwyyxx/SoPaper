@@ -12,6 +12,7 @@ It mainly supports searching papers in computer science.
 ## How to Use
 Install command line dependencies:
 * [pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) command line executable.
+	+ Using pdftk on OSX10.11 might lead to hangs. See [here](http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11) for more info.
 * poppler-utils (optional)
 
 Install python package:
