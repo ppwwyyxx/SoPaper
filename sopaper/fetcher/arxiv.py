@@ -31,7 +31,11 @@ class Arxiv(FetcherBase):
         full_text_div = self.soup.findAll('div', attrs={'class': 'full-text'})[0]
         link = full_text_div.findAll('li')[0]
         partial_link = link.children.next().get('href')
-        return direct_download('http://arxiv.org' + partial_link, updater)
+
+        prefix = 'http://arxiv.org'
+        if 'cn.arxiv.org' in self.url:  # handle cn.arxiv
+            prefix = 'http://cn.arxiv.org'
+        return direct_download(prefix + partial_link, updater)
 
         #match = ARXIV_PAT.search(self.url).groupdict()
         #pid = match['id']
