@@ -19,14 +19,17 @@ from bs4 import BeautifulSoup
 HOSTNAME = 'dl.acm.org'
 DEFAULT_TIMEOUT = '300.0'   # 5 minutes
 
+def get_headers(url):
+    return {'Host': urlparse(url).netloc,
+            'User-Agent': ukconfig.USER_AGENT,
+            'Connection': 'Keep-Alive'
+           }
+
 # Bug in requests:
 # requests would fail to download paper from dl.acm.org. use wget instead
 def download(url, updater):
     log_info("Custom Directly Download with URL {0} ...".format(url))
-    headers = {'Host': urlparse(url).netloc,
-               'User-Agent': ukconfig.USER_AGENT,
-               'Connection': 'Keep-Alive'
-              }
+    headers = get_headers(url)
 
     resp = requests.get(url, headers=headers, allow_redirects=False)
     pdfurl = resp.headers.get('location')
@@ -42,7 +45,8 @@ def download(url, updater):
                  priority=2)
 class DLAcm(FetcherBase):
     def _do_pre_parse(self):
-        self.text = requests.get(self.url).text.encode('utf-8')
+        self.text = requests.get(
+            self.url, headers=get_headers(self.url)).text.encode('utf-8')
         #with open("/tmp/b.html", 'w') as f:
             #f.write(self.text)
         #text = open("/tmp/b.html").read()
@@ -57,8 +61,9 @@ class DLAcm(FetcherBase):
                 url = pdf[0].get('href')
                 url = 'http://{0}/'.format(HOSTNAME) + url
                 log_info("dl.acm origin url: {0}".format(url))
-                r = requests.get(url, allow_redirects=False)
+                r = requests.get(url, headers=get_headers(url), allow_redirects=False)
                 pdfurl = r.headers.get('location')
+                assert pdfurl
             except:
                 # probably something need to be fixed
                 log_exc('')
