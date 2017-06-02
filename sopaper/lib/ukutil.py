@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # File: ukutil.py
-# Date: Thu Jun 18 22:50:33 2015 +0800
+# Date: Fri Jun 02 10:18:29 2017 -0700
 # Author: jiakai <jia.kai66@gmail.com>
 #         Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -54,6 +54,7 @@ def check_buf_filetype(buf, need_type):
     if ukconfig.USE_MAGIC_LIB:
         s = magic.from_buffer(buf)
     else:
+        assert os.name != 'nt', "Windows users please install python-magic."
         f = tempfile.NamedTemporaryFile(delete=False)
         f.write(buf)
         f.close()

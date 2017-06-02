@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: pdfutil.py
-# Date: Mon Jan 04 02:39:11 2016 +0000
+# Date: Fri Jun 02 10:19:03 2017 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 from ..lib.textutil import filter_nonascii, parse_file_size
@@ -59,6 +59,9 @@ def pdf_compress(data):
     """ take a pdf data string, return a compressed string
         compression is done using ps2pdf14 in ghostscript
     """
+    if os.name == 'nt':
+        log_info("Does not support pdf compress on windows!")
+        return data
     f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     f.write(data)
     f.close()

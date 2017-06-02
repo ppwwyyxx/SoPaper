@@ -14,6 +14,6 @@ kwargs = dict(
       'console_scripts': ['sopaper = sopaper.__main__:main']
   },
   include_package_data=True,
-  install_requires=['termcolor', 'requests', 'beautifulsoup4']
+  install_requires=['termcolor', 'requests', 'beautifulsoup4', 'python-magic']
 )
 setup(**kwargs)
