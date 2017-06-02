@@ -1,14 +1,16 @@
 #!../../manage/exec-in-virtualenv.sh
 # -*- coding: UTF-8 -*-
 # File: textutil.py
-# Date: Wed Jul 08 22:33:24 2015 +0800
+# Date: Fri Jun 02 10:39:42 2017 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import string
 import re
 import os
 import hashlib
+import platform
 from .ukutil import ensure_unicode
+from .sanitize import sanitize_path_fragment
 
 STOPWORDS = set(['of', 'from', 'as', 'to', 'a', 'an', 'in', 'into', 'on',
                  'onto', 'with', 'about', 'the', 'for', 'and', 'or', 'by',
@@ -91,7 +93,13 @@ def abbr_subst(s):
     return s
 
 def finalize_filename(s):
-    s = s.replace('/', ' ')
+    system = platform.system()
+    fs = {
+            'Windows': 'ntfs_win32',
+            'Linux': 'ext4',
+            'Darwin': 'hfs+'
+        }[system]   # hopefully the guess can work in most cases..
+    s = sanitize_path_fragment(s, target_file_systems={fs}, replacement=u'-')
     s = abbr_subst(s)
     return s
 
