@@ -22,7 +22,7 @@ Usage:
 ```bash
 $ sopaper --help
 $ sopaper "Distinctive image features from scale-invariant keypoints"
-$ sopaper "http://arxiv.org/abs/1506.03184"
+$ sopaper "https://arxiv.org/abs/1606.06160"
 ```
 NOTE: If you are not in school, you may need proxy by environment variable `http_proxy` and `https_proxy`,
 to be able to download from certain sites (such as 'dl.acm.org').

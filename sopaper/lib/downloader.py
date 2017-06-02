@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # File: downloader.py
-# Date: Wed Jul 08 22:54:28 2015 +0800
+# Date: Fri Jun 02 10:10:59 2017 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys
@@ -79,7 +79,7 @@ def requests_download(url, progress_updater, headers=None):
         progress_updater.set_total(total_length)
         dl = 0
         ret = ""
-        for data in resp.iter_content():
+        for data in resp.iter_content(chunk_size=1024*1024):
             dl += len(data)
             ret += data
             progress_updater.update(dl)
