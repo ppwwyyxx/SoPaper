@@ -15,7 +15,7 @@ from email.mime.text import MIMEText
 @app.route('/mail', methods=['POST'])
 def mail():
     js = request.get_json(force=True)
-    print js
+    print(js)
     try:
         sendmail(js['addr'], js['subject'], js['content'])
     except Exception as e:

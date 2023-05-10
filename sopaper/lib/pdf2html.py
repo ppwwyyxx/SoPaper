@@ -50,7 +50,7 @@ class PDF2Html(object):
 
 if __name__ == '__main__':
     w = PDF2Html(data=None, filename='/tmp/a.pdf')
-    print len(w.get(1))
+    print(len(w.get(1)))
     w.clean()
 
 

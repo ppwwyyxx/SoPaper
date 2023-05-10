@@ -67,7 +67,7 @@ def main():
         #query = "Distinctive image features from scale-invariant keypoint"
         ctx = JobContext(query)
 
-        search_args = zip(searchers, [ctx] * len(searchers))
+        search_args = list(zip(searchers, [ctx] * len(searchers)))
         pool = Pool()
         as_results = [pool.apply_async(searcher_run, arg) for arg in search_args]
         #results = [searcher_run(*arg) for arg in search_args]  # for debug
@@ -102,9 +102,9 @@ def main():
         ctx.title = "Unnamed Paper"
     if args.url:
         # url mode
-        print("Results for {}:".format(ctx.title))
+        print(("Results for {}:".format(ctx.title)))
         for (_, sr) in download_candidates:
-            print(sr.url)
+            print((sr.url))
         return
 
     for (parser, sr) in download_candidates:
@@ -116,7 +116,7 @@ def main():
         filename = os.path.join(directory, ctx.title + ".pdf")
         if os.path.exists(filename):
             log_err("File \"{}\" exists! overwrite? (y/n)".format(os.path.basename(filename)))
-            resp = raw_input()
+            resp = input()
             if resp not in ['y', 'Y']:
                 log_info("No file written. Exiting...")
                 break

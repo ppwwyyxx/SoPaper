@@ -75,7 +75,7 @@ class IEEE(FetcherBase):
                 ref = ref.replace('\n', '')
                 ref = ref.replace('\r', '')
                 ref = ref.replace('\\', '')
-                ref = ref.replace(u'\xa0', u' ')
+                ref = ref.replace('\xa0', ' ')
                 if 'Abstract' in ref:
                     ref = ref[:ref.find('Abstract')]
                 if 'Cross' in ref:
@@ -107,7 +107,7 @@ class IEEE(FetcherBase):
                 cite = cite.replace('\r', '')
                 cite = cite.replace('\\', '')
                 cite = cite.replace('  ', '')
-                cite = cite.replace(u'\xa0', u' ')
+                cite = cite.replace('\xa0', ' ')
                 if 'Abstract' in cite:
                     cite = cite[:cite.find('Abstract')]
                 if 'Cross' in cite:

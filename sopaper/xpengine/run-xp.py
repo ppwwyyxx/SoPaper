@@ -4,8 +4,8 @@
 # Date: Fri May 23 20:19:26 2014 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from indexer import *
-from searcher import *
+from .indexer import *
+from .searcher import *
 
 import json
 import glob
@@ -30,7 +30,7 @@ def index():
 def search(query):
     searcher = XapianSearcher(db)
     ret = searcher.search(query)
-    print json.dumps(ret)
+    print(json.dumps(ret))
 
 if sys.argv[1] == 'index':
     index()

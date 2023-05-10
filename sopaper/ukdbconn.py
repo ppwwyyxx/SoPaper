@@ -14,8 +14,8 @@ except ImportError:
     from pymongo import Connection as MongoClient
 from pymongo.errors import DuplicateKeyError
 
-import ukconfig
-from uklogger import *
+from . import ukconfig
+from .uklogger import *
 
 _db = None
 
@@ -74,7 +74,7 @@ def global_counter(name, delta=1):
         if k:
             return k
     try:
-        val = long(1)
+        val = int(1)
         db.insert({'_id': name, 'val': val})
         return val
     except DuplicateKeyError:

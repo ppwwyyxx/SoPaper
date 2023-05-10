@@ -12,7 +12,7 @@ from ..uklogger import *
 from .. import ukconfig
 from ..ukconfig import BS_PARSER
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 

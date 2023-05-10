@@ -10,7 +10,7 @@ import re
 import xappy
 from xappy import SearchConnection
 
-from xpcommon import FIELD_NUM,STOPWORDS
+from .xpcommon import FIELD_NUM,STOPWORDS
 
 class XapianSearcher(object):
 
@@ -40,7 +40,7 @@ class XapianSearcher(object):
                    }
             return doc
 
-        ret = map(transform, res)
+        ret = list(map(transform, res))
         return ret
 
     def close(self):

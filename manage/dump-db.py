@@ -12,7 +12,7 @@ from ukdbconn import get_mongo
 
 def dump(pid, output):
     OUTPUT = os.path.join(os.path.dirname(__file__), output)
-    pid = long(pid)
+    pid = int(pid)
     db = get_mongo('paper')
 
     doc = list(db.find({'_id': pid}).limit(1))[0]
@@ -36,7 +36,7 @@ def dump(pid, output):
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print "Usage: {0} <paper id> <output dir>".format(sys.argv[0])
+        print("Usage: {0} <paper id> <output dir>".format(sys.argv[0]))
         sys.exit()
 
     dump(sys.argv[1], sys.argv[2])

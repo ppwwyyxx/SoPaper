@@ -1,4 +1,4 @@
-from   __future__ import unicode_literals
+
 import sys
 import unicodedata
 import warnings
@@ -15,7 +15,7 @@ warnings.filterwarnings("always", category=ReplacementLengthWarning)
 
 def _are_unicode(unicode_args=[]):
     if sys.version_info[0] == 2:
-        return all((type(arg) == unicode) for arg in unicode_args)
+        return all((type(arg) == str) for arg in unicode_args)
 
     # Assume Python 3
     return all((type(arg) == str) for arg in unicode_args)

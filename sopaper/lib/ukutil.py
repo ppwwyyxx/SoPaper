@@ -23,21 +23,21 @@ except:
     pass
 
 def ensure_unicode_anytype(s):
-    if isinstance(s, basestring):
+    if isinstance(s, str):
         return ensure_unicode(s)
     return s
 
 def ensure_unicode(s):
     """assert type of s is basestring and convert s to unicode"""
-    assert isinstance(s, basestring), 's should be string' + str(s)
+    assert isinstance(s, str), 's should be string' + str(s)
     if isinstance(s, str):
         s = s.decode('utf-8')
     return s
 
 def ensure_bin_str(s):
     """assert type of s is basestring and convert s to byte string"""
-    assert isinstance(s, basestring), 's should be string'
-    if isinstance(s, unicode):
+    assert isinstance(s, str), 's should be string'
+    if isinstance(s, str):
         s = s.encode('utf-8')
     return s
 
@@ -74,4 +74,4 @@ def check_file_type(fname, need_type):
 
 
 if __name__ == '__main__':
-    print check_filetype(open("./ukconfig.py").read(), 'PDF')
+    print(check_filetype(open("./ukconfig.py").read(), 'PDF'))

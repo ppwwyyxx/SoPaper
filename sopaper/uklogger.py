@@ -6,7 +6,7 @@
 
 """utilities for handling logging"""
 
-import ukconfig
+from . import ukconfig
 import traceback
 import time
 import os
@@ -16,13 +16,13 @@ from termcolor import colored
 
 def log_api(msg):
     """log a message from api-website"""
-    print colored('API', 'green'), msg
+    print(colored('API', 'green'), msg)
     # TODO: use log util, log to file, including time, module, etc.
 
 
 def log_info(msg):
     """log an info message"""
-    print colored('INFO', 'blue'), msg
+    print(colored('INFO', 'blue'), msg)
     if ukconfig.LOG_DIR:
         with open(os.path.join(ukconfig.LOG_DIR, 'info.txt'), 'a') as f:
             f.write(msg)
@@ -32,7 +32,7 @@ def log_info(msg):
 
 def log_err(msg):
     """log an err message"""
-    print colored('ERR', 'red', attrs=['blink']), msg
+    print(colored('ERR', 'red', attrs=['blink']), msg)
     if ukconfig.LOG_DIR:
         with open(os.path.join(ukconfig.LOG_DIR, 'error.txt'), 'a') as f:
             f.write(msg)

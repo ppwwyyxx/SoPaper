@@ -10,7 +10,7 @@ from .base import FetcherBase, direct_download
 from ..uklogger import *
 from .. import ukconfig
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
@@ -33,7 +33,7 @@ class ScienceDirect(FetcherBase):
         if pdf:
             try:
                 url = pdf[0]['pdfurl']
-                print url
+                print(url)
             except:
                 # probably something need to be fixed
                 log_exc('')

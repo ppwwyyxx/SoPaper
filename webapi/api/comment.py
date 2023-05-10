@@ -12,7 +12,7 @@ from ukdbconn import get_mongo
 def do_comment():
     """ update db with user's comment & uid """
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
         uid = request.values.get('uid')
         comment = request.values.get('cmt')
     except Exception:
@@ -31,7 +31,7 @@ def do_comment():
 def get_comment():
     """ return first 10 comments of the paper with pid """
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
         page = int(request.values.get('page'))
     except Exception:
         return {'status': 'error',

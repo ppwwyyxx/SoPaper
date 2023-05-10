@@ -51,7 +51,7 @@ def levenshtein(s1, s2):
     if len(s2) == 0:
         return len(s1)
 
-    previous_row = xrange(len(s2) + 1)
+    previous_row = range(len(s2) + 1)
     for i, c1 in enumerate(s1):
         current_row = [i + 1]
         for j, c2 in enumerate(s2):
@@ -85,7 +85,7 @@ def name_clean(name):
     return ensure_unicode(ret)
 
 def filter_nonascii(string):
-    return filter(lambda x: ord(x) < 128, string)
+    return [x for x in string if ord(x) < 128]
 
 def abbr_subst(s):
     for k, v in ABBR_DICT:
@@ -99,7 +99,7 @@ def finalize_filename(s):
             'Linux': 'ext4',
             'Darwin': 'hfs+'
         }[system]   # hopefully the guess can work in most cases..
-    s = sanitize_path_fragment(s, target_file_systems={fs}, replacement=u'-')
+    s = sanitize_path_fragment(s, target_file_systems={fs}, replacement='-')
     s = abbr_subst(s)
     return s
 
@@ -109,5 +109,5 @@ def md5(s):
     return m.hexdigest()
 
 if __name__ == '__main__':
-    print title_correct("Gated Softmax Classification",
-                        "[PDF]Gated Softmax Classification - NIPS Proceedings")
+    print(title_correct("Gated Softmax Classification",
+                        "[PDF]Gated Softmax Classification - NIPS Proceedings"))

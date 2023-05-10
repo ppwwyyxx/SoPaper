@@ -13,9 +13,9 @@ from ukdbconn import get_mongo
 def html():
     """ return a dict of {pagenum: 'html'} """
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
         page_str = request.values.get('page')
-        pages = map(int, page_str.split(','))
+        pages = list(map(int, page_str.split(',')))
     except Exception:
         return {'status': 'error',
                 'reason': 'invalid request'}

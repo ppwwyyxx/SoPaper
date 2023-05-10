@@ -4,12 +4,12 @@
 # Date: 五 6月 13 18:07:29 2014 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from textutil import title_beautify
+from .textutil import title_beautify
 from ukconfig import MAILSERVER_HOST, MAILSERVER_PORT
 
 import json
 import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 PAT = "https://sopaper.net9.org/download?pid={0}"
@@ -28,7 +28,7 @@ def sendmail(addr, author, res):
     headers = {'Content-type': 'application/json', 'Accept': '*/*'}
     resp = requests.post("http://{0}:{1}/mail".format(MAILSERVER_HOST, MAILSERVER_PORT),
                  data=json.dumps(dic), headers=headers)
-    print resp.content
+    print(resp.content)
 
 
 if __name__ == '__main__':

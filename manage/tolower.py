@@ -14,7 +14,7 @@ for paper in itr:
     try:
         data = paper['author']
     except:
-        print paper['_id'], paper['title']
+        print(paper['_id'], paper['title'])
         continue
     pid = paper['_id']
     db.update({'_id': pid}, {'$set': {'author': [x.lower() for x in data]}})

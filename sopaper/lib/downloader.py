@@ -12,11 +12,11 @@ from ..lib.textutil import parse_file_size
 from ..lib.exc import FileCorrupted
 from .. import ukconfig
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os
 import tempfile
 import requests
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 class ProgressPrinter(object):
     def __init__(self):
@@ -47,7 +47,7 @@ def wget_download(url, progress_updater, headers=None):
     log_info("Download with wget on {0} ...".format(url))
 
     headers = ' '.join(['--header="{0}: {1}"'.format(k, v) for k, v
-                        in headers.iteritems()])
+                        in headers.items()])
     tf = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
     tf.close()
     # set timeout and retry number
@@ -109,4 +109,4 @@ def direct_download(url, progress_updater, headers=None):
 
 if __name__ == '__main__':
     data = direct_download('http://delivery.acm.org/10.1145/330000/322274/p615-yao.pdf?ip=59.66.132.22&id=322274&acc=ACTIVE%20SERVICE&key=BF85BBA5741FDC6E%2E587F3204F5B62A59%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=456185443&CFTOKEN=45860210&__acm__=1399725544_eebbed2ce2719c67c7a3642f2b21d80a')
-    print data
+    print(data)

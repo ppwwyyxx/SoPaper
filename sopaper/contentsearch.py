@@ -7,25 +7,24 @@
 import tempfile
 import os
 from threading import Lock, Condition
-from lib.timeout import timeout, timeout_command
+from .lib.timeout import timeout, timeout_command
 
-from xpengine.indexer import XapianIndexer
-from xpengine.searcher import XapianSearcher
-from lib.singleton import Singleton
-import ukconfig
-from ukdbconn import get_mongo
-from uklogger import *
-from lib.textutil import filter_nonascii
-from lib.pdfutil import pdf2text
+from .xpengine.indexer import XapianIndexer
+from .xpengine.searcher import XapianSearcher
+from .lib.singleton import Singleton
+from . import ukconfig
+from .ukdbconn import get_mongo
+from .uklogger import *
+from .lib.textutil import filter_nonascii
+from .lib.pdfutil import pdf2text
 
 DB_DIR = ukconfig.XP_DB_DIR
 
 
-class SoPaperSearcher(object):
+class SoPaperSearcher(object, metaclass=Singleton):
     """ Search by content of paper
         Don't instantiate me
     """
-    __metaclass__ = Singleton
 
     def __init__(self):
         if not os.path.isdir(DB_DIR):
@@ -38,10 +37,9 @@ class SoPaperSearcher(object):
         res = self.searcher.search(query, offset, page_size, summary_len)
         return res
 
-class SoPaperIndexer(object):
+class SoPaperIndexer(object, metaclass=Singleton):
     """ Don't instantiate me
     """
-    __metaclass__ = Singleton
 
     def __init__(self):
         self.indexer = XapianIndexer(DB_DIR)
@@ -97,5 +95,5 @@ def do_add_paper(doc):
     indexer_lock.release()
 
 if __name__ == '__main__':
-    print "Rebuilding..."
+    print("Rebuilding...")
     SoPaperIndexer().rebuild()

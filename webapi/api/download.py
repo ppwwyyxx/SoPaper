@@ -14,7 +14,7 @@ from authorfetch import process_fetch_author
 # api: /download?pid=1
 @app.route('/download')
 def download():
-    pid = long(request.values.get('pid'))
+    pid = int(request.values.get('pid'))
     agent = str(request.user_agent)
     db = get_mongo('paper')
 
@@ -44,7 +44,7 @@ def download():
 @api_method('/download_available')
 def available():
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
         #log_info("Query available of {0} with dic={1}".
                      #format(pid, str(progress_dict)))
     except:

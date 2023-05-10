@@ -4,13 +4,13 @@
 # Date: Thu Jun 18 23:27:53 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-import ukconfig
+from . import ukconfig
 ukconfig.USE_DB = False
 ukconfig.USE_INDEXER = False
 
-from fetcher import register_parser, SearchResult
-from job import JobContext
-from ukdbconn import new_paper
+from .fetcher import register_parser, SearchResult
+from .job import JobContext
+from .ukdbconn import new_paper
 
 import sys
 
@@ -44,6 +44,6 @@ if __name__ == '__main__':
     #print params
     data = parser.download(sr)
 
-    print ctx.title
+    print(ctx.title)
     if ukconfig.USE_DB and ctx.success:
         pid = new_paper(ctx)
