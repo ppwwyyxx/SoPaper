@@ -12,7 +12,7 @@ from ukdbconn import get_mongo
 def mark():
     """ get marks of the paper with pid """
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
     except Exception:
         return {'status': 'error',
                 'reason': 'invalid request'}
@@ -31,7 +31,7 @@ def mark():
 def do_mark():
     """ update db with user's mark & uid """
     try:
-        pid = long(request.values.get('pid'))
+        pid = int(request.values.get('pid'))
         mark = int(request.values.get('mark'))
     except Exception:
         return {'status': 'error',

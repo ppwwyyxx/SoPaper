@@ -46,7 +46,7 @@ class register_parser(object):
 
     @staticmethod
     def get_parser_list():
-        lst = register_parser.parser_dict.values()
+        lst = list(register_parser.parser_dict.values())
         return sorted(lst, key=lambda x: x.priority, reverse=True)
 
     def __call__(self, fetcher_cls):
@@ -107,7 +107,7 @@ class register_parser(object):
         meta = fetcher_inst.get_meta()
         if len(meta):
             log_info("Fetcher {} Update Metadata: {}".format(
-                fetcher_inst.name, str(meta.keys())))
+                fetcher_inst.name, str(list(meta.keys()))))
         ctx.update_meta_dict(meta)
         return True
 

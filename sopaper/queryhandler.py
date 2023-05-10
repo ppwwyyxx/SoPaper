@@ -8,18 +8,18 @@ from bson.binary import Binary
 from threading import Thread
 from multiprocessing import Pool
 
-from ukdbconn import get_mongo, global_counter, new_paper
-from uklogger import *
-from lib.textutil import title_beautify, parse_file_size
-import searcher
-from searcher import searcher_run
-import fetcher
-from job import JobContext
-from dbsearch import *
-from pdfprocess import postprocess
-from lib.downloader import ProgressPrinter
-from contentsearch import SoPaperSearcher
-import ukconfig
+from .ukdbconn import get_mongo, global_counter, new_paper
+from .uklogger import *
+from .lib.textutil import title_beautify, parse_file_size
+from . import searcher
+from .searcher import searcher_run
+from . import fetcher
+from .job import JobContext
+from .dbsearch import *
+from .pdfprocess import postprocess
+from .lib.downloader import ProgressPrinter
+from .contentsearch import SoPaperSearcher
+from . import ukconfig
 
 # global. save all ongoing download
 progress_dict = {}
@@ -69,7 +69,7 @@ def handle_title_query(query):
     # similar search
     res = similar_search(query)
     if res:
-        log_info(u"Found similar results in db: {0}".format(res['_id']))
+        log_info("Found similar results in db: {0}".format(res['_id']))
         return [res]
 
     # search on web
@@ -77,7 +77,7 @@ def handle_title_query(query):
     parsers = fetcher.register_parser.get_parser_list()
     ctx = JobContext(query)
 
-    args = zip(searchers, [ctx] * len(searchers))
+    args = list(zip(searchers, [ctx] * len(searchers)))
     pool = Pool()
     async_results = [pool.apply_async(searcher_run, arg) for arg in args]
 
@@ -106,7 +106,7 @@ def handle_title_query(query):
 
         meta = s.get('ctx_update')
         if meta:
-            log_info('Meat update from searcher: {0}'.format(str(meta.keys())))
+            log_info('Meat update from searcher: {0}'.format(str(list(meta.keys()))))
             ctx.update_meta_dict(meta)
     pool.close()
     pool.terminate()
@@ -170,7 +170,7 @@ def handle_content_query(query):
     db = get_mongo('paper')
 
     def transform(r):
-        pid = long(r['_id'])
+        pid = int(r['_id'])
         # XXX should find use '$in' and then do sorting
         doc = db.find_one({'_id': pid}, SEARCH_RETURN_FIELDS)
         if not doc:
@@ -179,7 +179,7 @@ def handle_content_query(query):
         doc['weight'] = r['weight']
         return doc
 
-    ret = map(transform, res)
+    ret = list(map(transform, res))
     return ret
 
 if __name__ == '__main__':

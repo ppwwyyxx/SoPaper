@@ -13,7 +13,7 @@ from xappy import IndexerConnection, FieldActions, UnprocessedDocument, Field
 from xappy import errors
 from lib.ukutil import ensure_unicode_anytype as ensure_unicode
 
-from xpcommon import FIELD_NUM, STOPWORDS
+from .xpcommon import FIELD_NUM, STOPWORDS
 
 class XapianIndexer(object):
 
@@ -31,7 +31,7 @@ class XapianIndexer(object):
 
         self.lock = threading.Lock()
 
-        for k in FIELD_NUM.keys():
+        for k in list(FIELD_NUM.keys()):
             self.dbconn.add_field_action(k, FieldActions.STORE_CONTENT)
 
     def add_doc(self, doc):
@@ -40,7 +40,7 @@ class XapianIndexer(object):
         document = UnprocessedDocument()
         document.fields.append(Field('text', content))
 
-        for k, v in doc.iteritems():
+        for k, v in doc.items():
             if k in ['text', 'id']:
                 continue
             if type(v) == list:
@@ -53,7 +53,7 @@ class XapianIndexer(object):
             self.lock.acquire()
             self.dbconn.add(document)
         except errors.IndexerError as e:
-            print str(e)
+            print(str(e))
         finally:
             self.lock.release()
 

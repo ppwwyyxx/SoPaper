@@ -7,12 +7,12 @@ import tempfile
 import os
 from bson.binary import Binary
 
-from uklogger import *
-from ukdbconn import get_mongo
-from lib.pdf2html import PDF2Html
-from lib.textutil import parse_file_size
-from lib.pdfutil import *
-import contentsearch
+from .uklogger import *
+from .ukdbconn import get_mongo
+from .lib.pdf2html import PDF2Html
+from .lib.textutil import parse_file_size
+from .lib.pdfutil import *
+from . import contentsearch
 
 def do_addhtml(data, pid):
     # convert to html
@@ -82,7 +82,7 @@ def postprocess(data, ctx, pid):
 if __name__ == '__main__':
     import sys
     f = sys.argv[1]
-    data = open(f).read()
+    data = open(f, 'rb').read()
 
     text = pdf2text(data)
-    print text
+    print(text)

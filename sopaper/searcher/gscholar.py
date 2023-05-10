@@ -14,8 +14,8 @@ from ..ukconfig import BS_PARSER
 import re
 import requests
 from bs4 import BeautifulSoup
-import urllib
-from urlparse import urlparse
+import urllib.request, urllib.parse, urllib.error
+from urllib.parse import urlparse
 import traceback
 
 GOOGLE_SCHOLAR_URL = "https://scholar.google.com/scholar?hl=en&q={0}&btnG=&as_sdt=1%2C5&as_sdtp="
@@ -63,7 +63,7 @@ def search(ctx):
                         title_updated = new_title
                         break
                     title_updated = new_title
-                log_info(u"Title updated: {0}".format(title_updated))
+                log_info("Title updated: {0}".format(title_updated))
                 ret['ctx_update']['title'] = title_updated
 
             cnt = find_citecnt(rst)

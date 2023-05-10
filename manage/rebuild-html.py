@@ -8,12 +8,12 @@ from pdfprocess import do_addhtml
 from ukdbconn import get_mongo
 
 db = get_mongo('paper')
-itr = db.find({'_id': 67L})
+itr = db.find({'_id': 67})
 for paper in itr:
     try:
         data = paper['pdf']
     except:
-        print paper['_id'], paper['title']
+        print(paper['_id'], paper['title'])
         continue
     pid = paper['_id']
     do_addhtml(data, pid)

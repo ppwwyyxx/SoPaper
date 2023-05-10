@@ -7,18 +7,18 @@
 from multiprocessing import Pool
 import sys
 
-import searcher
-from job import JobContext
-from searcher import searcher_run
+from . import searcher
+from .job import JobContext
+from .searcher import searcher_run
 
 if __name__ == '__main__':
     query = sys.argv[1]
     searchers = searcher.register_searcher.get_searcher_list()
     searchers = searchers[1:]
-    print [k.name for k in searchers]
+    print([k.name for k in searchers])
     ctx = JobContext(query)
 
-    args = zip(searchers, [ctx] * len(searchers))
+    args = list(zip(searchers, [ctx] * len(searchers)))
     pool = Pool()
     async_results = [pool.apply_async(searcher_run, arg) for arg in args]
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
             continue
         srs = s['results']
 
-        print srs
+        print(srs)
 
         meta = s.get('ctx_update')
         if meta:

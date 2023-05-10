@@ -11,9 +11,9 @@ from ..lib.textutil import title_correct, filter_title_fileformat
 from ..ukconfig import BS_PARSER
 
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
-from urlparse import urlparse
+from urllib.parse import urlparse
 import traceback
 import requests
 
@@ -22,7 +22,7 @@ GOOGLE_URL = "https://www.google.com/search?q={0}"
 def parse_google_link(url):
     return url      # now it seems to be ok
     real = re.findall('http[^&]*&', url)[0]
-    ret = urllib.unquote(real[:-1])
+    ret = urllib.parse.unquote(real[:-1])
     return ret
 
 @register_searcher(name='Google')

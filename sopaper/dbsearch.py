@@ -6,9 +6,9 @@
 
 import operator
 
-from ukdbconn import get_mongo
-from uklogger import *
-from lib.textutil import title_beautify, levenshtein
+from .ukdbconn import get_mongo
+from .uklogger import *
+from .lib.textutil import title_beautify, levenshtein
 
 SEARCH_RETURN_FIELDS = {'view_cnt': 1, 'download_cnt': 1,
                         'title': 1, 'page': 1, 'source': 1,
@@ -41,7 +41,7 @@ def search_startswith(query):
                         {'$regex': '^{0}'.format(query) } },
                        SEARCH_RETURN_FIELDS))
     res = [k for k in res if levenshtein(k['title'], query) < 10]
-    print res
+    print(res)
     return res
 
 @beautify_results()
@@ -89,4 +89,4 @@ def init_title_for_similar_search():
 init_title_for_similar_search()
 
 if __name__ == '__main__':
-    print search_exact(title_beautify('Intriguing properties of neural networks'))
+    print(search_exact(title_beautify('Intriguing properties of neural networks')))

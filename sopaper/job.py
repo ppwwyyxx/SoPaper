@@ -4,9 +4,9 @@
 # Date: Thu Jun 18 23:11:07 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-from lib.textutil import title_beautify
-from lib.ukutil import ensure_unicode
-from uklogger import *
+from .lib.textutil import title_beautify
+from .lib.ukutil import ensure_unicode
+from .uklogger import *
 
 class JobContext(object):
     def __init__(self, query):
@@ -48,7 +48,7 @@ class JobContext(object):
     def __str__(self):
         d = {'title': self.title,
              'success': self.success,
-             'meta': self.meta.keys()
+             'meta': list(self.meta.keys())
             }
         return str(d)
 

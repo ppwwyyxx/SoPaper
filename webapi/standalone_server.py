@@ -24,8 +24,8 @@ def main():
     try:
         app.config.from_pyfile('../manage/api_website_config.py')
     except IOError as e:
-        print e
-        print 'WARNING: No configuration found, using builtin defaults.'
+        print(e)
+        print('WARNING: No configuration found, using builtin defaults.')
 
     app.run(app.config['API_HOST'], app.config['API_PORT'],
             **app.config['API_RUN_OPTIONS'])

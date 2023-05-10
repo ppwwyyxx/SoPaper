@@ -35,9 +35,9 @@ def sort_content(res):
         c = max([c, 10])
         return (w ** 2) * c
 
-    print [r['weight']  for r in res]
-    print [r['citecnt'] for r in res]
-    print [score(r) for r in res]
+    print([r['weight']  for r in res])
+    print([r['citecnt'] for r in res])
+    print([score(r) for r in res])
     res = sorted(res, key=score)
     return res
 
@@ -53,7 +53,7 @@ def do_query(query):
 
     assert isinstance(res, list)
 
-    res = map(transform, res)
+    res = list(map(transform, res))
 
     if tp == 'content':
         res = sort_content(res)
@@ -85,7 +85,7 @@ def content_query():
 
     res = handle_content_query(query)
     assert isinstance(res, list)
-    res = map(transform, res)
+    res = list(map(transform, res))
 
     return {'status': 'ok',
             'type': 'author',
@@ -102,7 +102,7 @@ def do_search_author(name):
     if not res:
         return None
 
-    res = map(transform, res)
+    res = list(map(transform, res))
     res = sorted(res, key=lambda x: x.get('citecnt', 0))
     return {'status': 'ok',
             'type': 'author',

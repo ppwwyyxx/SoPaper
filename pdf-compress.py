@@ -22,12 +22,12 @@ def get_args():
 def main():
     global args
     args = get_args()
-    data = open(args.file).read()
+    data = open(args.file, 'rb').read()
     newdata = pdf_compress(data)
 
     if len(newdata) < len(data):
         newfilename = args.file + '.compressed'
-        with open(newfilename, 'w') as fout:
+        with open(newfilename, 'wb') as fout:
             fout.write(newdata)
         os.remove(args.file)
         os.rename(newfilename, args.file)
