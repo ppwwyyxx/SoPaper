@@ -58,7 +58,7 @@ def wget_download(url, progress_updater, headers=None):
             os.remove(tf.name)
         raise FileCorrupted("wget failed with return code {}".format(ret))
     else:
-        data = open(tf.name).read()
+        data = open(tf.name, 'rb').read()
         progress_updater.finish(data)
         os.remove(tf.name)
     return data

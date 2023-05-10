@@ -73,7 +73,7 @@ def pdf_compress(data):
         log_err("Compress: ps2pdf14 failed!")
         newdata = None
     else:
-        newdata = open(f2.name).read()
+        newdata = open(f2.name, 'rb').read()
     file_succ = newdata is not None and \
             check_file_type(f2.name, 'PDF document') and \
             len(newdata) >= ukconfig.FILE_SIZE_MINIMUM

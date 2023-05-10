@@ -15,7 +15,7 @@ class PDF2Html(object):
         if data is not None:
             f = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
             f.close()
-            with open(f.name, 'w') as fpdf:
+            with open(f.name, 'wb') as fpdf:
                 fpdf.write(data)
             self.fname = f.name
             self.createfile = True

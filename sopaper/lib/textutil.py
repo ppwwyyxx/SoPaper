@@ -65,8 +65,8 @@ def levenshtein(s1, s2):
 def title_correct(query, title):
     """ return (match, update) """
     title = title.replace('[PDF]', '')
-    q = ''.join([t for t in query if t in string.letters]).lower()
-    now = ''.join([t for t in title if t in string.letters]).lower()
+    q = ''.join([t for t in query if t in string.ascii_letters]).lower()
+    now = ''.join([t for t in title if t in string.ascii_letters]).lower()
     ed_thres = min(len(query), len(title)) / 5
     ERROR_RATIO = 0.6
     if levenshtein(q, now) < ed_thres:

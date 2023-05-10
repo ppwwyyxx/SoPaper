@@ -82,7 +82,7 @@ def postprocess(data, ctx, pid):
 if __name__ == '__main__':
     import sys
     f = sys.argv[1]
-    data = open(f).read()
+    data = open(f, 'rb').read()
 
     text = pdf2text(data)
     print(text)

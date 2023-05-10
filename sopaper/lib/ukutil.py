@@ -29,17 +29,30 @@ def ensure_unicode_anytype(s):
 
 def ensure_unicode(s):
     """assert type of s is basestring and convert s to unicode"""
-    assert isinstance(s, str), 's should be string' + str(s)
-    if isinstance(s, str):
-        s = s.decode('utf-8')
+    if isinstance(s, bytes):
+        return s.decode('utf-8')
+    assert isinstance(s, str)
+    # In python 3 all strings are assumed to be unicode
     return s
+
+    # Python 2 legacy:
+    # assert isinstance(s, str), 's should be string' + str(s)
+    # if isinstance(s, str):
+    #     s = s.decode('utf-8')
+    # return s
 
 def ensure_bin_str(s):
     """assert type of s is basestring and convert s to byte string"""
-    assert isinstance(s, str), 's should be string'
-    if isinstance(s, str):
-        s = s.encode('utf-8')
-    return s
+    if isinstance(s, bytes):
+        return s
+    assert isinstance(s, str)
+    return s.encode('utf-8')
+
+    # Python 2 legacy:
+    # assert isinstance(s, str), 's should be string'
+    # if isinstance(s, str):
+    #     s = s.encode('utf-8')
+    # return s
 
 def import_all_modules(file_path, pkg_name):
     """import all modules recursively in a package
@@ -51,6 +64,9 @@ def import_all_modules(file_path, pkg_name):
         import_module(module_name)
 
 def check_buf_filetype(buf, need_type):
+    if isinstance(need_type, str):
+        need_type = need_type.encode('utf-8')
+        
     if ukconfig.USE_MAGIC_LIB:
         s = magic.from_buffer(buf)
     else:
@@ -67,6 +83,9 @@ def check_buf_filetype(buf, need_type):
         return False
 
 def check_file_type(fname, need_type):
+    if isinstance(need_type, str):
+        need_type = need_type.encode('utf-8')
+
     s = Popen('file "{0}"'.format(fname), stdout=PIPE, shell=True).stdout.read()
     if s.find(need_type) != -1:
         return True
@@ -74,4 +93,4 @@ def check_file_type(fname, need_type):
 
 
 if __name__ == '__main__':
-    print(check_filetype(open("./ukconfig.py").read(), 'PDF'))
+    print(check_filetype(open("./ukconfig.py", 'rb').read(), 'PDF'))

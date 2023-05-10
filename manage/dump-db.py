@@ -23,14 +23,14 @@ def dump(pid, output):
         os.mkdir(OUTPUT)
     except:
         pass
-    fout = open(os.path.join(OUTPUT, title + '.pdf'), 'w')
+    fout = open(os.path.join(OUTPUT, title + '.pdf'), 'wb')
     fout.write(pdf)
     fout.close()
 
     npage = doc.get('page')
     if npage:
         for i in range(npage + 1):
-            fout = open(os.path.join(OUTPUT, title + '.html.{0}'.format(i)), 'w')
+            fout = open(os.path.join(OUTPUT, title + '.html.{0}'.format(i)), 'wb')
             fout.write(doc['html'][i])
             fout.close()
 
